@@ -1,6 +1,6 @@
-package com.example.erfan_adine_p1_2.entity.Category;
+package com.example.erfan_adine_p1_2.entity.user;
 
-import com.example.erfan_adine_p1_2.entity.base.BaseCategory;
+import com.example.erfan_adine_p1_2.entity.base.BaseUser;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,5 +15,5 @@ import javax.persistence.Entity;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SubService extends BaseCategory {
+public class MainUser extends BaseUser {
 }
