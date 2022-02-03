@@ -11,7 +11,6 @@ import javax.persistence.MappedSuperclass;
 
 @Setter
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 @MappedSuperclass
 public class BaseMessage extends BaseEntity {

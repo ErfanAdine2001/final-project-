@@ -1,0 +1,37 @@
+package com.example.erfan_adine_ptest.entity.work;
+
+import com.example.erfan_adine_ptest.entity.core.BaseEntity;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.List;
+
+
+@Entity
+@Getter
+@Setter
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
+public class SubService extends BaseEntity {
+
+    @Column
+    private Integer number;
+
+
+
+//    @OneToOne(cascade = CascadeType.ALL,mappedBy = "subService")
+//    private MainServiceInDto mainService;
+    private String name;
+
+    private BigDecimal basePrice;
+
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "mainService_ID_mm")
+    private List<MainService> mainService;
+
+}
