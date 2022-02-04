@@ -4,6 +4,8 @@ package com.example.erfan_adine_ptest.service;
 //fixme this import is very important because i can do some my works that ??????????????????????????????????
 
 
+import com.example.erfan_adine_ptest.dto.in.user.AdminInDto;
+import com.example.erfan_adine_ptest.dto.out.user.AdminOutDto;
 import com.example.erfan_adine_ptest.entity.user.Admin;
 import com.example.erfan_adine_ptest.entity.user.User;
 import com.example.erfan_adine_ptest.entity.user.Worker;
@@ -52,12 +54,16 @@ public class AdminService extends Common<Admin, Long> {
      * @throws EmailNotValidException
      * @throws PasswordNotValidException
      */
-    @Override
-    public Admin save(Admin entity) throws NullFieldException, BadEntryException, NameNotValidException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
-        if (checkBaseCustomerIsValid(entity)) {
-            return super.save(entity);
-        }
-        return null;
+
+    public AdminOutDto save(AdminInDto entity) throws NullFieldException, BadEntryException, NameNotValidException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
+        Admin admin = new Admin();
+        admin.setPassword(entity.getPassword());
+        admin.setEmail(entity.getEmail());
+        admin.setImage(entity.getImage());
+        admin.setFName(entity.getFirstName());
+        admin.setLName(entity.getLastName());
+//        admin.setRole(entity.get);
+       adminRepository.save();
     }
 
     /**
