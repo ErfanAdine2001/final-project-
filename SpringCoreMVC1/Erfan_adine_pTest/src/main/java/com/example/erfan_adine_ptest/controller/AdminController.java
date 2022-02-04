@@ -14,19 +14,19 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admins")
+@RequestMapping("/manager")
 public class AdminController {
     private final AdminService adminService;
 
     @PostMapping
     public ResponseEntity<AdminOutDto> create(@Valid @RequestBody AdminInDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
 
-        Admin admin = new Admin();
-        admin.setFName(request.getFirstName());
-        admin.setLName(request.getLastName());
-        admin.setEmail(request.getEmail());
-        admin.setPassword(request.getPassword());
-//        admin.setImage(request.getImage());
+        Admin admin = Admin.builder()
+                .fName(request.getFirstName())
+                .lName(request.getLastName())
+                .email(request.getEmail())
+                .password(request.getPassword())
+                .build();
 
         Admin result = adminService.save(admin);
         AdminOutDto response = new AdminOutDto();
@@ -38,8 +38,11 @@ public class AdminController {
 
     }
 
-
-//    public ResponseEntity<?> changePassword(){
+//
+//    public ResponseEntity<?> changePassword(@RequestBody AdminInDto request ){
+//
+//
+//
 //
 //    }
 

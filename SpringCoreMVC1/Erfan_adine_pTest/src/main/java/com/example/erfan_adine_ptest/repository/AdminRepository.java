@@ -105,6 +105,10 @@ public interface AdminRepository extends JpaRepository<Admin, Long>, JpaSpecific
     @Query("select u from User u where u.fName=:name")
     List<User> findByFName(String name);
 
+//     Admin findByPasswordAndAndFName(){
+//
+//    }
+
 //    @Query("select e from SubServiceInDto e where e.name=:Name and ")
 //    @Query("SELECT SubServiceInDto.id  FROM SubServiceInDto INNER JOIN worker_duty  INNER JOIN WorkerInDto.id" +
 //            " ON SubServiceInDto.id=worker_duty.worker_id and WorkerInDto.id=worker_duty.duty_id " +
