@@ -21,13 +21,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.util.Date;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class WorkerService extends Common<Worker, Long> {
+public class WorkerService {
     private final WorkerRepository workerRepository;
     private final DutyRepository dutyRepository;
     private final MainOrderService mainOrderService;
@@ -63,13 +61,6 @@ public class WorkerService extends Common<Worker, Long> {
         workerRepository.save(byId);
     }
 
-    @Transactional
-    public void updateByIdAndRole(Long worker_id, List<Role> roleList) {
-        Worker worker = workerRepository.findById(worker_id).get();
-        worker.setRole(roleList);
-
-        workerRepository.save(worker);
-    }
     //--
     //-----
     //---------
@@ -100,11 +91,6 @@ public class WorkerService extends Common<Worker, Long> {
         workerRepository.delete(worker);
     }
 
-
-    @PostConstruct
-    public void init() {
-        setJpaRepository(workerRepository);
-    }
 
 
     //TODO fS 2-1  ----------> Service
@@ -145,6 +131,12 @@ public class WorkerService extends Common<Worker, Long> {
     @Transactional
     public Worker findByName(String name) {
         return workerRepository.findByFirstNameName(name);
+
+    }
+
+    @Transactional
+    public Worker findById(Long id) {
+        return workerRepository.findById(id).get();
 
     }
 

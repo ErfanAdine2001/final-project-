@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.erfan_adine_ptest.service.util.Validation.checkBaseCustomerIsValid;
@@ -29,36 +30,20 @@ import static com.example.erfan_adine_ptest.service.util.Validation.checkBaseCus
 public class AdminService {
 
     private final AdminRepository adminRepository;
-
     private final UserService userService;
     private final WorkerService workerService;
     private final MainService_Service mainServiceService;
     private final ExperteService experteService;
-    private Validation validation;
-
-    @PostConstruct
-    public void init() {
-        setJpaRepository(adminRepository);
-    }
 
 
-    /**
-     * duty : "save"
-     *
-     * @param entity
-     * @return
-     * @throws NullFieldException
-     * @throws BadEntryException
-     * @throws NameNotValidException
-     * @throws EmailNotValidException
-     * @throws PasswordNotValidException
-     */
+
+
+
 
     public AdminOutDto saveAdmin(AdminInDto entity) throws NullFieldException, BadEntryException, NameNotValidException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
         Admin admin = new Admin();
         admin.setPassword(entity.getPassword());
         admin.setEmail(entity.getEmail());
-        admin.setImage(entity.getImage());
         admin.setFName(entity.getFirstName());
         admin.setLName(entity.getLastName());
         admin.setRole(entity.getRole());
@@ -70,48 +55,28 @@ public class AdminService {
         return response;
     }
 
-    /**
-     * duty : "find By Id"
-     *
-     * @param id
-     * @return AdminInDto
-     */
 
-    @Override
+
+
     public Admin findById(Long id) {
-        return super.findById(id);
+        return adminRepository.findById(id).get();
     }
 
-    /**
-     * duty : "find All"
-     *
-     * @return
-     */
-    @Override
+
     public List<Admin> findAll() {
-        return super.findAll();
+
+        List<Admin> adminList = new ArrayList<>();
+        adminRepository.findAll().forEach((element) -> adminList.add(element));
+
+        return adminList;
     }
 
-    /**
-     * duty : " update"
-     *
-     * @param id
-     * @throws NameNotValidException
-     * @throws NullFieldException
-     * @throws BadEntryException
-     * @throws EmailNotValidException
-     * @throws PasswordNotValidException
-     */
+
     @Override
     public void update(Long id) throws NameNotValidException, NullFieldException, BadEntryException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
         super.update(id);
     }
 
-    /**
-     * duty : " delete "
-     *
-     * @param id
-     */
     @Override
     public void delete(Long id) {
         super.delete(id);

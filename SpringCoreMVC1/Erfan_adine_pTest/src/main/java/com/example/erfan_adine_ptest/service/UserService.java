@@ -8,6 +8,7 @@ import com.example.erfan_adine_ptest.dto.out.user.WorkerOrUserSerchOutDto;
 import com.example.erfan_adine_ptest.entity.product.MainOrder;
 import com.example.erfan_adine_ptest.entity.product.OrderStatus;
 import com.example.erfan_adine_ptest.entity.product.message.Suggestion;
+import com.example.erfan_adine_ptest.entity.user.Admin;
 import com.example.erfan_adine_ptest.entity.user.User;
 import com.example.erfan_adine_ptest.exception.*;
 import com.example.erfan_adine_ptest.repository.UserRepository;
@@ -22,11 +23,12 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
 @RequiredArgsConstructor
-public class UserService extends Common<User, Long> {
+public class UserService {
     private final UserRepository userRepository;
 
     private Validation validation;
@@ -57,8 +59,6 @@ public class UserService extends Common<User, Long> {
 
     }
 
-    //**************************************
-//    pagination  all  users
 
     public Page<WorkerOrUserSerchOutDto> findAllByFNameAndLName(WorkerOrUserSerchInDto workerOrUserSerchInDto){
         Pageable pageable = PageRequest.of(workerOrUserSerchInDto.getPageNumber(),workerOrUserSerchInDto.getPageSize());
@@ -71,36 +71,34 @@ public class UserService extends Common<User, Long> {
                 .findAllByFNameAndLNameAndEmailAndPassword(workerOrUserSerchInDto.getFName(), workerOrUserSerchInDto.getLName(),workerOrUserSerchInDto.getPassword(),workerOrUserSerchInDto.getEmail(),pageable);
     }
 
+
+
+    public User findById(Long id){
+       return userRepository.findById(id).get();
+    }
     //**************************************
 
     @Transactional
-    @Override
     public List<User> findAll() {
-        return super.findAll();
+        List<User> adminList = new ArrayList<>();
+        userRepository.findAll().forEach((element) -> adminList.add(element));
+
+        return adminList;
     }
 
     @Transactional
-    @Override
     public void delete(Long id) {
-        super.delete(id);
+        userRepository.delete(findById(id));
     }
 
     // TODO validation email don f--------->1-2  service of user
     @Transactional
     public void changePassword(User user) throws NameNotValidException, EmailNotValidException, PasswordNotValidException, NullFieldException {
-//
+
         if (Validation.checkBaseCustomerIsValid(user)) {
             userRepository.save(user);
         }
     }
-
-
-
-//
-//    @Transactional
-//    public void removeById(Long id, String password) {
-//        userRepository.removeById(id, password);
-//    }
 
 
     //TODO fS 2-3
@@ -124,8 +122,7 @@ public class UserService extends Common<User, Long> {
     @Transactional
     public void selectWorkersBySuggestionId(Long userId, Long suggestionId, Long orderId) {
         Suggestion suggestion = suggestionService.findById(suggestionId);
-        User user = userRepository.getById(userId);
-//        MainOrderInDto mainOrder = mainOrderService.findById(orderId);
+        User user = findById(userId);
 
         List<MainOrder> orders = user.getOrders();
         for (MainOrder order : orders) {

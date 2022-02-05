@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class RequestService extends Common<Request, Long> {
+public class RequestService {
     private final RequestRepository requestRepository;
 
     private Validation validation;

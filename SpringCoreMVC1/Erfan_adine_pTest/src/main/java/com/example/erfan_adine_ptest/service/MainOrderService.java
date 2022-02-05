@@ -16,17 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MainOrderService  {
     private final OrderRepository orderRepository;
-
     private Validation validation;
-
-    @PostConstruct
-    public void init() {
-        setJpaRepository(orderRepository);
-    }
-
-//    public List<Object[]> groupBy(Long id){
-//        return orderRepository.gropById(id);
-//    }
 
 
     @Transactional

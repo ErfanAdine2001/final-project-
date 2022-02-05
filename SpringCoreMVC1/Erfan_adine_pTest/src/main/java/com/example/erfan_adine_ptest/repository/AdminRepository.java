@@ -35,15 +35,6 @@ public interface AdminRepository extends PagingAndSortingRepository<Admin, Long>
     List<Admin> GroupById();
 
 
-    @Query("select u from User u inner join Role r on u.id= r.id where u.id=:id and r.statusRole=:statusRole")
-    List<Object> findUserByIdAndAndRole(Long id, StatusRole statusRole);
-
-
-//    List<Object> findByIdAndAndRole(Long id, RoleInDto role);
-
-    @Query("select u from Worker u inner join Role r on u.id= r.id where u.id=:id and r.statusRole=:statusRole")
-    List<Object> findWorkerByIdAndAndRole(Long id, StatusRole statusRole);
-
 
     /**
      * user and worker ->update

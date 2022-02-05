@@ -7,14 +7,13 @@ import com.example.erfan_adine_ptest.repository.TransactionRepository;
 import com.example.erfan_adine_ptest.service.util.Validation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class TransactionService extends Common<Transaction, Long> {
+public class TransactionService {
     private final TransactionRepository transactionRepository;
 
     private Validation validation;

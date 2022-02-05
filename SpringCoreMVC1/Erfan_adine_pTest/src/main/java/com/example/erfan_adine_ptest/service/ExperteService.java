@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ExperteService extends Common<SubService, Long> {
+public class ExperteService  {
     private final ExperteRepository experteRepository;
     private Validation validation;
 
@@ -36,26 +36,22 @@ public class ExperteService extends Common<SubService, Long> {
     }
 
     @Transactional
-    @Override
     public SubService findById(Long id) {
         return super.findById(id);
     }
 
     @Transactional
-    @Override
     public List<SubService> findAll() {
         return super.findAll();
     }
 
 
     @Transactional
-    @Override
     public void update(Long id) throws MistakeInService, NameNotValidException, NullFieldException, BadEntryException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
         super.update(id);
     }
 
     @Transactional
-    @Override
     public void delete(Long aLong) {
         super.delete(aLong);
     }

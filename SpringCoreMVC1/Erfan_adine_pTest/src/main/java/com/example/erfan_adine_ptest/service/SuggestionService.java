@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SuggestionService extends Common<Suggestion, Long> {
+public class SuggestionService extends{
     private final SuggestionRepository suggestionRepository;
 
     private Validation validation;

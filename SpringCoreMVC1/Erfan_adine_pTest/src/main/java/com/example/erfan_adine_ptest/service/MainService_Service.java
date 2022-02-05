@@ -1,6 +1,8 @@
 package com.example.erfan_adine_ptest.service;
 
 
+import com.example.erfan_adine_ptest.dto.in.work.MainServiceInDto;
+import com.example.erfan_adine_ptest.dto.out.work.MainServiceOutDto;
 import com.example.erfan_adine_ptest.entity.work.MainService;
 import com.example.erfan_adine_ptest.exception.*;
 import com.example.erfan_adine_ptest.repository.DutyRepository;
@@ -11,12 +13,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.util.Date;
 import java.util.List;
 
 
 @Service
 @RequiredArgsConstructor
-public class MainService_Service extends Common<MainService, Long> {
+public class MainService_Service{
     private final DutyRepository dutyRepository;
 
     private Validation validation;
@@ -71,21 +74,27 @@ public class MainService_Service extends Common<MainService, Long> {
     }
 
     @Transactional
-    @Override
-    public MainService save(MainService entity) throws NullFieldException, BadEntryException, NameNotValidException, EmailNotValidException, PasswordNotValidException, NullCommentException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, BasePriceOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
-        if (validation.MainServiceIsValid(entity))
-            return super.save(entity);
-        return null;
+    public MainServiceOutDto save(MainServiceInDto entity) throws NullFieldException, BadEntryException, NameNotValidException, EmailNotValidException, PasswordNotValidException, NullCommentException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, BasePriceOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
+
+        MainService mainService = new MainService();
+        mainService.setName(entity.getName());
+        mainService.setWorker(entity.getWorkers());
+        mainService.setUpdatedTime(new Date());
+        mainService.setCreatedTime(new Date());
+
+        MainServiceOutDto mainServiceOutDto = new MainServiceOutDto();
+        mainServiceOutDto.setId(entity.getId());
+
+        return mainServiceOutDto;
+
     }
 
     @Transactional
-    @Override
     public MainService findById(Long id) {
         return super.findById(id);
     }
 
     @Transactional
-    @Override
     public void delete(Long id) {
         super.delete(id);
     }

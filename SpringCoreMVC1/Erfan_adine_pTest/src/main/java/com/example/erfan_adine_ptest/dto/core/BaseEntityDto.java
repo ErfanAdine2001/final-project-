@@ -19,10 +19,6 @@ import java.util.Date;
 public class BaseEntityDto {
 
     private Long id;
-
-
-    private Date createdTime;
-
     private Date updatedTime;
 
 
