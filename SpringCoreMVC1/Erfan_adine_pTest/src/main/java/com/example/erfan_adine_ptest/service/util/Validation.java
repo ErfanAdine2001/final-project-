@@ -6,8 +6,6 @@ import com.example.erfan_adine_ptest.entity.core.BasePerson;
 import com.example.erfan_adine_ptest.entity.product.MainOrder;
 import com.example.erfan_adine_ptest.entity.product.message.Request;
 import com.example.erfan_adine_ptest.entity.product.message.Suggestion;
-import com.example.erfan_adine_ptest.entity.user.Role;
-import com.example.erfan_adine_ptest.entity.user.StatusRole;
 import com.example.erfan_adine_ptest.entity.work.MainService;
 import com.example.erfan_adine_ptest.entity.work.SubService;
 import com.example.erfan_adine_ptest.exception.*;

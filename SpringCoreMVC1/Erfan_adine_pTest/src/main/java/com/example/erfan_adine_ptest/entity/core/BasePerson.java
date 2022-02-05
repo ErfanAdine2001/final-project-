@@ -23,7 +23,9 @@ public class BasePerson extends BaseEntity{
 
     private String password;
 
-    @Lob
-    private byte[] image;
+    private String role;
+
+//    @Lob
+//    private byte[] image;
 
 }

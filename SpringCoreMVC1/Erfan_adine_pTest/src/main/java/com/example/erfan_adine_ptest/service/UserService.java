@@ -1,5 +1,10 @@
 package com.example.erfan_adine_ptest.service;
 
+import com.example.erfan_adine_ptest.dto.in.user.AdminInDto;
+import com.example.erfan_adine_ptest.dto.in.user.UserInDto;
+import com.example.erfan_adine_ptest.dto.in.user.WorkerOrUserSerchInDto;
+import com.example.erfan_adine_ptest.dto.out.user.UserOutDto;
+import com.example.erfan_adine_ptest.dto.out.user.WorkerOrUserSerchOutDto;
 import com.example.erfan_adine_ptest.entity.product.MainOrder;
 import com.example.erfan_adine_ptest.entity.product.OrderStatus;
 import com.example.erfan_adine_ptest.entity.product.message.Suggestion;
@@ -8,6 +13,9 @@ import com.example.erfan_adine_ptest.exception.*;
 import com.example.erfan_adine_ptest.repository.UserRepository;
 import com.example.erfan_adine_ptest.service.util.Validation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,26 +34,44 @@ public class UserService extends Common<User, Long> {
 
     private final MainOrderService mainOrderService;
 
-    @PostConstruct
-    public void init() {
-        setJpaRepository(userRepository);
-    }
+//    @PostConstruct
+//    public void init() {
+//        setJpaRepository(userRepository);
+//    }
 
 
     @Transactional
-    @Override
-    public User save(User entity) throws NullFieldException, BadEntryException, NameNotValidException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, BasePriceOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, AddressOfRequestIsNull, SuggestionOfPriceIsNullException {
-        if (Validation.checkBaseCustomerIsValid(entity)) {
-            try {
-                if (validation.checkBaseCustomerIsValid(entity)) {
-                    return super.save(entity);
-                }
-            } catch (NullCommentException | RoleIsNullException | OrderOfTransactionIsNullExeption e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
+    public UserOutDto save(UserInDto entity) throws NullFieldException, BadEntryException, NameNotValidException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, BasePriceOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, AddressOfRequestIsNull, SuggestionOfPriceIsNullException {
+
+        User user = new User();
+        user.setEmail(entity.getEmail());
+        user.setImage(entity.getImage());
+        user.setFName(entity.getFirstName());
+        user.setLName(entity.getLastName());
+        user.setPassword(entity.getPassword());
+
+        UserOutDto userOutDto = new UserOutDto();
+        userOutDto.setId(user.getId());
+
+        return userOutDto;
+
     }
+
+    //**************************************
+//    pagination  all  users
+
+    public Page<WorkerOrUserSerchOutDto> findAllByFNameAndLName(WorkerOrUserSerchInDto workerOrUserSerchInDto){
+        Pageable pageable = PageRequest.of(workerOrUserSerchInDto.getPageNumber(),workerOrUserSerchInDto.getPageSize());
+       return userRepository.findAllByFNameAndLName(workerOrUserSerchInDto.getFName(),workerOrUserSerchInDto.getLName(),pageable);
+    }
+
+    public Page<WorkerOrUserSerchOutDto> findAllByFNameAndLNameAndEmailAndPassword(WorkerOrUserSerchInDto workerOrUserSerchInDto){
+        Pageable pageable = PageRequest.of(workerOrUserSerchInDto.getPageNumber(),workerOrUserSerchInDto.getPageSize());
+        return userRepository
+                .findAllByFNameAndLNameAndEmailAndPassword(workerOrUserSerchInDto.getFName(), workerOrUserSerchInDto.getLName(),workerOrUserSerchInDto.getPassword(),workerOrUserSerchInDto.getEmail(),pageable);
+    }
+
+    //**************************************
 
     @Transactional
     @Override

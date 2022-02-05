@@ -18,9 +18,6 @@ import java.util.List;
 @AllArgsConstructor
 public class Admin extends BasePerson {
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "role_ID_mm")
-    private List<Role> role;
 
     //TODO search for syntax : Auto query generate jpa repository
 }

@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class MainOrderService extends Common<MainOrder, Long> {
+public class MainOrderService  {
     private final OrderRepository orderRepository;
 
     private Validation validation;

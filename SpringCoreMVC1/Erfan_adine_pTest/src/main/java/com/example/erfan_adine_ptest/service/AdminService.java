@@ -26,7 +26,7 @@ import static com.example.erfan_adine_ptest.service.util.Validation.checkBaseCus
 
 @Service
 @RequiredArgsConstructor
-public class AdminService extends Common<Admin, Long> {
+public class AdminService {
 
     private final AdminRepository adminRepository;
 
@@ -42,7 +42,6 @@ public class AdminService extends Common<Admin, Long> {
     }
 
 
-
     /**
      * duty : "save"
      *
@@ -55,15 +54,20 @@ public class AdminService extends Common<Admin, Long> {
      * @throws PasswordNotValidException
      */
 
-    public AdminOutDto save(AdminInDto entity) throws NullFieldException, BadEntryException, NameNotValidException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
+    public AdminOutDto saveAdmin(AdminInDto entity) throws NullFieldException, BadEntryException, NameNotValidException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
         Admin admin = new Admin();
         admin.setPassword(entity.getPassword());
         admin.setEmail(entity.getEmail());
         admin.setImage(entity.getImage());
         admin.setFName(entity.getFirstName());
         admin.setLName(entity.getLastName());
-//        admin.setRole(entity.get);
-       adminRepository.save();
+        admin.setRole(entity.getRole());
+        adminRepository.save(admin);
+
+        AdminOutDto response = new AdminOutDto();
+        response.setId(admin.getId());
+
+        return response;
     }
 
     /**
@@ -114,8 +118,7 @@ public class AdminService extends Common<Admin, Long> {
     }
 
 
-
-// TODO f1 ------------------ > 1-3  service  false
+    // TODO f1 ------------------ > 1-3  service  false
     @Transactional
     public List<User> usersFiltering(String f) {
         return adminRepository.findByFName(f);
@@ -138,7 +141,7 @@ public class AdminService extends Common<Admin, Long> {
     @Transactional
     public Worker addNewWorker(Worker worker) throws NameNotValidException, EmailNotValidException, PasswordNotValidException, NullFieldException, BadEntryException {
 
-            return workerService.save(worker);
+        return workerService.save(worker);
 
 
     }
@@ -156,7 +159,7 @@ public class AdminService extends Common<Admin, Long> {
 
     public SubService addNewSubService(SubService subService) throws NameNotValidException, NullFieldException, BadEntryException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NullCommentException, BasePriceOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
 
-           return experteService.save(subService);
+        return experteService.save(subService);
 
 
     }
@@ -176,7 +179,6 @@ public class AdminService extends Common<Admin, Long> {
 
     //fixme pleas fix this because I dont need these methods : ) :(
     //-----------------------------------------------------------add delete update  worker from service and subService
-
 
 
     //-------------------------------------------------------adding new  mainService and  expert

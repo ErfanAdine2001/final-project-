@@ -5,6 +5,8 @@ import com.example.erfan_adine_ptest.entity.core.BasePerson;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.Lob;
+
 
 @Getter
 @Setter
@@ -13,5 +15,7 @@ import lombok.experimental.SuperBuilder;
 //@AllArgsConstructor
 public class UserInDto extends BasePersonDto {
 
+    @Lob
+    private byte[] image;
 
 }

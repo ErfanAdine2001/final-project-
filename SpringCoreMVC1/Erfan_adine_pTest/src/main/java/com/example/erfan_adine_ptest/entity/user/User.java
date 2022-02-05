@@ -20,12 +20,11 @@ import java.util.List;
 public class User extends BasePerson {
 
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "roles_ID_mm")
-    private List<Role> roles;
-
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "orders_ID_om_l")
     private List<MainOrder> orders;
+
+    @Lob
+    private byte[] image;
 
 }

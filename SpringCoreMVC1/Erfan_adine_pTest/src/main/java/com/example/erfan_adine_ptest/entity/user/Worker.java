@@ -20,11 +20,6 @@ import java.util.Set;
 public class Worker extends BasePerson {
 
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "role_ID_mm_l")
-    private List<Role> role;
-
-
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_ID_mo")
     private MainOrder order;
@@ -32,5 +27,8 @@ public class Worker extends BasePerson {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "mainService_ID_mm_l")
     private Set<MainService> mainService;
+
+    @Lob
+    private byte[] image;
 
 }

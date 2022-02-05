@@ -2,7 +2,6 @@ package com.example.erfan_adine_ptest.repository;
 
 
 import com.example.erfan_adine_ptest.entity.user.Admin;
-import com.example.erfan_adine_ptest.entity.user.StatusRole;
 import com.example.erfan_adine_ptest.entity.user.User;
 import com.example.erfan_adine_ptest.entity.user.Worker;
 import org.springframework.data.domain.Page;
@@ -13,11 +12,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
 
 
-public interface AdminRepository extends JpaRepository<Admin, Long>, JpaSpecificationExecutor<Admin> {
+public interface AdminRepository extends PagingAndSortingRepository<Admin, Long>, JpaSpecificationExecutor<Admin> {
 
     List<Admin> findAll(Specification<Admin> spec);
 
@@ -115,6 +115,19 @@ public interface AdminRepository extends JpaRepository<Admin, Long>, JpaSpecific
 //            "where SubServiceInDto .name=:name  and WorkerInDto .id=:idWorker")
 //    SubServiceInDto findExpertByNameAndIdOfWorker(String name,Long idWorker);
 //
+
+
+
+    //***********************************************
+    //***********************************************
+
+
+
+
+
+
+
+
 
 
 }

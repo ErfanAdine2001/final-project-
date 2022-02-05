@@ -1,10 +1,13 @@
 package com.example.erfan_adine_ptest.service;
 
 
+import com.example.erfan_adine_ptest.dto.in.user.WorkerInDto;
+import com.example.erfan_adine_ptest.dto.in.user.WorkerOrUserSerchInDto;
+import com.example.erfan_adine_ptest.dto.out.user.WorkerOrUserSerchOutDto;
+import com.example.erfan_adine_ptest.dto.out.user.WorkerOutDto;
 import com.example.erfan_adine_ptest.entity.product.MainOrder;
 import com.example.erfan_adine_ptest.entity.product.OrderStatus;
 import com.example.erfan_adine_ptest.entity.product.message.Suggestion;
-import com.example.erfan_adine_ptest.entity.user.Role;
 import com.example.erfan_adine_ptest.entity.user.Worker;
 import com.example.erfan_adine_ptest.entity.work.MainService;
 import com.example.erfan_adine_ptest.exception.*;
@@ -12,10 +15,14 @@ import com.example.erfan_adine_ptest.repository.DutyRepository;
 import com.example.erfan_adine_ptest.repository.WorkerRepository;
 import com.example.erfan_adine_ptest.service.util.Validation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -70,10 +77,22 @@ public class WorkerService extends Common<Worker, Long> {
     //-----------------
 
     @Transactional
-    public Worker save(Worker worker) throws NameNotValidException, EmailNotValidException, PasswordNotValidException, NullFieldException {
-        if (validation.checkBaseCustomerIsValid(worker))
-            return workerRepository.save(worker);
-        return null;
+    public WorkerOutDto save( WorkerInDto request) throws NameNotValidException, EmailNotValidException, PasswordNotValidException, NullFieldException {
+
+        Worker worker = new Worker();
+        worker.setFName(request.getFirstName());
+        worker.setLName(request.getLastName());
+        worker.setImage(request.getImage());
+        worker.setCreatedTime(new Date());
+        worker.setUpdatedTime(new Date());
+        worker.setEmail(request.getEmail());
+        worker.setMainService(request.getMainServiceList());
+
+        WorkerOutDto workerOutDto = new WorkerOutDto();
+        workerOutDto.setId(request.getId());
+
+        return workerOutDto;
+
     }
 
     @Transactional
@@ -128,5 +147,22 @@ public class WorkerService extends Common<Worker, Long> {
         return workerRepository.findByFirstNameName(name);
 
     }
+
+    //**************************************
+//    pagination  all  users
+
+    public Page<WorkerOrUserSerchOutDto> findAllByFNameAndLName(WorkerOrUserSerchInDto workerOrUserSerchInDto){
+        Pageable pageable = PageRequest.of(workerOrUserSerchInDto.getPageNumber(),workerOrUserSerchInDto.getPageSize());
+        return workerRepository.findAllByFNameAndLName(workerOrUserSerchInDto.getFName(),workerOrUserSerchInDto.getLName(),pageable);
+    }
+
+    public Page<WorkerOrUserSerchOutDto> findAllByFNameAndLNameAndEmailAndPassword(WorkerOrUserSerchInDto workerOrUserSerchInDto){
+        Pageable pageable = PageRequest.of(workerOrUserSerchInDto.getPageNumber(),workerOrUserSerchInDto.getPageSize());
+        return workerRepository
+                .findAllByFNameAndLNameAndEmailAndPassword(workerOrUserSerchInDto.getFName(), workerOrUserSerchInDto.getLName(),workerOrUserSerchInDto.getPassword(),workerOrUserSerchInDto.getEmail(),pageable);
+    }
+
+    //**************************************
+
 }
 

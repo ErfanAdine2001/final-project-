@@ -29,7 +29,7 @@ public class BasePersonDto extends BaseEntityDto {
     @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{3,}$")
     private String password;
 
-    @Lob
-    private byte[] image;
+    private String role;
+
 
 }

@@ -21,22 +21,16 @@ public class AdminController {
     @PostMapping
     public ResponseEntity<AdminOutDto> create(@Valid @RequestBody AdminInDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
 
-        Admin admin = Admin.builder()
-                .fName(request.getFirstName())
-                .lName(request.getLastName())
-                .email(request.getEmail())
-                .password(request.getPassword())
-                .build();
-
-        Admin result = adminService.save(admin);
-        AdminOutDto response = new AdminOutDto();
-
-        response.setId(result.getId());
+        AdminOutDto result = adminService.saveAdmin(request);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(response);
+                .body(result);
 
     }
+
+
+
+
 
 //
 //    public ResponseEntity<?> changePassword(@RequestBody AdminInDto request ){
