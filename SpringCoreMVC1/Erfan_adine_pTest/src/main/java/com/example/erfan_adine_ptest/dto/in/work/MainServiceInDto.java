@@ -18,7 +18,7 @@ import java.util.Set;
 public class MainServiceInDto extends BaseEntityDto {
 
     private String name;
-
     private Set<Worker> workers;
+    private  String description;
 
 }

@@ -4,6 +4,7 @@ package com.example.erfan_adine_ptest.entity.product.message;
 
 import com.example.erfan_adine_ptest.entity.product.MainOrder;
 import com.example.erfan_adine_ptest.entity.user.User;
+import com.example.erfan_adine_ptest.entity.work.SubService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +27,10 @@ public class Request extends BaseMessage {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_ID_mo")
-    private User user;
 
     private String address;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private SubService subService;
+
 }

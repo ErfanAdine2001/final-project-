@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 
@@ -25,7 +24,6 @@ public class MainOrderService  {
     }
 
     @Transactional
-    @Override
     public MainOrder save(MainOrder entity) throws NullFieldException, BadEntryException, NameNotValidException, EmailNotValidException, PasswordNotValidException, NullCommentException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, BasePriceOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
         if (validation.mainServiceIsValid(entity))
             return super.save(entity);
@@ -33,26 +31,24 @@ public class MainOrderService  {
     }
 
     @Transactional
-    @Override
     public List<MainOrder> findAll() {
-        return super.findAll();
+        return orderRepository.findAll();
     }
 
     @Transactional
-    @Override
     public MainOrder findById(Long id) {
-        return super.findById(id);
+        return orderRepository.findById(id).get();
     }
 
     @Transactional
-    @Override
     public void delete(Long id) {
-        super.delete(id);
+       orderRepository.delete(findById(id));
     }
 
     @Transactional
-    @Override
-    public void update(Long id) throws NameNotValidException, NullFieldException, BadEntryException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
-        super.update(id);
+    public void update(Long id,String address) throws NameNotValidException, NullFieldException, BadEntryException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
+        MainOrder a = findById(id);
+        a.setAddres(address);
+        orderRepository.save(a);
     }
 }

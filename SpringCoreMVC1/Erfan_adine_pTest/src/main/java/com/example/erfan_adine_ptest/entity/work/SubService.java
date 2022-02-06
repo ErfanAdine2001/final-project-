@@ -1,6 +1,7 @@
 package com.example.erfan_adine_ptest.entity.work;
 
 import com.example.erfan_adine_ptest.entity.core.BaseEntity;
+import com.example.erfan_adine_ptest.entity.product.message.Request;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -33,5 +34,8 @@ public class SubService extends BaseEntity {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "mainService_ID_mm")
     private List<MainService> mainService;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Request request;
 
 }

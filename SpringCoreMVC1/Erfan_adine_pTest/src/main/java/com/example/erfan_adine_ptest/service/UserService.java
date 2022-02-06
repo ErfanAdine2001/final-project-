@@ -1,14 +1,14 @@
 package com.example.erfan_adine_ptest.service;
 
-import com.example.erfan_adine_ptest.dto.in.user.AdminInDto;
+import com.example.erfan_adine_ptest.dto.in.user.ShowAllOrdersByUserIdInDto;
 import com.example.erfan_adine_ptest.dto.in.user.UserInDto;
 import com.example.erfan_adine_ptest.dto.in.user.WorkerOrUserSerchInDto;
+import com.example.erfan_adine_ptest.dto.out.user.ShowAllOrdersByUserIdOutDto;
 import com.example.erfan_adine_ptest.dto.out.user.UserOutDto;
 import com.example.erfan_adine_ptest.dto.out.user.WorkerOrUserSerchOutDto;
 import com.example.erfan_adine_ptest.entity.product.MainOrder;
 import com.example.erfan_adine_ptest.entity.product.OrderStatus;
 import com.example.erfan_adine_ptest.entity.product.message.Suggestion;
-import com.example.erfan_adine_ptest.entity.user.Admin;
 import com.example.erfan_adine_ptest.entity.user.User;
 import com.example.erfan_adine_ptest.exception.*;
 import com.example.erfan_adine_ptest.repository.UserRepository;
@@ -60,23 +60,48 @@ public class UserService {
     }
 
 
-    public Page<WorkerOrUserSerchOutDto> findAllByFNameAndLName(WorkerOrUserSerchInDto workerOrUserSerchInDto){
-        Pageable pageable = PageRequest.of(workerOrUserSerchInDto.getPageNumber(),workerOrUserSerchInDto.getPageSize());
-       return userRepository.findAllByFNameAndLName(workerOrUserSerchInDto.getFName(),workerOrUserSerchInDto.getLName(),pageable);
+    public Page<WorkerOrUserSerchOutDto> findAllByFNameAndLName(WorkerOrUserSerchInDto workerOrUserSerchInDto) {
+        Pageable pageable = PageRequest.of(workerOrUserSerchInDto.getPageNumber(), workerOrUserSerchInDto.getPageSize());
+        return userRepository.findAllByFNameAndLName(workerOrUserSerchInDto.getFName(), workerOrUserSerchInDto.getLName(), pageable);
     }
 
-    public Page<WorkerOrUserSerchOutDto> findAllByFNameAndLNameAndEmailAndPassword(WorkerOrUserSerchInDto workerOrUserSerchInDto){
-        Pageable pageable = PageRequest.of(workerOrUserSerchInDto.getPageNumber(),workerOrUserSerchInDto.getPageSize());
+    public Page<WorkerOrUserSerchOutDto> findAllByFNameAndLNameAndEmailAndPassword(WorkerOrUserSerchInDto workerOrUserSerchInDto) {
+        Pageable pageable = PageRequest.of(workerOrUserSerchInDto.getPageNumber(), workerOrUserSerchInDto.getPageSize());
         return userRepository
-                .findAllByFNameAndLNameAndEmailAndPassword(workerOrUserSerchInDto.getFName(), workerOrUserSerchInDto.getLName(),workerOrUserSerchInDto.getPassword(),workerOrUserSerchInDto.getEmail(),pageable);
+                .findAllByFNameAndLNameAndEmailAndPassword(workerOrUserSerchInDto.getFName(), workerOrUserSerchInDto.getLName(), workerOrUserSerchInDto.getPassword(), workerOrUserSerchInDto.getEmail(), pageable);
     }
 
 
-
-    public User findById(Long id){
-       return userRepository.findById(id).get();
+    public Page<ShowAllOrdersByUserIdOutDto> showAllOrdersByUserIdS(ShowAllOrdersByUserIdInDto orders,Long id) {
+        Pageable pageable = PageRequest.of(orders.getPageNumber(), orders.getPageSize());
+        return userRepository.showAllOrdersByUserIdR(id, pageable);
+//        return userRepository.showAllOrdersByUserIdR(orders.getUser().getId(), pageable);
     }
+
+
+    public User findById(Long id) {
+        return userRepository.findById(id).get();
+    }
+    //               *********************
+    //*******               *****************
+    //************               ***********
+    //*************               *******
+    //                          ******
+    //************               ***********
+    //**********             *****************
+    //               *********************
     //**************************************
+    //**************************************
+    //**************************************
+    //**************************************
+    //***********************
+    //***************
+    //*************
+    //*********
+    //******
+    //***
+    //**
+    //*
 
     @Transactional
     public List<User> findAll() {
@@ -115,7 +140,6 @@ public class UserService {
         return sortMyList;
 //        fixme
     }
-
 
 
     //TODO fS 2-4

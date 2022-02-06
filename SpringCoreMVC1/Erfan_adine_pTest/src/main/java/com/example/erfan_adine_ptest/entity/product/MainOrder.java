@@ -32,8 +32,6 @@ public class MainOrder extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
-//    private WorkerInDto worker;
-
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "suggestion_ID_oo")

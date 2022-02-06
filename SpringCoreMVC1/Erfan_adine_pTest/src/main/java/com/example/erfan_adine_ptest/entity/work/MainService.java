@@ -27,4 +27,6 @@ public class MainService extends BaseEntity {
     @JoinColumn(name = "worker_ID_mm")
     private Set<Worker> worker=new HashSet<>();
 
+    private  String description;
+
 }

@@ -5,7 +5,9 @@ import com.example.erfan_adine_ptest.dto.core.BaseMessageDto;
 import com.example.erfan_adine_ptest.entity.product.MainOrder;
 import com.example.erfan_adine_ptest.entity.product.message.BaseMessage;
 import com.example.erfan_adine_ptest.entity.product.message.SuggestionStatus;
+import com.example.erfan_adine_ptest.entity.user.User;
 import com.example.erfan_adine_ptest.entity.user.Worker;
+import com.example.erfan_adine_ptest.entity.work.SubService;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -28,4 +30,9 @@ public class RequestInDto extends BaseMessageDto {
 
     @Enumerated(EnumType.STRING)
     private SuggestionStatus suggestionStatus ;
+
+    private SubService subService;
+
+    private User user;
+
 }
