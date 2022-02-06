@@ -14,46 +14,31 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SuggestionService extends{
+public class SuggestionService extends {
     private final SuggestionRepository suggestionRepository;
 
-    private Validation validation;
-
-    @PostConstruct
-    public void init() {
-        setJpaRepository(suggestionRepository);
-    }
-
-
     @Transactional
-    @Override
     public Suggestion save(Suggestion entity) throws NullFieldException, BadEntryException, NameNotValidException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, SuggestionOfPriceIsNullException, OrderOfTransactionIsNullExeption {
-        if (validation.SuggestionIsValid(entity))
-            return super.save(entity);
-        return null;
+      return suggestionRepository.save(entity);
     }
 
     @Transactional
-    @Override
     public Suggestion findById(Long aLong) {
         return super.findById(aLong);
     }
 
 
     @Transactional
-    @Override
     public List<Suggestion> findAll() {
         return super.findAll();
     }
 
     @Transactional
-    @Override
     public void update(Long aLong) throws NameNotValidException, NullFieldException, BadEntryException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
         super.update(aLong);
     }
 
     @Transactional
-    @Override
     public void delete(Long aLong) {
         super.delete(aLong);
     }

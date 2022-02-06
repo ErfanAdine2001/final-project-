@@ -1,19 +1,25 @@
 package com.example.erfan_adine_ptest.service;
 
+import com.example.erfan_adine_ptest.dto.in.product.MainOrderInDto;
+import com.example.erfan_adine_ptest.dto.out.product.MainOrderOutDto;
 import com.example.erfan_adine_ptest.entity.product.MainOrder;
+import com.example.erfan_adine_ptest.entity.product.OrderStatus;
 import com.example.erfan_adine_ptest.exception.*;
 import com.example.erfan_adine_ptest.repository.OrderRepository;
 import com.example.erfan_adine_ptest.service.util.Validation;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.criterion.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
 @Service
 @RequiredArgsConstructor
-public class MainOrderService  {
+public class MainOrderService {
     private final OrderRepository orderRepository;
     private Validation validation;
 
@@ -24,10 +30,22 @@ public class MainOrderService  {
     }
 
     @Transactional
-    public MainOrder save(MainOrder entity) throws NullFieldException, BadEntryException, NameNotValidException, EmailNotValidException, PasswordNotValidException, NullCommentException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, BasePriceOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
-        if (validation.mainServiceIsValid(entity))
-            return super.save(entity);
-        return null;
+    public MainOrderOutDto save(MainOrderInDto entity) throws NullFieldException, BadEntryException, NameNotValidException, EmailNotValidException, PasswordNotValidException, NullCommentException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, BasePriceOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
+        MainOrder order = new MainOrder();
+        order.setStatus(OrderStatus.WAITING_FOR_SUGGESTION);
+        order.setSubService(entity.getSubService());
+        order.setSuggestion(entity.getSuggestion());
+        order.setAddres(entity.getAddres());
+        order.setUpdatedTime(new Date());
+        order.setCreatedTime(new Date());
+        order.setUser(entity.getUser());
+        order.setSuggestion(entity.getSuggestion());
+
+        MainOrderOutDto mainOrderOutDto = new MainOrderOutDto();
+        mainOrderOutDto.setId(order.getId());
+
+        return mainOrderOutDto;
+
     }
 
     @Transactional
@@ -42,13 +60,28 @@ public class MainOrderService  {
 
     @Transactional
     public void delete(Long id) {
-       orderRepository.delete(findById(id));
+        orderRepository.delete(findById(id));
     }
 
     @Transactional
-    public void update(Long id,String address) throws NameNotValidException, NullFieldException, BadEntryException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
+    public void update(Long id, String address) throws NameNotValidException, NullFieldException, BadEntryException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
         MainOrder a = findById(id);
         a.setAddres(address);
         orderRepository.save(a);
+    }
+
+    @Transactional
+    public List<MainOrder> findAllOrderByStatusWateForSuggestion() {
+        List<MainOrder> allByStatus = orderRepository.findAllByStatus();
+        List<MainOrder> finalOrder = new ArrayList<>();
+        for (MainOrder order : allByStatus) {
+
+            if (order.getStatus().equals(OrderStatus.WAITING_FOR_SUGGESTION)){
+
+                finalOrder.add(order);
+
+            }
+        }
+        return finalOrder;
     }
 }

@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -68,7 +69,7 @@ public class WorkerService {
     //-----------------
 
     @Transactional
-    public WorkerOutDto save( WorkerInDto request) throws NameNotValidException, EmailNotValidException, PasswordNotValidException, NullFieldException {
+    public WorkerOutDto save(WorkerInDto request) throws NameNotValidException, EmailNotValidException, PasswordNotValidException, NullFieldException {
 
         Worker worker = new Worker();
         worker.setFName(request.getFirstName());
@@ -90,7 +91,6 @@ public class WorkerService {
     public void delete(Worker worker) {
         workerRepository.delete(worker);
     }
-
 
 
     //TODO fS 2-1  ----------> Service
@@ -143,18 +143,23 @@ public class WorkerService {
     //**************************************
 //    pagination  all  users
 
-    public Page<WorkerOrUserSerchOutDto> findAllByFNameAndLName(WorkerOrUserSerchInDto workerOrUserSerchInDto){
-        Pageable pageable = PageRequest.of(workerOrUserSerchInDto.getPageNumber(),workerOrUserSerchInDto.getPageSize());
-        return workerRepository.findAllByFNameAndLName(workerOrUserSerchInDto.getFName(),workerOrUserSerchInDto.getLName(),pageable);
+    public Page<WorkerOrUserSerchOutDto> findAllByFNameAndLName(WorkerOrUserSerchInDto workerOrUserSerchInDto) {
+        Pageable pageable = PageRequest.of(workerOrUserSerchInDto.getPageNumber(), workerOrUserSerchInDto.getPageSize());
+        return workerRepository.findAllByFNameAndLName(workerOrUserSerchInDto.getFName(), workerOrUserSerchInDto.getLName(), pageable);
     }
 
-    public Page<WorkerOrUserSerchOutDto> findAllByFNameAndLNameAndEmailAndPassword(WorkerOrUserSerchInDto workerOrUserSerchInDto){
-        Pageable pageable = PageRequest.of(workerOrUserSerchInDto.getPageNumber(),workerOrUserSerchInDto.getPageSize());
+    public Page<WorkerOrUserSerchOutDto> findAllByFNameAndLNameAndEmailAndPassword(WorkerOrUserSerchInDto workerOrUserSerchInDto) {
+        Pageable pageable = PageRequest.of(workerOrUserSerchInDto.getPageNumber(), workerOrUserSerchInDto.getPageSize());
         return workerRepository
-                .findAllByFNameAndLNameAndEmailAndPassword(workerOrUserSerchInDto.getFName(), workerOrUserSerchInDto.getLName(),workerOrUserSerchInDto.getPassword(),workerOrUserSerchInDto.getEmail(),pageable);
+                .findAllByFNameAndLNameAndEmailAndPassword(workerOrUserSerchInDto.getFName(), workerOrUserSerchInDto.getLName(), workerOrUserSerchInDto.getPassword(), workerOrUserSerchInDto.getEmail(), pageable);
     }
 
     //**************************************
+
+    public List<MainOrder> findAllOrderByStatusWateFOrSuggestions() {
+        List<MainOrder> allOrderByStatusWateForSuggestion = mainOrderService.findAllOrderByStatusWateForSuggestion();
+        return allOrderByStatusWateForSuggestion;
+    }
 
 }
 

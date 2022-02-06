@@ -19,23 +19,7 @@ import java.util.List;
 
 public interface AdminRepository extends PagingAndSortingRepository<Admin, Long>, JpaSpecificationExecutor<Admin> {
 
-    List<Admin> findAll(Specification<Admin> spec);
-
-    @Override
-    Page<Admin> findAll(Specification<Admin> spec, Pageable pageable);
-
-    @Override
-    List<Admin> findAll(Specification<Admin> spec, Sort sort);
-
-    @Override
-    long count(Specification<Admin> spec);
-
     // -----------------------------------------
-    @Query("select e from Admin e group by e.id")
-    List<Admin> GroupById();
-
-
-
     /**
      * user and worker ->update
      *
@@ -72,10 +56,11 @@ public interface AdminRepository extends PagingAndSortingRepository<Admin, Long>
     User findUsersByfNameAndLName(String firstName, String lastName);
 //    UserInDto findUsersByIdAndRole(Long id, List<RoleInDto> role);
 
-
+    @Modifying
     @Query("select w from Worker w where w.fName=:firstName")
     List<Worker> findWorkerByName(String firstName);
 
+    @Modifying
     @Query("select u from User u where u.fName=:firstName and u.lName=:lastName")
     List<User> findUsersByfName(String firstName);
 //
@@ -87,14 +72,16 @@ public interface AdminRepository extends PagingAndSortingRepository<Admin, Long>
 
     //--------------------------------------------
     //todo f1 ----------------------> 1-5 Repository need
-
+    @Modifying
     @Query("select w from Worker w where w.fName=:firstName and w.lName=:lastName")
     Worker findWorkerByfNameAndLName(String firstName, String lastName);
 
 
     //------------------------------------------------
+    @Modifying
     @Query("select u from User u where u.fName=:name")
     List<User> findByFName(String name);
+
 
 //     Admin findByPasswordAndAndFName(){
 //
@@ -108,17 +95,8 @@ public interface AdminRepository extends PagingAndSortingRepository<Admin, Long>
 //
 
 
-
     //***********************************************
     //***********************************************
-
-
-
-
-
-
-
-
 
 
 }

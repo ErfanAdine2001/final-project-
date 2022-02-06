@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 
 public interface WorkerRepository extends JpaRepository<Worker, Long> {
 
@@ -25,6 +27,8 @@ public interface WorkerRepository extends JpaRepository<Worker, Long> {
 
 
     Page<WorkerOrUserSerchOutDto> findAllByFNameAndLName(String fName, String lName ,Pageable pageable);
+
+
 
 
 }

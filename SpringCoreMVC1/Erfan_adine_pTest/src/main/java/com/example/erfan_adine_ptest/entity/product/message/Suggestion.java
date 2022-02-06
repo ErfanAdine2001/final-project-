@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.util.Date;
 
 //@EqualsAndHashCode(callSuper = true)
 //@Data
@@ -32,7 +33,7 @@ public class Suggestion extends BaseMessage {
     @JoinColumn(name = "worker_ID_mo")
     private Worker worker;
 
-    private Double duration;
+    private Date duration;
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
