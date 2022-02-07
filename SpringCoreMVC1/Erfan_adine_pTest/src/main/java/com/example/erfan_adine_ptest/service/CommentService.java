@@ -1,5 +1,6 @@
 package com.example.erfan_adine_ptest.service;
 
+import com.example.erfan_adine_ptest.dto.in.product.CommentInDto;
 import com.example.erfan_adine_ptest.entity.product.Comment;
 import com.example.erfan_adine_ptest.exception.*;
 import com.example.erfan_adine_ptest.repository.CommentRepository;
@@ -7,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -26,8 +28,16 @@ public class CommentService {
     }
 
     @Transactional
-    public Comment save(Comment entity) throws NullFieldException, BadEntryException, NameNotValidException, EmailNotValidException, PasswordNotValidException, NullCommentException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
-       return commentRepository.save(entity);
+    public Comment save(CommentInDto commentInDto) throws NullFieldException, BadEntryException, NameNotValidException, EmailNotValidException, PasswordNotValidException, NullCommentException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
+        Comment comment = new Comment();
+        comment.setPoints(commentInDto.getPoints());
+        comment.setDescription(commentInDto.getDescription());
+        comment.setOrder(commentInDto.getOrder());
+        comment.setCreatedTime(new Date());
+        comment.setUpdatedTime(new Date());
+        comment.setSender(commentInDto.getSender());
+        comment.setSubService(commentInDto.getSubService());
+       return commentRepository.save(comment);
     }
 
     @Transactional

@@ -1,26 +1,35 @@
 package com.example.erfan_adine_ptest.controller;
 
+import com.example.erfan_adine_ptest.dto.in.product.CommentInDto;
 import com.example.erfan_adine_ptest.dto.in.product.MainOrderInDto;
+import com.example.erfan_adine_ptest.dto.in.product.message.SuggestionInDto;
 import com.example.erfan_adine_ptest.dto.in.user.ShowAllOrdersByUserIdInDto;
 import com.example.erfan_adine_ptest.dto.in.user.UserInDto;
 import com.example.erfan_adine_ptest.dto.in.user.WorkerOrUserSerchInDto;
+import com.example.erfan_adine_ptest.dto.out.product.CommentOutDto;
 import com.example.erfan_adine_ptest.dto.out.product.MainOrderOutDto;
 import com.example.erfan_adine_ptest.dto.out.user.ShowAllOrdersByUserIdOutDto;
 import com.example.erfan_adine_ptest.dto.out.user.UserOutDto;
 import com.example.erfan_adine_ptest.dto.out.user.WorkerOrUserSerchOutDto;
+import com.example.erfan_adine_ptest.entity.Transaction;
+import com.example.erfan_adine_ptest.entity.product.Comment;
+import com.example.erfan_adine_ptest.entity.product.MainOrder;
+import com.example.erfan_adine_ptest.entity.product.OrderStatus;
+import com.example.erfan_adine_ptest.entity.product.message.Suggestion;
+import com.example.erfan_adine_ptest.entity.product.message.SuggestionStatus;
 import com.example.erfan_adine_ptest.entity.work.SubService;
 import com.example.erfan_adine_ptest.exception.*;
-import com.example.erfan_adine_ptest.service.MainOrderService;
-import com.example.erfan_adine_ptest.service.RequestService;
-import com.example.erfan_adine_ptest.service.SubService_Service;
-import com.example.erfan_adine_ptest.service.UserService;
+import com.example.erfan_adine_ptest.service.*;
 import lombok.*;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 
 
@@ -37,8 +46,13 @@ public class UserController {
 
     private final RequestService requestService;
 
+    private final SuggestionService suggestionService;
+
     private final MainOrderService mainOrderService;
 
+    private final CommentService commentService;
+
+    private final  TransactionService transactionService;
 
 //    private final
 
@@ -126,5 +140,63 @@ public class UserController {
                 .body(mainOrderOutDto);
     }
 
+    /**
+     * <b>can find all "suggestion" if "Suggestion Status" equal with   " SuggestionStatus.ACCEPTED" </b>
+     *
+     * @param suggestion
+     * @return
+     */
+    @PostMapping("/seeTheSuggestionsThatAreACCEPTED")
+    public ResponseEntity<Page<WorkerOrUserSerchOutDto>> seeTheSuggestionsThatAreACCEPTED(@RequestBody SuggestionInDto suggestion) {
+        Pageable pageable = PageRequest.of(suggestion.getPageNumber(), suggestion.getPageSize());
+        Page<WorkerOrUserSerchOutDto> allBystatusOrder = suggestionService.findAllBystatusOrder(pageable, SuggestionStatus.ACCEPTED);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(allBystatusOrder);
+    }
+
+
+
+
+    // user can save his/her comment for order
+    //TODO  ثبت نظرات
+    @PostMapping("/addComment")
+    public ResponseEntity<CommentOutDto> addComment(@RequestBody CommentInDto commentInDto) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
+
+        Comment comment = commentService.save(commentInDto);
+
+        CommentOutDto commentOutDto = new CommentOutDto();
+        commentOutDto.setId(comment.getId());
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(commentOutDto);
+    }
+
+    //TODO  مشاهده تاریخچه سفارشات و اعتبار
+    @PostMapping("/findAllOrder")
+    public ResponseEntity<List<MainOrder>> findAllOrder(MainOrderInDto mainOrderInDto) {
+        List<MainOrder> allOrderByStatusOfStatus = mainOrderService.findAllOrderByStatusOfStatus(mainOrderInDto.getStatus());
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(allOrderByStatusOfStatus);
+
+    }
+
+    //TODO مشاهده تاریخچه سفارشات و اعتبار
+    @PostMapping("/loadAmount/{userId}")
+    public ResponseEntity<List<Transaction>> loadAmount(@PathVariable Long userId) {
+        List<Transaction> transactionList = transactionService.findAllByUserId(userId);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(transactionList);
+
+    }
+
+//    @PostMapping("")
+//    public void AcceptTheSelect(@RequestBody MainOrderInDto mainOrderInDto) {
+//        Suggestion suggestion = mainOrderInDto.getSuggestion();
+//        mainOrderService.save()
+//
+//    }
 
 }

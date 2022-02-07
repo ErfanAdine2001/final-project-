@@ -4,14 +4,18 @@ package com.example.erfan_adine_ptest.controller;
 import com.example.erfan_adine_ptest.dto.in.product.MainOrderInDto;
 import com.example.erfan_adine_ptest.dto.in.user.WorkerInDto;
 import com.example.erfan_adine_ptest.dto.in.user.WorkerOrUserSerchInDto;
+import com.example.erfan_adine_ptest.dto.out.product.PointsCommetnsOutDto;
 import com.example.erfan_adine_ptest.dto.out.product.message.SuggestionOutDto;
 import com.example.erfan_adine_ptest.dto.out.user.WorkerOrUserSerchOutDto;
 import com.example.erfan_adine_ptest.dto.out.user.WorkerOutDto;
+import com.example.erfan_adine_ptest.entity.product.Comment;
 import com.example.erfan_adine_ptest.entity.product.MainOrder;
+import com.example.erfan_adine_ptest.entity.product.OrderStatus;
 import com.example.erfan_adine_ptest.entity.product.message.BaseMessageStatus;
 import com.example.erfan_adine_ptest.entity.product.message.Suggestion;
 import com.example.erfan_adine_ptest.entity.user.Worker;
 import com.example.erfan_adine_ptest.exception.*;
+import com.example.erfan_adine_ptest.service.CommentService;
 import com.example.erfan_adine_ptest.service.MainOrderService;
 import com.example.erfan_adine_ptest.service.SuggestionService;
 import com.example.erfan_adine_ptest.service.WorkerService;
@@ -22,9 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -36,6 +38,8 @@ public class WorkerController {
     private final SuggestionService suggestionService;
     private final WorkerService workerService;
     private final MainOrderService mainOrderService;
+    private final CommentService commentService;
+    private final PointsCommetnsOutDto pointsCommetnsOutDto;
 
     @PostMapping
     public ResponseEntity<WorkerOutDto> create(@Valid @RequestBody WorkerInDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
@@ -110,6 +114,42 @@ public class WorkerController {
 //       mainOrderInDto.getTimeStartWork() -(mainOrderInDto.getTimefinishedWork());
 //        suggestion.setDuration();
     }
+
+    //TODO ثبت نظرات
+    @PostMapping("/loadCommentsByOrderId/{orderId}")
+    public ResponseEntity<PointsCommetnsOutDto> loadCommentsByOrderId(@PathVariable Long orderId){
+
+//        MainOrder mainOrder = mainOrderService.findById(orderId);
+        List<Comment> commentList = commentService.findAll();
+        List<Comment> finalList = new ArrayList<>();
+        List<Integer> finalPointsList = new ArrayList<>();
+
+        for(Comment comment : commentList){
+            if (comment.getOrder().getId().equals(orderId)){
+                finalList.add(comment);
+            }
+        }
+
+        for(Comment comment : finalList){
+            finalPointsList.add(comment.getPoints());
+        }
+        pointsCommetnsOutDto.setPoint(finalPointsList);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                        .body(pointsCommetnsOutDto);
+
+    }
+
+    //TODO  مشاهده تاریخچه سفارشات و اعتبار
+
+    public ResponseEntity<List<MainOrder>> findAllOrder(MainOrderInDto mainOrderInDto){
+        List<MainOrder> allOrderByStatusOfStatus = mainOrderService.findAllOrderByStatusOfStatus(mainOrderInDto.getStatus());
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(allOrderByStatusOfStatus);
+
+    }
+
 
 
 }

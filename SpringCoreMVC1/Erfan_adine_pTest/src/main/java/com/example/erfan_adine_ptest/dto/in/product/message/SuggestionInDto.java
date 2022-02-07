@@ -24,7 +24,10 @@ public class SuggestionInDto extends BaseMessageDto {
     private Double duration;
 
 
-    @Builder.Default
+
     @Enumerated(EnumType.STRING)
-    private SuggestionStatus suggestionStatus = SuggestionStatus.PENDING;
+    private SuggestionStatus suggestionStatus;
+
+    Integer PageNumber;
+    Integer PageSize;
 }

@@ -84,4 +84,25 @@ public class MainOrderService {
         }
         return finalOrder;
     }
+
+
+
+    //TODO   مشاهده تاریخچه سفارشات و اعتبار  service
+    @Transactional
+    public List<MainOrder> findAllOrderByStatusOfStatus(OrderStatus status) {
+        List<MainOrder> allByStatus = orderRepository.findAllByStatus();
+        List<MainOrder> finalOrder = new ArrayList<>();
+        for (MainOrder order : allByStatus) {
+
+            if (order.getStatus().equals(status)){
+
+                finalOrder.add(order);
+
+            }
+        }
+        return finalOrder;
+    }
+
+
+
 }
