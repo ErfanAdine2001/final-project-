@@ -6,19 +6,18 @@ import com.example.erfan_adine_ptest.entity.product.message.Suggestion;
 import com.example.erfan_adine_ptest.entity.product.message.SuggestionStatus;
 import com.example.erfan_adine_ptest.exception.*;
 import com.example.erfan_adine_ptest.repository.SuggestionRepository;
-import com.example.erfan_adine_ptest.service.util.Validation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
+
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SuggestionService extends {
+public class SuggestionService {
     private final SuggestionRepository suggestionRepository;
 
     @Transactional
@@ -27,24 +26,24 @@ public class SuggestionService extends {
     }
 
     @Transactional
-    public Suggestion findById(Long aLong) {
-        return super.findById(aLong);
+    public Suggestion findById(Long id) {
+        return suggestionRepository.findById(id).get();
     }
 
 
     @Transactional
     public List<Suggestion> findAll() {
-        return super.findAll();
+        return suggestionRepository.findAll();
     }
 
-    @Transactional
-    public void update(Long aLong) throws NameNotValidException, NullFieldException, BadEntryException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
-        super.update(aLong);
-    }
+//    @Transactional
+//    public void update(Long id) throws NameNotValidException, NullFieldException, BadEntryException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
+//        super.update(id);
+//    }
 
     @Transactional
-    public void delete(Long aLong) {
-        super.delete(aLong);
+    public void delete(Long id) {
+        suggestionRepository.delete(findById(id));
     }
 
     public Page<WorkerOrUserSerchOutDto> findAllBystatusOrder(Pageable pageable, SuggestionStatus status) {

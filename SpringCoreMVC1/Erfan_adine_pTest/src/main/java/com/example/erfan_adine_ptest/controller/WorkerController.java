@@ -13,6 +13,7 @@ import com.example.erfan_adine_ptest.entity.product.MainOrder;
 import com.example.erfan_adine_ptest.entity.product.OrderStatus;
 import com.example.erfan_adine_ptest.entity.product.message.BaseMessageStatus;
 import com.example.erfan_adine_ptest.entity.product.message.Suggestion;
+import com.example.erfan_adine_ptest.entity.product.message.SuggestionStatus;
 import com.example.erfan_adine_ptest.entity.user.Worker;
 import com.example.erfan_adine_ptest.exception.*;
 import com.example.erfan_adine_ptest.service.CommentService;
@@ -39,9 +40,9 @@ public class WorkerController {
     private final WorkerService workerService;
     private final MainOrderService mainOrderService;
     private final CommentService commentService;
-    private final PointsCommetnsOutDto pointsCommetnsOutDto;
+    private  PointsCommetnsOutDto pointsCommetnsOutDto;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<WorkerOutDto> create(@Valid @RequestBody WorkerInDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
 
         WorkerOutDto workerOutDto = workerService.save(request);
@@ -77,9 +78,9 @@ public class WorkerController {
      * <br>
      * <b>this method show all pagination Orders  of user by Id</b>
      */
-    @PostMapping
-    public ResponseEntity<List<MainOrder>> findSuggestionForMainOrder() {
-        List<MainOrder> allOrderByStatusWateFOrSuggestions = workerService.findAllOrderByStatusWateFOrSuggestions();
+    @PostMapping("findSuggestionForMainOrder")
+    public ResponseEntity<List<MainOrder>> findSuggestionForMainOrder(@RequestBody MainOrderInDto mainOrderInDto) {
+        List<MainOrder> allOrderByStatusWateFOrSuggestions = workerService.findAllOrderByStatusWateFOrSuggestions(mainOrderInDto.getStatus());
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(allOrderByStatusWateFOrSuggestions);
@@ -98,7 +99,7 @@ public class WorkerController {
         Suggestion suggestion = new Suggestion();
         suggestion.setWorker(w);
         suggestion.setOrder(m);
-        suggestion.setStatus(BaseMessageStatus.WAITING);
+        suggestion.setSuggestionStatus(SuggestionStatus.ACCEPTED);
         suggestion.setPrice(mainOrderInDto.getSuggestionPrice());
 
         m.setSuggestion(suggestion);
@@ -117,7 +118,7 @@ public class WorkerController {
 
     //TODO ثبت نظرات
     @PostMapping("/loadCommentsByOrderId/{orderId}")
-    public ResponseEntity<PointsCommetnsOutDto> loadCommentsByOrderId(@PathVariable Long orderId){
+    public ResponseEntity<PointsCommetnsOutDto> loadCommentsByOrderId( @PathVariable Long orderId){
 
 //        MainOrder mainOrder = mainOrderService.findById(orderId);
         List<Comment> commentList = commentService.findAll();

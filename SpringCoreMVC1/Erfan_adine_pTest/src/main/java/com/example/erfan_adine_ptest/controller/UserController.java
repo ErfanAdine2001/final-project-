@@ -17,6 +17,7 @@ import com.example.erfan_adine_ptest.entity.product.MainOrder;
 import com.example.erfan_adine_ptest.entity.product.OrderStatus;
 import com.example.erfan_adine_ptest.entity.product.message.Suggestion;
 import com.example.erfan_adine_ptest.entity.product.message.SuggestionStatus;
+import com.example.erfan_adine_ptest.entity.user.Worker;
 import com.example.erfan_adine_ptest.entity.work.SubService;
 import com.example.erfan_adine_ptest.exception.*;
 import com.example.erfan_adine_ptest.service.*;
@@ -26,6 +27,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -52,7 +54,7 @@ public class UserController {
 
     private final CommentService commentService;
 
-    private final  TransactionService transactionService;
+    private final TransactionService transactionService;
 
 //    private final
 
@@ -116,22 +118,6 @@ public class UserController {
      * <B>this method add new Main Order</B>
      *
      * @param mainOrderInDto
-     * @return
-     * @throws NameOfSubServiceIsNull
-     * @throws NameOfMainServiceIsNull
-     * @throws SuggestionOfPriceIsNullException
-     * @throws NullCommentException
-     * @throws BasePriceOfSubServiceIsNull
-     * @throws NullFieldException
-     * @throws BadEntryException
-     * @throws AddressOfRequestIsNull
-     * @throws NullAddresOfMainOrderException
-     * @throws OrderOfTransactionIsNullExeption
-     * @throws OrderOfRequestIsNullException
-     * @throws NameNotValidException
-     * @throws EmailNotValidException
-     * @throws PasswordNotValidException
-     * @throws RoleIsNullException
      */
     @PostMapping("/selectSubServiceAndAddNewMainOrder")
     public ResponseEntity<MainOrderOutDto> selectSubService(@RequestBody MainOrderInDto mainOrderInDto) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
@@ -149,14 +135,37 @@ public class UserController {
     @PostMapping("/seeTheSuggestionsThatAreACCEPTED")
     public ResponseEntity<Page<WorkerOrUserSerchOutDto>> seeTheSuggestionsThatAreACCEPTED(@RequestBody SuggestionInDto suggestion) {
         Pageable pageable = PageRequest.of(suggestion.getPageNumber(), suggestion.getPageSize());
-        Page<WorkerOrUserSerchOutDto> allBystatusOrder = suggestionService.findAllBystatusOrder(pageable, SuggestionStatus.ACCEPTED);
+        Page<WorkerOrUserSerchOutDto> allByStatusOrder = suggestionService.findAllBystatusOrder(pageable, SuggestionStatus.ACCEPTED);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(allBystatusOrder);
+                .body(allByStatusOrder);
 
     }
 
+    /**
+     * <b> here customer select his/her suggestion and then waiting for coming worker to place location </b>
+     *
+     * @param suggestionId
+     */
+    @PostMapping("/selectWorkerWithSuggestionIdAndWaitingForWorkerSelected/{suggestionId}")
+    public ResponseEntity<String> selectWorkerWithSuggestionIdAndWaitingForWorkerSelectedU(@Valid @PathVariable Long suggestionId) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
+        Suggestion s = suggestionService.findById(suggestionId);
+        if (s.getSuggestionStatus().equals(SuggestionStatus.ACCEPTED)) {
+            MainOrderInDto order = new MainOrderInDto();
+            order.setId(s.getOrder().getId());
+            order.setSuggestion(s);
+            order.setStatus(OrderStatus.WAITING_FOR_COMING_WORKER);
 
+            mainOrderService.save(order);
+
+
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body("Waiting For Coming Worker ");
+
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(null);
+    }
 
 
     // user can save his/her comment for order
@@ -175,10 +184,10 @@ public class UserController {
 
     //TODO  مشاهده تاریخچه سفارشات و اعتبار
     @PostMapping("/findAllOrder")
-    public ResponseEntity<List<MainOrder>> findAllOrder(MainOrderInDto mainOrderInDto) {
+    public ResponseEntity<List<MainOrder>> findAllOrder(@RequestBody MainOrderInDto mainOrderInDto) {
         List<MainOrder> allOrderByStatusOfStatus = mainOrderService.findAllOrderByStatusOfStatus(mainOrderInDto.getStatus());
 
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity.status(HttpStatus.OK)
                 .body(allOrderByStatusOfStatus);
 
     }

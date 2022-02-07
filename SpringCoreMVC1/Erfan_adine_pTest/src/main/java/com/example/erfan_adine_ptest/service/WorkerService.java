@@ -79,9 +79,10 @@ public class WorkerService {
         worker.setUpdatedTime(new Date());
         worker.setEmail(request.getEmail());
         worker.setMainService(request.getMainServiceList());
+        Worker save = workerRepository.save(worker);
 
         WorkerOutDto workerOutDto = new WorkerOutDto();
-        workerOutDto.setId(request.getId());
+        workerOutDto.setId(save.getId());
 
         return workerOutDto;
 
@@ -156,8 +157,8 @@ public class WorkerService {
 
     //**************************************
 
-    public List<MainOrder> findAllOrderByStatusWateFOrSuggestions() {
-        List<MainOrder> allOrderByStatusWateForSuggestion = mainOrderService.findAllOrderByStatusWateForSuggestion();
+    public List<MainOrder> findAllOrderByStatusWateFOrSuggestions(OrderStatus status) {
+        List<MainOrder> allOrderByStatusWateForSuggestion = mainOrderService.findAllOrderByStatusWateForSuggestion(status);
         return allOrderByStatusWateForSuggestion;
     }
 

@@ -17,7 +17,7 @@ import java.util.List;
 
 public interface UserRepository extends PagingAndSortingRepository<User, Long> {
 
-    @Modifying
+
     @Query("select e from User e group by e.id")
     List<User> GroupById();
 
@@ -27,13 +27,13 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long> {
 
 
     //TODO f2-3
-    @Modifying
+
     @Query("select s from Suggestion s group by s.id")
     Suggestion GroupSuggestionById();
 
 
     //TODO f2-4
-    @Modifying
+
     @Query("select s from Suggestion s where s.id=:id")
     Worker registerOfWorkerById(Long id);
 
@@ -46,7 +46,7 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long> {
     Page<WorkerOrUserSerchOutDto> findAllByFNameAndLName(String fName, String lName, Pageable pageable);
 
 
-    @Modifying
+//    @Modifying
     @Query("select m from MainOrder m where m.user.id=:id")
     Page<ShowAllOrdersByUserIdOutDto> showAllOrdersByUserIdR(Long id, Pageable pageable);
 

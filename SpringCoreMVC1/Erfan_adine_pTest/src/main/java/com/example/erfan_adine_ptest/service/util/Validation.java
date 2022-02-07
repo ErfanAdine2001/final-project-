@@ -15,8 +15,8 @@ import java.math.BigDecimal;
 import java.util.regex.Pattern;
 
 public class Validation {
-    private static Role role;
-    private static StatusRole statusRole;
+//    private static Role role;
+//    private static StatusRole statusRole;
 
 
     /**
@@ -50,13 +50,13 @@ public class Validation {
         }
         return true;
     }
-
-    public static Boolean RoleIsValid(Role role) throws RoleIsNullException {
-        if (role==null){
-            throw new RoleIsNullException("role is null ???????");
-        }
-        return true;
-    }
+//
+//    public static Boolean RoleIsValid(Role role) throws RoleIsNullException {
+//        if (role==null){
+//            throw new RoleIsNullException("role is null ???????");
+//        }
+//        return true;
+//    }
 
     public static Boolean SuggestionIsValid(Suggestion suggestion) throws SuggestionOfPriceIsNullException {
         if (suggestion.getPrice()==null)

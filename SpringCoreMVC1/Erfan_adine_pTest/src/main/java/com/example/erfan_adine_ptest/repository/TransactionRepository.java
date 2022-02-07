@@ -14,14 +14,14 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     //    @Query("select w from TransactionInDto w where w.id=:id group by w.id")
 //    List<TransactionInDto> GroupById(Long id);
-    @Modifying
+
     @Query("select e from Transaction e group by e.id")
     List<Transaction> GroupById();
 
 
 
     // here I used two way for this work
-    @Modifying
+
     @Query("select t from  Transaction t where t.user.id=:userId")
     List<Transaction> findAllByUserId(Long userId);
 

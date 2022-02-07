@@ -19,9 +19,11 @@ public class TransactionService {
 
     @Transactional
     public Transaction save(Transaction entity) throws NullFieldException, BadEntryException, NameNotValidException, EmailNotValidException, PasswordNotValidException, NullCommentException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, BasePriceOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, AddressOfRequestIsNull, RoleIsNullException, SuggestionOfPriceIsNullException, OrderOfTransactionIsNullExeption {
-        if (validation.TransactionalIsVAlid(entity))
-            return super.save(entity);
-        return null;
+            return transactionRepository.save(entity);
+
+
+//        if (validation.TransactionalIsVAlid(entity))
+//        return null;
     }
 
     @Transactional
@@ -45,6 +47,7 @@ public class TransactionService {
     public void delete(Long id) {
         transactionRepository.delete(findById(id));
     }
+
 
 
     @Transactional

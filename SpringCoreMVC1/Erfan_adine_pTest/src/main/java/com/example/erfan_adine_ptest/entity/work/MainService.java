@@ -7,7 +7,6 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 
@@ -23,9 +22,9 @@ public class MainService extends BaseEntity {
     private String name;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @Builder.Default
     @JoinColumn(name = "worker_ID_mm")
-    private Set<Worker> worker=new HashSet<>();
+    private Set<Worker> worker;
+//    private Set<Worker> worker=new HashSet<>();
 
     private  String description;
 

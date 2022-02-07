@@ -48,6 +48,34 @@ public class MainOrderService {
 
     }
 
+
+
+
+
+    @Transactional
+    public MainOrderOutDto save(MainOrder entity) throws NullFieldException, BadEntryException, NameNotValidException, EmailNotValidException, PasswordNotValidException, NullCommentException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, BasePriceOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
+        MainOrder order = new MainOrder();
+        order.setStatus(OrderStatus.WAITING_FOR_SUGGESTION);
+        order.setSubService(entity.getSubService());
+        order.setSuggestion(entity.getSuggestion());
+        order.setAddres(entity.getAddres());
+        order.setUpdatedTime(new Date());
+        order.setCreatedTime(new Date());
+        order.setUser(entity.getUser());
+        order.setSuggestion(entity.getSuggestion());
+
+        orderRepository.save(order);
+
+        MainOrderOutDto mainOrderOutDto = new MainOrderOutDto();
+        mainOrderOutDto.setId(order.getId());
+
+        return mainOrderOutDto;
+
+    }
+
+
+    //************
+
     @Transactional
     public List<MainOrder> findAll() {
         return orderRepository.findAll();
@@ -71,8 +99,8 @@ public class MainOrderService {
     }
 
     @Transactional
-    public List<MainOrder> findAllOrderByStatusWateForSuggestion() {
-        List<MainOrder> allByStatus = orderRepository.findAllByStatus();
+    public List<MainOrder> findAllOrderByStatusWateForSuggestion(OrderStatus status) {
+        List<MainOrder> allByStatus = orderRepository.findAllByStatus(status);
         List<MainOrder> finalOrder = new ArrayList<>();
         for (MainOrder order : allByStatus) {
 
@@ -90,7 +118,7 @@ public class MainOrderService {
     //TODO   مشاهده تاریخچه سفارشات و اعتبار  service
     @Transactional
     public List<MainOrder> findAllOrderByStatusOfStatus(OrderStatus status) {
-        List<MainOrder> allByStatus = orderRepository.findAllByStatus();
+        List<MainOrder> allByStatus = orderRepository.findAllByStatus(status);
         List<MainOrder> finalOrder = new ArrayList<>();
         for (MainOrder order : allByStatus) {
 

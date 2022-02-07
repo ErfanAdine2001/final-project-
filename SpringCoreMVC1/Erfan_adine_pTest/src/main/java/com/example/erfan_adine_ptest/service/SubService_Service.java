@@ -24,4 +24,8 @@ public class SubService_Service {
         return subServiceList;
     }
 
+    public SubService save(SubService subService){
+     return experteRepository.save(subService);
+    }
+
 }

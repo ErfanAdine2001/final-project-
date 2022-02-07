@@ -32,4 +32,5 @@ public class BasePersonDto extends BaseEntityDto {
     private String role;
 
 
+
 }

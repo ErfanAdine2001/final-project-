@@ -15,7 +15,6 @@ import java.util.List;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-@AllArgsConstructor
 public class Admin extends BasePerson {
 
 

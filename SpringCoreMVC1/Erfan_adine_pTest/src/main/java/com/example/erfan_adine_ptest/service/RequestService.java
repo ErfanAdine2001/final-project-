@@ -41,21 +41,21 @@ public class RequestService {
 
     @Transactional
     public Request findById(Long id) {
-        return super.findById(id);
+        return requestRepository.findById(id).get();
     }
 
     @Transactional
     public List<Request> findAll() {
-        return super.findAll();
+        return requestRepository.findAll();
     }
 
     @Transactional
     public void delete(Long id) {
-        super.delete(id);
+        requestRepository.delete(findById(id));
     }
 
-    @Transactional
-    public void update(Long id) throws NameNotValidException, NullFieldException, BadEntryException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
-        super.update(id);
-    }
+//    @Transactional
+//    public void update(Long id) throws NameNotValidException, NullFieldException, BadEntryException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
+//        super.update(id);
+//    }
 }

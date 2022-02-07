@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.util.Date;
 import java.util.List;
 
@@ -26,27 +25,17 @@ public class MainService_Service{
 
     private final WorkerRepository workerRepository;
 
-    @PostConstruct
-    public void init() {
-        setJpaRepository(dutyRepository);
-    }
 
 
     @Transactional
-    public List<MainService> gropById() {
-        return dutyRepository.GroupById();
-    }
-
-
-    @Override
     public List<MainService> findAll() {
-        return super.findAll();
+        return dutyRepository.findAll();
     }
 
-    @Override
-    public void update(Long id) throws NameNotValidException, NullFieldException, BadEntryException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
-        super.update(id);
-    }
+
+//    public void update(Long id) throws NameNotValidException, NullFieldException, BadEntryException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
+//        super.update(id);
+//    }
 
 
     //--------------------------------------------------------
@@ -82,6 +71,8 @@ public class MainService_Service{
         mainService.setUpdatedTime(new Date());
         mainService.setCreatedTime(new Date());
 
+        dutyRepository.save(mainService);
+
         MainServiceOutDto mainServiceOutDto = new MainServiceOutDto();
         mainServiceOutDto.setId(entity.getId());
 
@@ -91,11 +82,11 @@ public class MainService_Service{
 
     @Transactional
     public MainService findById(Long id) {
-        return super.findById(id);
+        return dutyRepository.findById(id).get();
     }
 
     @Transactional
     public void delete(Long id) {
-        super.delete(id);
+        dutyRepository.delete(findById(id));
     }
 }

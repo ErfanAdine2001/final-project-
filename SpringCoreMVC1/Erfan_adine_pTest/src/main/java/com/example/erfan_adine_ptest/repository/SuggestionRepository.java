@@ -9,20 +9,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
-
-
 public interface SuggestionRepository extends JpaRepository<Suggestion, Long> {
 
-   SuggestionStatus sss = null;
 
 
-    @Modifying
-    @Query("select e from Suggestion e group by e.id")
-    List<Suggestion> GroupById();
 
-
-    @Modifying
     @Query("select s from Suggestion s where s.suggestionStatus=:status")
     Page<WorkerOrUserSerchOutDto> findAllBystatusOrder(Pageable pageable , SuggestionStatus status);
+
+//    Page<WorkerOrUserSerchOutDto> findAllBystatusOrder(Pageable pageable , SuggestionStatus status);
 }

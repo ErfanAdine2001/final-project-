@@ -29,14 +29,14 @@ import java.util.*;
 @RequestMapping("/manager")
 public class AdminController {
     private final AdminService adminService;
-    private final MainService mainService;
+//    private final MainService mainService;
     private final MainService_Service mainServiceService;
     private final UserController userController;
     private final WorkerController workderController;
     private final WorkerService workerService;
 
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<AdminOutDto> create(@Valid @RequestBody AdminInDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
 
         AdminOutDto result = adminService.saveAdmin(request);
@@ -55,24 +55,24 @@ public class AdminController {
 
     }
 
-    @PostMapping("/searchWorkerByFirstNameAndLastName")
+    @PostMapping("/searchAllWorkerByFNameAndLName")
     public ResponseEntity<Page<WorkerOrUserSerchOutDto>> searchAllWorkerByFNameAndLName(@Valid @RequestBody WorkerOrUserSerchInDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
 
         ResponseEntity<Page<WorkerOrUserSerchOutDto>> result = workderController.findAllByFNameAndLName(request);
         return result;
 
     }
-
+//*************/
 
     // search users
-    @PostMapping("/searchWorkerListByAllAttribute")
+    @PostMapping("/searchWorkerListByAllAttribute2")
     public ResponseEntity<Page<WorkerOrUserSerchOutDto>> searchUsers(@Valid @RequestBody WorkerOrUserSerchInDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
         ResponseEntity<Page<WorkerOrUserSerchOutDto>> result = userController.findAllByFNameAndLNameAndEmailAndPassword(request);
         return result;
 
     }
 
-    @PostMapping("/searchWorkerByFirstNameAndLastName")
+    @PostMapping("/searchAllUserByFNameAndLName")
     public ResponseEntity<Page<WorkerOrUserSerchOutDto>> searchAllUserByFNameAndLName(@Valid @RequestBody WorkerOrUserSerchInDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
 
         ResponseEntity<Page<WorkerOrUserSerchOutDto>> result = userController.findAllByFNameAndLName(request);

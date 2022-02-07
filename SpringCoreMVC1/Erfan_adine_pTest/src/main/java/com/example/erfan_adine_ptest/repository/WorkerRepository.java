@@ -19,7 +19,6 @@ public interface WorkerRepository extends JpaRepository<Worker, Long> {
     @Query("update Request r set r.status=:baseMessageStatus")
     void ConfirmationOfOrder(BaseMessageStatus baseMessageStatus);
 
-    @Modifying
     @Query("select w from Worker w where w.fName=:firstName")
     Worker findByFirstNameName(String firstName);
 

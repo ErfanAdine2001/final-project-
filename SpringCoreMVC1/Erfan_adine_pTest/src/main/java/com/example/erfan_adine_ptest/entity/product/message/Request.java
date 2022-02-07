@@ -24,9 +24,9 @@ public class Request extends BaseMessage {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_ID_oo")
     protected MainOrder order;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_ID_mo")
+//
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "user_ID_mo")
 
     private String address;
 
