@@ -45,4 +45,11 @@ public class TransactionService {
     public void delete(Long id) {
         transactionRepository.delete(findById(id));
     }
+
+
+    @Transactional
+    public List<Transaction>  findAllByUserId(Long id) {
+        List<Transaction> allByUserId = transactionRepository.findAllByUserId(id);
+        return allByUserId;
+    }
 }
