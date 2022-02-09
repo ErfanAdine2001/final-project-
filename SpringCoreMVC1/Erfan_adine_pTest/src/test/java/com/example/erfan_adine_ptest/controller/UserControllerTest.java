@@ -28,24 +28,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ActiveProfiles("test")
 @WebMvcTest( controllers = UserController.class)
-class UserControllerTest {
+class UserControllerTest extends RestControllerTest{
 
-    @MockBean
-    private UserController userController;
-
-    @Autowired
-    private MockMvc mvc;
-
-    @Test
-    public void contextLoads() throws Exception {
-        assertThat(userController).isNotNull();
-    }
+//    @MockBean
+//    private UserController userController;
+//
+//    @Autowired
+//    private MockMvc mvc;
+////
+//    @Test
+//    public void contextLoads() throws Exception {
+//        assertThat(userController).isNotNull();
+//    }
 
     @Test
     void create() throws Exception {
 
         UserInDto userInDto = new UserInDto();
-        userInDto.setId(1L);
+//        userInDto.setId(1L);
         userInDto.setEmail("erfan@gmail.com");
         userInDto.setPassword("123Aa");
         userInDto.setFirstName("erfan");
@@ -78,6 +78,7 @@ class UserControllerTest {
 
     @Test
     void findAllByFNameAndLNameAndEmailAndPassword() {
+
     }
 
     @Test
@@ -113,7 +114,13 @@ class UserControllerTest {
     }
 
     @Test
-    void loadAmount() {
+    void loadAmount() throws Exception {
+
+        mvc.perform(MockMvcRequestBuilders
+                        .post("/users/loadAmount/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
 

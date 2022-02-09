@@ -46,7 +46,7 @@ public class UserController {
 
     private final UserService userService;
 
-    private final SubServiceController serviceController;
+    private  SubServiceController serviceController;
 
     private final SubService_Service service_service;
 
@@ -110,14 +110,14 @@ public class UserController {
     }
 
 
-    @PostMapping("/showAllSubService")
-    public ResponseEntity<List<SubService>> showAllSubServices() {
-
-        ResponseEntity<List<SubService>> listResponseEntity = serviceController.showAllsubServices();
-        return listResponseEntity.status(HttpStatus.OK)
-                .body(listResponseEntity.getBody());
-
-    }
+//    @PostMapping("/showAllSubService")
+//    public ResponseEntity<List<SubService>> showAllSubServices() {
+//
+//        ResponseEntity<List<SubService>> listResponseEntity = serviceController.showAllsubServices();
+//        return listResponseEntity.status(HttpStatus.OK)
+//                .body(listResponseEntity.getBody());
+//
+//    }
 
     /**
      * <B>this method add new Main Order</B>
@@ -198,20 +198,20 @@ public class UserController {
     }
 
     //TODO مشاهده تاریخچه سفارشات و اعتبار
-    @PostMapping("/loadAmount/{userId}")
+    @GetMapping("/loadAmount/{userId}")
     public ResponseEntity<List<Transaction>> loadAmount(@PathVariable Long userId) {
         List<Transaction> transactionList = transactionService.findAllByUserId(userId);
 
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity.status(HttpStatus.OK)
                 .body(transactionList);
 
     }
 
     //TODO    3-2 ----- پس از اعلام پایان  customer     @@@@@@@@@@@@@@@@@@@@@@@@@@@@  how can set time for come in page    and    how can i set captcha
     @PostMapping("/creditPayMoney")
-    public ResponseEntity<String> CreditPayMoney(@RequestBody TransactionInDto transactionInDto) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
+    public ResponseEntity<String> CreditPayMoney(@RequestBody TransactionInDto transactionInDto ,@RequestBody BankCardInformationInDto bankCardInformationInDto ) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
 
-        if (mainOrderService.findById(transactionInDto.getOrderId()).getStatus().equals(OrderStatus.DONE) && checkBalance(transactionInDto)) {
+        if (mainOrderService.findById(transactionInDto.getOrderId()).getStatus().equals(OrderStatus.DONE) && checkBalance(transactionInDto,bankCardInformationInDto )) {
 
             Transaction transaction = new Transaction();
             transaction.setOrder(mainOrderService.findById(transactionInDto.getOrderId()));
@@ -236,6 +236,36 @@ public class UserController {
 
         }
 
+
+        if (mainOrderService.findById(transactionInDto.getOrderId()).getStatus().equals(OrderStatus.DONE) && checkBalance(transactionInDto,bankCardInformationInDto )) {
+
+            Transaction transaction = new Transaction();
+            transaction.setOrder(mainOrderService.findById(transactionInDto.getOrderId()));
+            transaction.setAmount(transactionInDto.getAmount());
+            transaction.setWorker(workerService.findById(transactionInDto.getWorkerId()));
+            transactionService.save(transaction);
+
+            MainOrder mainOrder = mainOrderService.findById(transactionInDto.getOrderId());
+            mainOrder.setTransaction(transactionService.findById(transactionInDto.getId()));
+            mainOrder.setStatus(OrderStatus.PAID);
+            mainOrderService.save(mainOrder);
+
+            Worker worker = workerService.findById(transactionInDto.getWorkerId());
+            BigDecimal amount = transaction.getAmount();
+            BigDecimal accountBalance = amount.subtract((amount.multiply(new BigDecimal(30).divide(new BigDecimal(100)))));
+            worker.setAccountBalance(accountBalance);
+            worker.setDebtToTheCompany(amount.subtract(accountBalance));
+
+
+            workerService.save(worker);
+
+
+        }
+
+
+
+
+
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(null);
 
@@ -243,8 +273,7 @@ public class UserController {
 
 
     //TODO  3-2 ----- پرداخت      @@@@@@@@@@@@@
-    public Boolean checkBalance(TransactionInDto transactionInDto) {
-        BankCardInformationInDto bankCardInformationInDto = new BankCardInformationInDto();
+    public Boolean checkBalance(TransactionInDto transactionInDto , BankCardInformationInDto bankCardInformationInDto) {
 
         BigDecimal balance = bankCardInformationInDto.getBalance();
 
@@ -261,6 +290,7 @@ public class UserController {
 //    }
 
     //TODO    3-2 ----- پس از اعلام پایان  customer     @@@@@@@@@@@@@@@@@@@@@@@@@@@@-
+    @PostMapping("/cashPayMoney")
     public ResponseEntity<String> cashPayMoney(@RequestBody TransactionInDto transactionInDto) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
 
         if (mainOrderService.findById(transactionInDto.getOrderId()).getStatus() == OrderStatus.DONE) {

@@ -30,14 +30,17 @@ public class MainOrderInDto extends BaseEntityDto {
 
     private SubService subService;
 
-    private Suggestion suggestion;
+    private Suggestion suggestionId;
 
-    private User user;
+    private User userId;
 
     private Date timeStartWork;
 
     private Date timefinishedWork;
 
      private BigDecimal suggestionPrice;
+
+
+
 
 }

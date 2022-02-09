@@ -28,8 +28,8 @@ public abstract class RestControllerTest {
     @Autowired
     protected MockMvc mvc;
 
-    @Autowired
-    protected WebApplicationContext webApplicationContext;
+//    @Autowired
+////    protected WebApplicationContext webApplicationContext;
 
     @MockBean
     protected UserService userService;
