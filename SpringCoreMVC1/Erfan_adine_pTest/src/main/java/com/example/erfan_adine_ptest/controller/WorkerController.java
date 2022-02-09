@@ -32,15 +32,15 @@ import java.util.List;
 
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/workers")
+@RequiredArgsConstructor
 public class WorkerController {
 
     private final SuggestionService suggestionService;
     private final WorkerService workerService;
     private final MainOrderService mainOrderService;
     private final CommentService commentService;
-    private  PointsCommetnsOutDto pointsCommetnsOutDto;
+    private PointsCommetnsOutDto pointsCommetnsOutDto;
 
     @PostMapping("/create")
     public ResponseEntity<WorkerOutDto> create(@Valid @RequestBody WorkerInDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
@@ -118,32 +118,33 @@ public class WorkerController {
 
     //TODO ثبت نظرات
     @PostMapping("/loadCommentsByOrderId/{orderId}")
-    public ResponseEntity<PointsCommetnsOutDto> loadCommentsByOrderId( @PathVariable Long orderId){
+    public ResponseEntity<PointsCommetnsOutDto> loadCommentsByOrderId(@PathVariable Long orderId) {
 
 //        MainOrder mainOrder = mainOrderService.findById(orderId);
         List<Comment> commentList = commentService.findAll();
         List<Comment> finalList = new ArrayList<>();
         List<Integer> finalPointsList = new ArrayList<>();
 
-        for(Comment comment : commentList){
-            if (comment.getOrder().getId().equals(orderId)){
+        for (Comment comment : commentList) {
+            if (comment.getOrder().getId().equals(orderId)) {
                 finalList.add(comment);
             }
         }
 
-        for(Comment comment : finalList){
+        for (Comment comment : finalList) {
             finalPointsList.add(comment.getPoints());
         }
         pointsCommetnsOutDto.setPoint(finalPointsList);
 
         return ResponseEntity.status(HttpStatus.OK)
-                        .body(pointsCommetnsOutDto);
+                .body(pointsCommetnsOutDto);
 
     }
 
     //TODO  مشاهده تاریخچه سفارشات و اعتبار
 
-    public ResponseEntity<List<MainOrder>> findAllOrder(MainOrderInDto mainOrderInDto){
+    @PostMapping("/findAllOrder")
+    public ResponseEntity<List<MainOrder>> findAllOrder(@RequestBody MainOrderInDto mainOrderInDto) {
         List<MainOrder> allOrderByStatusOfStatus = mainOrderService.findAllOrderByStatusOfStatus(mainOrderInDto.getStatus());
 
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -151,6 +152,17 @@ public class WorkerController {
 
     }
 
+//TODO     3-اعلام پایان کار      ---2     worker
+
+    @PostMapping("/finishWork/{orderId}")
+    public ResponseEntity<String> finishWork(@PathVariable Long orderId) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
+        MainOrder mainOrder = mainOrderService.findById(orderId);
+        mainOrder.setStatus(OrderStatus.DONE);
+        mainOrderService.save(mainOrder);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(null);
+    }
 
 
 }

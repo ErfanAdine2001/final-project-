@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class TransactionInDto extends BaseEntityDto {
 
-    private MainOrder order;
+    private Long orderId;
 
     private BigDecimal amount;
 

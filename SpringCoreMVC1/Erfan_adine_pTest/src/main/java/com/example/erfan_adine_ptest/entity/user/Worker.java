@@ -31,4 +31,6 @@ public class Worker extends BasePerson {
     @Lob
     private byte[] image;
 
+
+
 }

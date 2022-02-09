@@ -1,5 +1,6 @@
 package com.example.erfan_adine_ptest.entity.product;
 
+import com.example.erfan_adine_ptest.entity.Transaction;
 import com.example.erfan_adine_ptest.entity.core.BaseEntity;
 import com.example.erfan_adine_ptest.entity.product.message.Suggestion;
 import com.example.erfan_adine_ptest.entity.user.Admin;
@@ -55,6 +56,11 @@ public class MainOrder extends BaseEntity {
     @LastModifiedDate
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date timefinishedWork;
+
+
+    @OneToOne
+    @JoinColumn(name = "transaction_id_oo")
+    private Transaction transaction ;
 
 }
 

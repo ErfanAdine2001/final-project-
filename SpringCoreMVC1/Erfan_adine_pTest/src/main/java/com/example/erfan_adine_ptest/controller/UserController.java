@@ -1,5 +1,6 @@
 package com.example.erfan_adine_ptest.controller;
 
+import com.example.erfan_adine_ptest.dto.in.TransactionInDto;
 import com.example.erfan_adine_ptest.dto.in.product.CommentInDto;
 import com.example.erfan_adine_ptest.dto.in.product.MainOrderInDto;
 import com.example.erfan_adine_ptest.dto.in.product.message.SuggestionInDto;
@@ -201,6 +202,56 @@ public class UserController {
                 .body(transactionList);
 
     }
+
+    //TODO    3-2 ----- پس از اعلام پایان  customer
+    public ResponseEntity<String> CreditPayMoney( @RequestBody TransactionInDto transactionInDto) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
+
+        if (mainOrderService.findById(transactionInDto.getOrderId()).getStatus().equals(OrderStatus.DONE)){
+
+            Transaction transaction = new Transaction();
+            transaction.setOrder(mainOrderService.findById(transactionInDto.getOrderId()));
+            transaction.setAmount(transactionInDto.getAmount());
+            transactionService.save(transaction);
+
+            MainOrder mainOrder = mainOrderService.findById(transactionInDto.getOrderId());
+            mainOrder.setTransaction(transactionService.findById(transactionInDto.getId()));
+
+            mainOrderService.save(mainOrder);
+
+
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(null);
+
+    }
+
+
+    public ResponseEntity<String> cashPayMoney( @RequestBody TransactionInDto transactionInDto) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
+
+        if (mainOrderService.findById(transactionInDto.getOrderId()).getStatus()==OrderStatus.DONE){
+
+            Transaction transaction = new Transaction();
+            transaction.setOrder(mainOrderService.findById(transactionInDto.getOrderId()));
+            transaction.setAmount(transactionInDto.getAmount());
+            transactionService.save(transaction);
+
+            MainOrder mainOrder = mainOrderService.findById(transactionInDto.getOrderId());
+            mainOrder.setTransaction(transactionService.findById(transactionInDto.getId()));
+
+            mainOrderService.save(mainOrder);
+
+
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(null);
+
+    }
+
+
+
+
 
 //    @PostMapping("")
 //    public void AcceptTheSelect(@RequestBody MainOrderInDto mainOrderInDto) {
