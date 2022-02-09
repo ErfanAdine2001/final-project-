@@ -41,10 +41,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
+
 
         <dependency>
             <groupId>com.h2database</groupId>
@@ -75,7 +72,7 @@
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-core</artifactId>
-            <version>1.8.2</version>
+            <version>1.2.1</version>
         </dependency>
 <!--//**********************************-->
 
@@ -83,24 +80,53 @@
 
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-rest</artifactId>
-        </dependency>
-
-
-        <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
         </dependency>
-
-
-    </dependencies>
-
 
     <!--//**********************************-->
 
 
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web-services</artifactId>
+        </dependency>
+
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-rest</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jersey</artifactId>
+        </dependency>
+
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/net.jodah/expiringmap &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>net.jodah</groupId>-->
+<!--            <artifactId>expiringmap</artifactId>-->
+<!--        </dependency>-->
+
+        <!-- https://mvnrepository.com/artifact/nl.captcha/simplecaptcha -->
+        <dependency>
+            <groupId>nl.captcha</groupId>
+            <artifactId>simplecaptcha</artifactId>
+            <version>1.2.1</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/net.jodah/expiringmap -->
+        <dependency>
+            <groupId>net.jodah</groupId>
+            <artifactId>expiringmap</artifactId>
+            <version>0.5.9</version>
+        </dependency>
+
+
+    </dependencies>
 
 
 

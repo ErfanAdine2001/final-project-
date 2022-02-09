@@ -1,5 +1,6 @@
 package com.example.erfan_adine_ptest.controller;
 
+import com.example.erfan_adine_ptest.dto.in.BankCardInformationInDto;
 import com.example.erfan_adine_ptest.dto.in.TransactionInDto;
 import com.example.erfan_adine_ptest.dto.in.product.CommentInDto;
 import com.example.erfan_adine_ptest.dto.in.product.MainOrderInDto;
@@ -206,11 +207,11 @@ public class UserController {
 
     }
 
-    //TODO    3-2 ----- پس از اعلام پایان  customer
+    //TODO    3-2 ----- پس از اعلام پایان  customer     @@@@@@@@@@@@@@@@@@@@@@@@@@@@  how can set time for come in page    and    how can i set captcha
     @PostMapping("/creditPayMoney")
-    public ResponseEntity<String> CreditPayMoney( @RequestBody TransactionInDto transactionInDto) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
+    public ResponseEntity<String> CreditPayMoney(@RequestBody TransactionInDto transactionInDto) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
 
-        if (mainOrderService.findById(transactionInDto.getOrderId()).getStatus().equals(OrderStatus.DONE)){
+        if (mainOrderService.findById(transactionInDto.getOrderId()).getStatus().equals(OrderStatus.DONE) && checkBalance(transactionInDto)) {
 
             Transaction transaction = new Transaction();
             transaction.setOrder(mainOrderService.findById(transactionInDto.getOrderId()));
@@ -240,14 +241,29 @@ public class UserController {
 
     }
 
+
+    //TODO  3-2 ----- پرداخت      @@@@@@@@@@@@@
+    public Boolean checkBalance(TransactionInDto transactionInDto) {
+        BankCardInformationInDto bankCardInformationInDto = new BankCardInformationInDto();
+
+        BigDecimal balance = bankCardInformationInDto.getBalance();
+
+        if (transactionInDto.getAmount().compareTo(balance) == -1) {
+            return true;
+        }
+        return false;
+
+    }
+
+
 //    public BigDecimal monyOfWorkerBalance(){
 //
 //    }
 
+    //TODO    3-2 ----- پس از اعلام پایان  customer     @@@@@@@@@@@@@@@@@@@@@@@@@@@@-
+    public ResponseEntity<String> cashPayMoney(@RequestBody TransactionInDto transactionInDto) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
 
-    public ResponseEntity<String> cashPayMoney( @RequestBody TransactionInDto transactionInDto) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
-
-        if (mainOrderService.findById(transactionInDto.getOrderId()).getStatus()==OrderStatus.DONE){
+        if (mainOrderService.findById(transactionInDto.getOrderId()).getStatus() == OrderStatus.DONE) {
 
             Transaction transaction = new Transaction();
             transaction.setOrder(mainOrderService.findById(transactionInDto.getOrderId()));
@@ -266,9 +282,6 @@ public class UserController {
                 .body(null);
 
     }
-
-
-
 
 
 //    @PostMapping("")
