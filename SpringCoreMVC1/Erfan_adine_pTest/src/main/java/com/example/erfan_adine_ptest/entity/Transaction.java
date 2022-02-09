@@ -3,6 +3,7 @@ package com.example.erfan_adine_ptest.entity;
 import com.example.erfan_adine_ptest.entity.core.BaseEntity;
 import com.example.erfan_adine_ptest.entity.product.MainOrder;
 import com.example.erfan_adine_ptest.entity.user.User;
+import com.example.erfan_adine_ptest.entity.user.Worker;
 import com.example.erfan_adine_ptest.entity.work.SubService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,4 +38,8 @@ public class Transaction extends BaseEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "subService_ID_mo")
     private SubService subService;
+
+    @OneToOne
+    @JoinColumn(name = "transaction_Id_oo")
+    private Worker worker;
 }

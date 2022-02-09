@@ -86,7 +86,27 @@ public class WorkerService {
 
         return workerOutDto;
 
+
     }
+
+
+    @Transactional
+    public WorkerOutDto save(Worker request) throws NameNotValidException, EmailNotValidException, PasswordNotValidException, NullFieldException {
+
+        Worker save = workerRepository.save(request);
+
+        WorkerOutDto workerOutDto = new WorkerOutDto();
+        workerOutDto.setId(save.getId());
+
+        return workerOutDto;
+
+    }
+
+
+
+
+
+    //****************************************
 
     @Transactional
     public void delete(Worker worker) {

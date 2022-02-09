@@ -8,6 +8,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
@@ -31,6 +32,7 @@ public class Worker extends BasePerson {
     @Lob
     private byte[] image;
 
+    private BigDecimal accountBalance;
 
-
+    private BigDecimal debtToTheCompany;
 }

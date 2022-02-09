@@ -24,4 +24,6 @@ public class TransactionInDto extends BaseEntityDto {
     private User payer;
 
     private SubService recipient;
+
+    private Long workerId;
 }

@@ -6,6 +6,7 @@ import com.example.erfan_adine_ptest.dto.in.product.MainOrderInDto;
 import com.example.erfan_adine_ptest.dto.in.product.message.SuggestionInDto;
 import com.example.erfan_adine_ptest.dto.in.user.ShowAllOrdersByUserIdInDto;
 import com.example.erfan_adine_ptest.dto.in.user.UserInDto;
+import com.example.erfan_adine_ptest.dto.in.user.WorkerInDto;
 import com.example.erfan_adine_ptest.dto.in.user.WorkerOrUserSerchInDto;
 import com.example.erfan_adine_ptest.dto.out.product.CommentOutDto;
 import com.example.erfan_adine_ptest.dto.out.product.MainOrderOutDto;
@@ -32,6 +33,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -57,6 +59,7 @@ public class UserController {
 
     private final TransactionService transactionService;
 
+    private final WorkerService workerService;
 //    private final
 
     @PostMapping("/create")
@@ -204,6 +207,7 @@ public class UserController {
     }
 
     //TODO    3-2 ----- پس از اعلام پایان  customer
+    @PostMapping("/creditPayMoney")
     public ResponseEntity<String> CreditPayMoney( @RequestBody TransactionInDto transactionInDto) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
 
         if (mainOrderService.findById(transactionInDto.getOrderId()).getStatus().equals(OrderStatus.DONE)){
@@ -211,12 +215,22 @@ public class UserController {
             Transaction transaction = new Transaction();
             transaction.setOrder(mainOrderService.findById(transactionInDto.getOrderId()));
             transaction.setAmount(transactionInDto.getAmount());
+            transaction.setWorker(workerService.findById(transactionInDto.getWorkerId()));
             transactionService.save(transaction);
 
             MainOrder mainOrder = mainOrderService.findById(transactionInDto.getOrderId());
             mainOrder.setTransaction(transactionService.findById(transactionInDto.getId()));
-
+            mainOrder.setStatus(OrderStatus.PAID);
             mainOrderService.save(mainOrder);
+
+            Worker worker = workerService.findById(transactionInDto.getWorkerId());
+            BigDecimal amount = transaction.getAmount();
+            BigDecimal accountBalance = amount.subtract((amount.multiply(new BigDecimal(30).divide(new BigDecimal(100)))));
+            worker.setAccountBalance(accountBalance);
+            worker.setDebtToTheCompany(amount.subtract(accountBalance));
+
+
+            workerService.save(worker);
 
 
         }
@@ -225,6 +239,10 @@ public class UserController {
                 .body(null);
 
     }
+
+//    public BigDecimal monyOfWorkerBalance(){
+//
+//    }
 
 
     public ResponseEntity<String> cashPayMoney( @RequestBody TransactionInDto transactionInDto) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
