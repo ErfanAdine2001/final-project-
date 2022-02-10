@@ -2,17 +2,12 @@ package com.example.erfan_adine_ptest.dto.in.product;
 
 
 import com.example.erfan_adine_ptest.dto.core.BaseEntityDto;
-import com.example.erfan_adine_ptest.entity.core.BaseEntity;
 import com.example.erfan_adine_ptest.entity.product.OrderStatus;
-import com.example.erfan_adine_ptest.entity.product.message.Suggestion;
-import com.example.erfan_adine_ptest.entity.user.User;
-import com.example.erfan_adine_ptest.entity.work.SubService;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
 
 
 @Getter
@@ -22,7 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class MainOrderInDto extends BaseEntityDto {
 
-    private String addres;
+    private String address;
 
 
     @Enumerated(EnumType.STRING)
@@ -34,10 +29,8 @@ public class MainOrderInDto extends BaseEntityDto {
 
     private Long userId;
 
-    private Date timeStartWork;
+    private BigDecimal suggestionPrice;
 
-    private Date timefinishedWork;
-
-     private BigDecimal suggestionPrice;
+    private Long subService;
 
 }

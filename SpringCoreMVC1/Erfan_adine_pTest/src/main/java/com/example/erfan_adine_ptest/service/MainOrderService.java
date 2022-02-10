@@ -21,7 +21,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MainOrderService {
     private final OrderRepository orderRepository;
-    private Validation validation;
+    private final SubService_Service subServiceService;
+    private final  SuggestionService suggestionService;
+    private final UserService userService;
+
 
 
     @Transactional
@@ -33,13 +36,11 @@ public class MainOrderService {
     public MainOrderOutDto save(MainOrderInDto entity) throws NullFieldException, BadEntryException, NameNotValidException, EmailNotValidException, PasswordNotValidException, NullCommentException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, BasePriceOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
         MainOrder order = new MainOrder();
         order.setStatus(OrderStatus.WAITING_FOR_SUGGESTION);
-        order.setSubService(entity.getSubService());
-        order.setSuggestion(entity.getSuggestion());
-        order.setAddres(entity.getAddres());
+        order.setSubService(subServiceService.findById(entity.getSubService()));
+        order.setSuggestion(suggestionService.findById(entity.getSuggestionId()));
         order.setUpdatedTime(new Date());
         order.setCreatedTime(new Date());
-        order.setUser(entity.getUser());
-        order.setSuggestion(entity.getSuggestion());
+        order.setUser(userService.findById(entity.getUserId()));
 
         MainOrderOutDto mainOrderOutDto = new MainOrderOutDto();
         mainOrderOutDto.setId(order.getId());
