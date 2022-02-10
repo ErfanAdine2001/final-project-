@@ -28,11 +28,11 @@ public class MainOrderInDto extends BaseEntityDto {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    private SubService subService;
+    private Long subServiceId;
 
-    private Suggestion suggestion;
+    private Long suggestionId;
 
-    private User user;
+    private Long userId;
 
     private Date timeStartWork;
 

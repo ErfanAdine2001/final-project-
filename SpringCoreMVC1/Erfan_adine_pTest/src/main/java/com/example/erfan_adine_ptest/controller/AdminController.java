@@ -13,6 +13,7 @@ import com.example.erfan_adine_ptest.entity.work.MainService;
 import com.example.erfan_adine_ptest.exception.*;
 import com.example.erfan_adine_ptest.service.AdminService;
 import com.example.erfan_adine_ptest.service.MainService_Service;
+import com.example.erfan_adine_ptest.service.UserService;
 import com.example.erfan_adine_ptest.service.WorkerService;
 import lombok.*;
 import org.springframework.data.domain.Page;
@@ -29,11 +30,9 @@ import java.util.*;
 @RequestMapping("/manager")
 public class AdminController {
     private final AdminService adminService;
-//    private final MainService mainService;
-    private final MainService_Service mainServiceService;
-    private final UserController userController;
-    private final WorkerController workderController;
     private final WorkerService workerService;
+    private final MainService_Service mainServiceService;
+    private  final UserService userService;
 
 
     @PostMapping("/create")
@@ -50,16 +49,31 @@ public class AdminController {
     //Search Workers
     @PostMapping("/searchWorkerListByAllAttribute")
     public ResponseEntity<Page<WorkerOrUserSerchOutDto>> searchWorkers(@Valid @RequestBody WorkerOrUserSerchInDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
-        ResponseEntity<Page<WorkerOrUserSerchOutDto>> result = workderController.findAllByFNameAndLNameAndEmailAndPassword(request);
-        return result;
+
+
+        Page<WorkerOrUserSerchOutDto> allByFNameAndLNameAndEmailAndPassword = workerService.findAllByFNameAndLNameAndEmailAndPassword(request);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(allByFNameAndLNameAndEmailAndPassword);
+
+//        ResponseEntity<Page<WorkerOrUserSerchOutDto>> result = workderController.findAllByFNameAndLNameAndEmailAndPassword(request);
+//        return result;
 
     }
 
     @PostMapping("/searchAllWorkerByFNameAndLName")
     public ResponseEntity<Page<WorkerOrUserSerchOutDto>> searchAllWorkerByFNameAndLName(@Valid @RequestBody WorkerOrUserSerchInDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
 
-        ResponseEntity<Page<WorkerOrUserSerchOutDto>> result = workderController.findAllByFNameAndLName(request);
-        return result;
+
+        Page<WorkerOrUserSerchOutDto> findAllByFNameAndLName = workerService.findAllByFNameAndLName(request);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(findAllByFNameAndLName);
+
+
+
+//        ResponseEntity<Page<WorkerOrUserSerchOutDto>> result = workderController.findAllByFNameAndLName(request);
+//        return result;
 
     }
 //*************/
@@ -67,16 +81,31 @@ public class AdminController {
     // search users
     @PostMapping("/searchWorkerListByAllAttribute2")
     public ResponseEntity<Page<WorkerOrUserSerchOutDto>> searchUsers(@Valid @RequestBody WorkerOrUserSerchInDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
-        ResponseEntity<Page<WorkerOrUserSerchOutDto>> result = userController.findAllByFNameAndLNameAndEmailAndPassword(request);
-        return result;
+
+
+        Page<WorkerOrUserSerchOutDto> allByFNameAndLNameAndEmailAndPassword = userService.findAllByFNameAndLNameAndEmailAndPassword(request);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(allByFNameAndLNameAndEmailAndPassword);
+
+
+//        ResponseEntity<Page<WorkerOrUserSerchOutDto>> result = userController.findAllByFNameAndLNameAndEmailAndPassword(request);
+//        return result;
 
     }
 
     @PostMapping("/searchAllUserByFNameAndLName")
     public ResponseEntity<Page<WorkerOrUserSerchOutDto>> searchAllUserByFNameAndLName(@Valid @RequestBody WorkerOrUserSerchInDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
 
-        ResponseEntity<Page<WorkerOrUserSerchOutDto>> result = userController.findAllByFNameAndLName(request);
-        return result;
+
+        Page<WorkerOrUserSerchOutDto> allByFNameAndLNameAndEmailAndPassword = userService.findAllByFNameAndLName(request);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(allByFNameAndLNameAndEmailAndPassword);
+
+
+//        ResponseEntity<Page<WorkerOrUserSerchOutDto>> result = userController.findAllByFNameAndLName(request);
+//        return result;
 
     }
 

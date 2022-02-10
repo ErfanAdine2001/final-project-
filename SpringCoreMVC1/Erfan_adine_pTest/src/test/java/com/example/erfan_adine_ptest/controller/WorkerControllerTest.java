@@ -1,5 +1,6 @@
 package com.example.erfan_adine_ptest.controller;
 
+import com.example.erfan_adine_ptest.dto.in.product.MainOrderInDto;
 import com.example.erfan_adine_ptest.dto.in.user.UserInDto;
 import com.example.erfan_adine_ptest.dto.in.user.WorkerInDto;
 import com.example.erfan_adine_ptest.entity.product.MainOrder;
@@ -9,30 +10,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.WebApplicationContext;
-
-import java.util.HashMap;
 
 import static com.example.erfan_adine_ptest.controller.UserControllerTest.asJsonString;
-import static io.restassured.RestAssured.given;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-//
+
 //@ActiveProfiles("test")
 //@SpringJUnitConfig(.class)
 // extends RestControllerTest
@@ -54,9 +39,9 @@ class WorkerControllerTest extends RestControllerTest {
     private WorkerController controller;
 
     @Test
-     void contextLoads() throws Exception {
+    void contextLoads() throws Exception {
 
-    WorkerInDto workerInDto = new WorkerInDto();
+        WorkerInDto workerInDto = new WorkerInDto();
         workerInDto.setPassword("123Aa");
         workerInDto.setEmail("erfan@gmail.com");
 
@@ -101,7 +86,6 @@ class WorkerControllerTest extends RestControllerTest {
 ////                .andExpect(jsonPath("$.id").isNotEmpty());
 ////        return model;
 //
-
 
 
     @Test
@@ -165,33 +149,48 @@ class WorkerControllerTest extends RestControllerTest {
 //    }
 
 
-        @Test
-        void findAllByFNameAndLNameAndEmailAndPassword () {
+    @Test
+    void findAllByFNameAndLNameAndEmailAndPassword() throws Exception {
 
-
-        }
-
-        @Test
-        void findAllByFNameAndLName () {
-        }
-
-        @Test
-        void findSuggestionForMainOrder () {
-        }
-
-        @Test
-        void sendSuggestionForMainOrder () {
-        }
-
-        @Test
-        void loadCommentsByOrderId () {
-        }
-
-        @Test
-        void findAllOrder () {
-        }
-
-
-        //************************
+        mvc.perform(MockMvcRequestBuilders
+                        .post("/users/loadAmount")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
 
     }
+
+    @Test
+    void findAllByFNameAndLName() {
+    }
+
+    @Test
+    void findSuggestionForMainOrder() throws Exception {
+        MainOrderInDto mainOrderInDto= new MainOrderInDto();
+        mainOrderInDto.setAddres("slfsl fljslfjlsj");
+//        mainOrderInDto.set
+
+        mvc.perform(MockMvcRequestBuilders
+                        .post("/workers/findSuggestionForMainOrder")
+                        .content(asJsonString(mainOrderInDto))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void sendSuggestionForMainOrder() {
+    }
+
+    @Test
+    void loadCommentsByOrderId() {
+    }
+
+    @Test
+    void findAllOrder() {
+    }
+
+
+    //************************
+
+}

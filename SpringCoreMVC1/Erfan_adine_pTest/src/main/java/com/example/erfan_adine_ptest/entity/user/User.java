@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -27,4 +28,5 @@ public class User extends BasePerson {
     @Lob
     private byte[] image;
 
+    private BigDecimal UserAccountBalance;
 }

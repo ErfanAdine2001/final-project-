@@ -7,7 +7,6 @@ import com.example.erfan_adine_ptest.dto.in.product.MainOrderInDto;
 import com.example.erfan_adine_ptest.dto.in.product.message.SuggestionInDto;
 import com.example.erfan_adine_ptest.dto.in.user.ShowAllOrdersByUserIdInDto;
 import com.example.erfan_adine_ptest.dto.in.user.UserInDto;
-import com.example.erfan_adine_ptest.dto.in.user.WorkerInDto;
 import com.example.erfan_adine_ptest.dto.in.user.WorkerOrUserSerchInDto;
 import com.example.erfan_adine_ptest.dto.out.product.CommentOutDto;
 import com.example.erfan_adine_ptest.dto.out.product.MainOrderOutDto;
@@ -20,8 +19,8 @@ import com.example.erfan_adine_ptest.entity.product.MainOrder;
 import com.example.erfan_adine_ptest.entity.product.OrderStatus;
 import com.example.erfan_adine_ptest.entity.product.message.Suggestion;
 import com.example.erfan_adine_ptest.entity.product.message.SuggestionStatus;
+import com.example.erfan_adine_ptest.entity.user.User;
 import com.example.erfan_adine_ptest.entity.user.Worker;
-import com.example.erfan_adine_ptest.entity.work.SubService;
 import com.example.erfan_adine_ptest.exception.*;
 import com.example.erfan_adine_ptest.service.*;
 import lombok.*;
@@ -30,12 +29,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 
@@ -46,7 +43,7 @@ public class UserController {
 
     private final UserService userService;
 
-    private  SubServiceController serviceController;
+    private SubServiceController serviceController;
 
     private final SubService_Service service_service;
 
@@ -158,7 +155,7 @@ public class UserController {
         if (s.getSuggestionStatus().equals(SuggestionStatus.ACCEPTED)) {
             MainOrderInDto order = new MainOrderInDto();
             order.setId(s.getOrder().getId());
-            order.setSuggestion(s);
+            order.setSuggestionId(s.getId());
             order.setStatus(OrderStatus.WAITING_FOR_COMING_WORKER);
 
             mainOrderService.save(order);
@@ -209,15 +206,25 @@ public class UserController {
 
     //TODO    3-2 ----- پس از اعلام پایان  customer     @@@@@@@@@@@@@@@@@@@@@@@@@@@@  how can set time for come in page    and    how can i set captcha
     @PostMapping("/creditPayMoney")
-    public ResponseEntity<String> CreditPayMoney(@RequestBody TransactionInDto transactionInDto ,@RequestBody BankCardInformationInDto bankCardInformationInDto ) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
+    public ResponseEntity<String> CreditPayMoney(@RequestBody TransactionInDto transactionInDto, @RequestBody BankCardInformationInDto bankCardInformationInDto) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
 
-        if (mainOrderService.findById(transactionInDto.getOrderId()).getStatus().equals(OrderStatus.DONE) && checkBalance(transactionInDto,bankCardInformationInDto )) {
+
+
+
+
+        if (mainOrderService.findById(transactionInDto.getOrderId()).getStatus().equals(OrderStatus.DONE) && checkBalanceAccount(transactionInDto)) {
+
 
             Transaction transaction = new Transaction();
             transaction.setOrder(mainOrderService.findById(transactionInDto.getOrderId()));
             transaction.setAmount(transactionInDto.getAmount());
             transaction.setWorker(workerService.findById(transactionInDto.getWorkerId()));
             transactionService.save(transaction);
+
+
+            User user = userService.findById(transactionInDto.getId());
+            user.setUserAccountBalance(user.getUserAccountBalance().subtract(transactionInDto.getAmount()));
+            userService.save(user);
 
             MainOrder mainOrder = mainOrderService.findById(transactionInDto.getOrderId());
             mainOrder.setTransaction(transactionService.findById(transactionInDto.getId()));
@@ -237,13 +244,16 @@ public class UserController {
         }
 
 
-        if (mainOrderService.findById(transactionInDto.getOrderId()).getStatus().equals(OrderStatus.DONE) && checkBalance(transactionInDto,bankCardInformationInDto )) {
+       else if (mainOrderService.findById(transactionInDto.getOrderId()).getStatus().equals(OrderStatus.DONE) && checkBalanceBank(transactionInDto, bankCardInformationInDto)) {
 
             Transaction transaction = new Transaction();
             transaction.setOrder(mainOrderService.findById(transactionInDto.getOrderId()));
             transaction.setAmount(transactionInDto.getAmount());
             transaction.setWorker(workerService.findById(transactionInDto.getWorkerId()));
             transactionService.save(transaction);
+
+            //"subtract transaction amount"  from  " bank card  balance"
+            bankCardInformationInDto.setBalance( bankCardInformationInDto.getBalance().subtract(transactionInDto.getAmount()) );
 
             MainOrder mainOrder = mainOrderService.findById(transactionInDto.getOrderId());
             mainOrder.setTransaction(transactionService.findById(transactionInDto.getId()));
@@ -261,10 +271,6 @@ public class UserController {
 
 
         }
-
-
-
-
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(null);
@@ -273,13 +279,27 @@ public class UserController {
 
 
     //TODO  3-2 ----- پرداخت      @@@@@@@@@@@@@
-    public Boolean checkBalance(TransactionInDto transactionInDto , BankCardInformationInDto bankCardInformationInDto) {
+    public Boolean checkBalanceBank(TransactionInDto transactionInDto, BankCardInformationInDto bankCardInformationInDto) {
 
         BigDecimal balance = bankCardInformationInDto.getBalance();
 
         if (transactionInDto.getAmount().compareTo(balance) == -1) {
             return true;
         }
+        return false;
+
+    }
+
+    public Boolean checkBalanceAccount(TransactionInDto transactionInDto) {
+
+        User user = userService.findById(transactionInDto.getId());
+        Integer b = user.getUserAccountBalance().compareTo(transactionInDto.getAmount());
+
+
+        if (b == 1) {
+            return true;
+        }
+
         return false;
 
     }

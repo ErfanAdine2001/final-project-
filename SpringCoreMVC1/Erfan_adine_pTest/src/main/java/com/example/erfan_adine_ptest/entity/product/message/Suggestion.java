@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 
 //@EqualsAndHashCode(callSuper = true)
@@ -38,4 +39,6 @@ public class Suggestion extends BaseMessage {
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private SuggestionStatus suggestionStatus = SuggestionStatus.PENDING;
+
+    private BigDecimal SuggestionPrice;
 }

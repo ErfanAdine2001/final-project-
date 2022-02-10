@@ -54,10 +54,22 @@ public class UserService {
         user.setLName(entity.getLastName());
         user.setPassword(entity.getPassword());
 
+        userRepository.save(user);
+
         UserOutDto userOutDto = new UserOutDto();
         userOutDto.setId(user.getId());
 
         return userOutDto;
+
+    }
+
+    @Transactional
+    public User save(User entity) throws NullFieldException, BadEntryException, NameNotValidException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, BasePriceOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, AddressOfRequestIsNull, SuggestionOfPriceIsNullException {
+
+
+        User user = userRepository.save(entity);
+
+        return user;
 
     }
 

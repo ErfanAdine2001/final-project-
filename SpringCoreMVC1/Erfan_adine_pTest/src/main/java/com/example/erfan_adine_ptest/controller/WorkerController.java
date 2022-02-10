@@ -52,33 +52,32 @@ public class WorkerController {
 
     }
 
-
-    public ResponseEntity<Page<WorkerOrUserSerchOutDto>> findAllByFNameAndLNameAndEmailAndPassword(WorkerOrUserSerchInDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
-
-        Page<WorkerOrUserSerchOutDto> allByFNameAndLNameAndEmailAndPassword = workerService.findAllByFNameAndLNameAndEmailAndPassword(request);
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(allByFNameAndLNameAndEmailAndPassword);
-
-    }
-
-
-    public ResponseEntity<Page<WorkerOrUserSerchOutDto>> findAllByFNameAndLName(WorkerOrUserSerchInDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
-
-        Page<WorkerOrUserSerchOutDto> findAllByFNameAndLName = workerService.findAllByFNameAndLName(request);
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(findAllByFNameAndLName);
-
-    }
-
+//
+//    public ResponseEntity<Page<WorkerOrUserSerchOutDto>> findAllByFNameAndLNameAndEmailAndPassword(WorkerOrUserSerchInDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
+//
+//        Page<WorkerOrUserSerchOutDto> allByFNameAndLNameAndEmailAndPassword = workerService.findAllByFNameAndLNameAndEmailAndPassword(request);
+//
+//        return ResponseEntity.status(HttpStatus.OK)
+//                .body(allByFNameAndLNameAndEmailAndPassword);
+//
+//    }
+//
+//
+//    public ResponseEntity<Page<WorkerOrUserSerchOutDto>> findAllByFNameAndLName(WorkerOrUserSerchInDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
+//
+//        Page<WorkerOrUserSerchOutDto> findAllByFNameAndLName = workerService.findAllByFNameAndLName(request);
+//
+//        return ResponseEntity.status(HttpStatus.OK)
+//                .body(findAllByFNameAndLName);
+//
+//    }
 
     /**
      * <b>++++++++++++++++++++++++++++++++++</b>
      * <br>
      * <b>this method show all pagination Orders  of user by Id</b>
      */
-    @PostMapping("findSuggestionForMainOrder")
+    @PostMapping("/findSuggestionForMainOrder")
     public ResponseEntity<List<MainOrder>> findSuggestionForMainOrder(@RequestBody MainOrderInDto mainOrderInDto) {
         List<MainOrder> allOrderByStatusWateFOrSuggestions = workerService.findAllOrderByStatusWateFOrSuggestions(mainOrderInDto.getStatus());
 
@@ -96,11 +95,13 @@ public class WorkerController {
     public ResponseEntity<SuggestionOutDto> sendSuggestionForMainOrder(@PathVariable Long orderId, @RequestBody MainOrderInDto mainOrderInDto, @PathVariable Long workerId) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
         MainOrder m = mainOrderService.findById(orderId);
         Worker w = workerService.findById(workerId);
+        Suggestion s = suggestionService.findById(mainOrderInDto.getSuggestionId());
+
         Suggestion suggestion = new Suggestion();
         suggestion.setWorker(w);
         suggestion.setOrder(m);
         suggestion.setSuggestionStatus(SuggestionStatus.ACCEPTED);
-        suggestion.setPrice(mainOrderInDto.getSuggestionPrice());
+        suggestion.setPrice(s.getSuggestionPrice());
 
         m.setSuggestion(suggestion);
 
