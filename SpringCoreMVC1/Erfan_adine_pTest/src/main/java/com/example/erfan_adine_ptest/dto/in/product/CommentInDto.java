@@ -18,8 +18,8 @@ public class CommentInDto extends BaseEntityDto {
 
     private Integer points;
     private String description;
-    private User sender;
-    private SubService recipient;
-    private MainOrder order;
-    private SubService subService;
+    private Long userId;
+    private Long subServiceId;
+    private Long MainOrderId;
+
 }

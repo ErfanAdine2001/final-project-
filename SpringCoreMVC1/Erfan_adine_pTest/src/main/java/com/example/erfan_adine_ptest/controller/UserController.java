@@ -175,10 +175,7 @@ public class UserController {
     @PostMapping("/addComment")
     public ResponseEntity<CommentOutDto> addComment(@RequestBody CommentInDto commentInDto) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
 
-        Comment comment = commentService.save(commentInDto);
-
-        CommentOutDto commentOutDto = new CommentOutDto();
-        commentOutDto.setId(comment.getId());
+        CommentOutDto commentOutDto = commentService.save(commentInDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(commentOutDto);

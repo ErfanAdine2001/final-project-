@@ -1,7 +1,9 @@
 package com.example.erfan_adine_ptest.service;
 
 import com.example.erfan_adine_ptest.dto.in.product.CommentInDto;
+import com.example.erfan_adine_ptest.dto.out.product.CommentOutDto;
 import com.example.erfan_adine_ptest.entity.product.Comment;
+import com.example.erfan_adine_ptest.entity.work.SubService;
 import com.example.erfan_adine_ptest.exception.*;
 import com.example.erfan_adine_ptest.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
+    private final MainOrderService mainOrderService;
+    private final UserService userService;
+    private final SubService_Service subServiceService;
 
     @Transactional
     public Comment findById(Long id) {
@@ -28,16 +33,23 @@ public class CommentService {
     }
 
     @Transactional
-    public Comment save(CommentInDto commentInDto) throws NullFieldException, BadEntryException, NameNotValidException, EmailNotValidException, PasswordNotValidException, NullCommentException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
+    public CommentOutDto save(CommentInDto commentInDto) throws NullFieldException, BadEntryException, NameNotValidException, EmailNotValidException, PasswordNotValidException, NullCommentException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
+
+
         Comment comment = new Comment();
         comment.setPoints(commentInDto.getPoints());
         comment.setDescription(commentInDto.getDescription());
-        comment.setOrder(commentInDto.getOrder());
+        comment.setOrder(mainOrderService.findById(commentInDto.getMainOrderId()));
         comment.setCreatedTime(new Date());
         comment.setUpdatedTime(new Date());
-        comment.setSender(commentInDto.getSender());
-        comment.setSubService(commentInDto.getSubService());
-       return commentRepository.save(comment);
+        comment.setUser(userService.findById(commentInDto.getUserId()));
+        comment.setSubService(subServiceService.findById(commentInDto.getSubServiceId()));
+
+         commentRepository.save(comment);
+
+        CommentOutDto commentOutDto = new CommentOutDto();
+        commentOutDto.setId(comment.getId());
+        return commentOutDto;
     }
 
     @Transactional
@@ -46,7 +58,7 @@ public class CommentService {
     }
 
     @Transactional
-    public void update(Long id,String Description, Integer point) throws NameNotValidException, NullFieldException, BadEntryException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
+    public void update(Long id, String Description, Integer point) throws NameNotValidException, NullFieldException, BadEntryException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
 
         Comment comment = findById(id);
         comment.setDescription(Description);

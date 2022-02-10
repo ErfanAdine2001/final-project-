@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/subservices")
+@RequestMapping("/subServices")
 public class SubServiceController{
 
     private final SubService_Service service;

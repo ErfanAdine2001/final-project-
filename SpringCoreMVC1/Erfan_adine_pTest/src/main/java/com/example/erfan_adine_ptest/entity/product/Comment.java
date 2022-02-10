@@ -11,8 +11,6 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
-//@EqualsAndHashCode(callSuper = true)
-//@Data
 @Setter
 @Getter
 @Entity
@@ -27,7 +25,7 @@ public class Comment extends BaseEntity {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "sender_user_ID_mo")
-    private User sender;
+    private User user;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "subService_ID_mo")

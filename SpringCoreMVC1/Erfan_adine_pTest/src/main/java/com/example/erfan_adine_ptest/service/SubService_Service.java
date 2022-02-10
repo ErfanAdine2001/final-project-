@@ -28,4 +28,12 @@ public class SubService_Service {
      return experteRepository.save(subService);
     }
 
+
+    public SubService findById(Long id){
+        return experteRepository.findById(id).get();
+    }
+
+//    public
+
+
 }
