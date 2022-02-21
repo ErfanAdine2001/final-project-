@@ -3,10 +3,6 @@ package com.example.erfan_adine_ptest.controller;
 import com.example.erfan_adine_ptest.dto.in.product.MainOrderInDto;
 import com.example.erfan_adine_ptest.dto.in.user.UserInDto;
 import com.example.erfan_adine_ptest.dto.in.user.WorkerInDto;
-import com.example.erfan_adine_ptest.entity.product.MainOrder;
-import com.example.erfan_adine_ptest.entity.product.OrderStatus;
-import com.example.erfan_adine_ptest.service.WorkerService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +17,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 //@ActiveProfiles("test")
 //@SpringJUnitConfig(.class)
 // extends RestControllerTest
+//    @Autowired
+//    protected MockMvc mvc;
+
+
 
 @WebMvcTest(controllers = WorkerController.class)
 @ActiveProfiles("test")
 class WorkerControllerTest extends RestControllerTest {
-//    @Autowired
-//    protected MockMvc mvc;
-
 
     @Test
     void shoudCreateMockMvc() {
@@ -167,7 +164,7 @@ class WorkerControllerTest extends RestControllerTest {
     @Test
     void findSuggestionForMainOrder() throws Exception {
         MainOrderInDto mainOrderInDto= new MainOrderInDto();
-        mainOrderInDto.setAddres("slfsl fljslfjlsj");
+        mainOrderInDto.setAddress("slfsl fljslfjlsj");
 //        mainOrderInDto.set
 
         mvc.perform(MockMvcRequestBuilders
@@ -179,15 +176,33 @@ class WorkerControllerTest extends RestControllerTest {
     }
 
     @Test
-    void sendSuggestionForMainOrder() {
+    void sendSuggestionForMainOrder() throws Exception {
+
+        mvc.perform(MockMvcRequestBuilders
+                        .post("/users/loadAmount/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
     @Test
-    void loadCommentsByOrderId() {
+    void loadCommentsByOrderId() throws Exception {
+
+        mvc.perform(MockMvcRequestBuilders
+                        .post("/users/loadAmount/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
     @Test
-    void findAllOrder() {
+    void findAllOrder() throws Exception {
+
+        mvc.perform(MockMvcRequestBuilders
+                        .post("/users/loadAmount/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
 

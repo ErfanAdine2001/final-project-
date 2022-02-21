@@ -2,6 +2,7 @@ package com.example.erfan_adine_ptest.repository;
 
 
 import com.example.erfan_adine_ptest.dto.out.user.WorkerOrUserSerchOutDto;
+import com.example.erfan_adine_ptest.entity.product.MainOrder;
 import com.example.erfan_adine_ptest.entity.product.message.BaseMessageStatus;
 import com.example.erfan_adine_ptest.entity.user.Worker;
 import org.springframework.data.domain.Page;
@@ -28,7 +29,9 @@ public interface WorkerRepository extends JpaRepository<Worker, Long> {
 
     Page<WorkerOrUserSerchOutDto> findAllByFNameAndLName(String fName, String lName, Pageable pageable);
 
-
+    @Modifying
+    @Query("select m from  MainOrder  m  where m.user.id=:id")
+    List<MainOrder> serviceHistory(Long id);
 
 
 }

@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 
 @Getter
@@ -15,10 +16,11 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class SubServiceInDto extends BaseEntityDto {
 
-    private Integer number;
 
     private String name;
 
     private BigDecimal basePrice;
+
+    private List<Long> mainServiceId;
 
 }

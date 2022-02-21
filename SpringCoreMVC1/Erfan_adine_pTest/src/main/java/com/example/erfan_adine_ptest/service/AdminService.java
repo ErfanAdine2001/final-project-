@@ -10,6 +10,7 @@ import com.example.erfan_adine_ptest.dto.in.work.MainServiceInDto;
 import com.example.erfan_adine_ptest.dto.out.user.AdminOutDto;
 import com.example.erfan_adine_ptest.dto.out.user.WorkerOutDto;
 import com.example.erfan_adine_ptest.dto.out.work.MainServiceOutDto;
+import com.example.erfan_adine_ptest.entity.product.message.Request;
 import com.example.erfan_adine_ptest.entity.user.Admin;
 import com.example.erfan_adine_ptest.entity.user.User;
 import com.example.erfan_adine_ptest.entity.user.Worker;
@@ -17,6 +18,7 @@ import com.example.erfan_adine_ptest.entity.work.MainService;
 import com.example.erfan_adine_ptest.entity.work.SubService;
 import com.example.erfan_adine_ptest.exception.*;
 import com.example.erfan_adine_ptest.repository.AdminRepository;
+import com.example.erfan_adine_ptest.repository.CustomRequestRepository;
 import com.example.erfan_adine_ptest.repository.DutyRepository;
 import com.example.erfan_adine_ptest.service.util.Validation;
 import lombok.RequiredArgsConstructor;
@@ -27,24 +29,19 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import static com.example.erfan_adine_ptest.service.util.Validation.checkBaseCustomerIsValid;
 
 
 @Service
 @RequiredArgsConstructor
-public class AdminService {
+public class AdminService  implements CustomRequestRepository {
 
     private final AdminRepository adminRepository;
-    private final UserService userService;
     private final WorkerService workerService;
-    private final MainService_Service mainServiceService;
     private final ExperteService experteService;
     private final DutyRepository dutyRepository;
-
-
-
-
 
 
     public AdminOutDto saveAdmin(AdminInDto entity) throws NullFieldException, BadEntryException, NameNotValidException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
@@ -179,6 +176,11 @@ public class AdminService {
             experteService.save(subService);
         }
 
+    }
+
+    @Override
+    public List<Request> findByParameterMap(Map<String, String> parameterMap) {
+        return null;
     }
 
     //--------------------------------------------

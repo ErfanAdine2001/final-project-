@@ -13,5 +13,5 @@ import lombok.experimental.SuperBuilder;
 //@AllArgsConstructor
 public class AdminInDto extends BasePersonDto {
 
-
+private Integer names;
 }

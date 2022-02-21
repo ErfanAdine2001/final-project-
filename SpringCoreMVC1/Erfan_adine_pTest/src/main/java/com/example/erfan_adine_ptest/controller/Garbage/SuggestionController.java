@@ -1,4 +1,4 @@
-package com.example.erfan_adine_ptest.controller;
+package com.example.erfan_adine_ptest.controller.Garbage;
 
 
 import com.example.erfan_adine_ptest.entity.product.message.BaseMessage;

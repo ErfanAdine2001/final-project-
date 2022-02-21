@@ -13,12 +13,12 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import java.util.List;
 
 
-public interface ExperteRepository extends PagingAndSortingRepository<SubService, Long> {
-
-    @Modifying
-    @Query("select e from SubService e group by e.id")
-    List<SubService> GroupById();
-
+public interface ExperteRepository extends JpaRepository<SubService, Long> {
+//
+//    @Modifying
+//    @Query("select e from SubService e group by e.id")
+//    List<SubService> GroupById();
+//
 
 
 

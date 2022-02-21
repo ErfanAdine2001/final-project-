@@ -1,16 +1,20 @@
 package com.example.erfan_adine_ptest.repository;
 
 
+import com.example.erfan_adine_ptest.entity.product.MainOrder;
+import com.example.erfan_adine_ptest.entity.product.OrderStatus;
 import com.example.erfan_adine_ptest.entity.user.Admin;
 import com.example.erfan_adine_ptest.entity.user.User;
 import com.example.erfan_adine_ptest.entity.user.Worker;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+//import javax.persistence.Query;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface AdminRepository extends JpaRepository<Admin, Long>, JpaSpecificationExecutor<Admin> {
@@ -79,6 +83,8 @@ public interface AdminRepository extends JpaRepository<Admin, Long>, JpaSpecific
     List<User> findByFName(String name);
 
 
+//    List<MainOrder> searchBydate();
+
 //     Admin findByPasswordAndAndFName(){
 //
 //    }
@@ -93,6 +99,7 @@ public interface AdminRepository extends JpaRepository<Admin, Long>, JpaSpecific
 
     //***********************************************
     //***********************************************
+
 
 
 }

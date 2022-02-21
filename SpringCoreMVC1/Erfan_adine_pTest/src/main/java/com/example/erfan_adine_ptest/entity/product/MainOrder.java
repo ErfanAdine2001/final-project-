@@ -62,5 +62,8 @@ public class MainOrder extends BaseEntity {
     @JoinColumn(name = "transaction_id_oo")
     private Transaction transaction ;
 
+
+
+
 }
 

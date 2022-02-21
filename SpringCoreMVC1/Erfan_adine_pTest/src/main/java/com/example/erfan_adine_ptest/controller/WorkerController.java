@@ -4,6 +4,7 @@ package com.example.erfan_adine_ptest.controller;
 import com.example.erfan_adine_ptest.dto.in.product.MainOrderInDto;
 import com.example.erfan_adine_ptest.dto.in.user.WorkerInDto;
 import com.example.erfan_adine_ptest.dto.in.user.WorkerOrUserSerchInDto;
+import com.example.erfan_adine_ptest.dto.out.ServiceHistoryOutDto;
 import com.example.erfan_adine_ptest.dto.out.product.PointsCommetnsOutDto;
 import com.example.erfan_adine_ptest.dto.out.product.message.SuggestionOutDto;
 import com.example.erfan_adine_ptest.dto.out.user.WorkerOrUserSerchOutDto;
@@ -11,7 +12,6 @@ import com.example.erfan_adine_ptest.dto.out.user.WorkerOutDto;
 import com.example.erfan_adine_ptest.entity.product.Comment;
 import com.example.erfan_adine_ptest.entity.product.MainOrder;
 import com.example.erfan_adine_ptest.entity.product.OrderStatus;
-import com.example.erfan_adine_ptest.entity.product.message.BaseMessageStatus;
 import com.example.erfan_adine_ptest.entity.product.message.Suggestion;
 import com.example.erfan_adine_ptest.entity.product.message.SuggestionStatus;
 import com.example.erfan_adine_ptest.entity.user.Worker;
@@ -24,11 +24,13 @@ import lombok.*;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @RestController
@@ -160,9 +162,17 @@ public class WorkerController {
         MainOrder mainOrder = mainOrderService.findById(orderId);
         mainOrder.setStatus(OrderStatus.DONE);
         mainOrderService.save(mainOrder);
-
+//        ObjectUtils objectUtils
         return ResponseEntity.status(HttpStatus.OK)
                 .body(null);
+    }
+
+
+    @GetMapping("/ServiceHistory/{workerId}")
+    public ResponseEntity<List<MainOrder>> serviceHistory(@PathVariable Long workerId) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(workerService.serviceHistory(workerId));
+
     }
 
 

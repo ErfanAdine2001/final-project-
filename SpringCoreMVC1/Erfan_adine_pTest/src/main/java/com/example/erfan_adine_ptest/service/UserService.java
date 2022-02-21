@@ -1,6 +1,5 @@
 package com.example.erfan_adine_ptest.service;
 
-import com.example.erfan_adine_ptest.dto.in.BankCardInformationInDto;
 import com.example.erfan_adine_ptest.dto.in.user.ShowAllOrdersByUserIdInDto;
 import com.example.erfan_adine_ptest.dto.in.user.UserInDto;
 import com.example.erfan_adine_ptest.dto.in.user.WorkerOrUserSerchInDto;
@@ -21,11 +20,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -33,10 +29,8 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
 
-    private Validation validation;
     private final SuggestionService suggestionService;
 
-    private final MainOrderService mainOrderService;
 
 //    @PostConstruct
 //    public void init() {
@@ -100,26 +94,6 @@ public class UserService {
 
 
 
-    //                              **********
-    //*******                               ****
-    //************                      ******
-    //*************                 *******
-    //                                  ******
-    //************                       *****
-    //**********                       *****
-    //                            *********
-    //**************************************
-    //**************************************
-    //**************************************
-    //**************************************
-    //*************************
-    //****************
-    //*************
-    //*********
-    //******
-    //***
-    //**
-    //*
 
     @Transactional
     public List<User> findAll() {
@@ -181,6 +155,12 @@ public class UserService {
     //TODO @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  check information of account of user in bank
 
 
+
+    //**************************************************
+    public List<MainOrder> ServiceHistory(Long id){
+        List<MainOrder> mainOrders = userRepository.serviceHistory(id);
+        return mainOrders;
+    }
 }
 
 

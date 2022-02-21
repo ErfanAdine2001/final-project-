@@ -3,6 +3,8 @@ package com.example.erfan_adine_ptest.service;
 
 import com.example.erfan_adine_ptest.dto.in.user.WorkerInDto;
 import com.example.erfan_adine_ptest.dto.in.user.WorkerOrUserSerchInDto;
+import com.example.erfan_adine_ptest.dto.out.ServiceHistoryOutDto;
+import com.example.erfan_adine_ptest.dto.out.product.MainOrderOutDto;
 import com.example.erfan_adine_ptest.dto.out.user.WorkerOrUserSerchOutDto;
 import com.example.erfan_adine_ptest.dto.out.user.WorkerOutDto;
 import com.example.erfan_adine_ptest.entity.product.MainOrder;
@@ -79,10 +81,10 @@ public class WorkerService {
         worker.setUpdatedTime(new Date());
         worker.setEmail(request.getEmail());
         worker.setMainService(request.getMainServiceList());
-        Worker save = workerRepository.save(worker);
+         workerRepository.save(worker);
 
         WorkerOutDto workerOutDto = new WorkerOutDto();
-        workerOutDto.setId(save.getId());
+        workerOutDto.setId(worker.getId());
 
         return workerOutDto;
 
@@ -180,6 +182,13 @@ public class WorkerService {
     public List<MainOrder> findAllOrderByStatusWateFOrSuggestions(OrderStatus status) {
         List<MainOrder> allOrderByStatusWateForSuggestion = mainOrderService.findAllOrderByStatusWateForSuggestion(status);
         return allOrderByStatusWateForSuggestion;
+    }
+
+
+
+    public List<MainOrder> serviceHistory(Long id){
+        List<MainOrder> mainOrders = workerRepository.serviceHistory(id);
+        return mainOrders;
     }
 
 }

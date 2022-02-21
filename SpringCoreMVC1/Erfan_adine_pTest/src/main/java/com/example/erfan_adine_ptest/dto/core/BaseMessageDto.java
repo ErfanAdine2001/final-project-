@@ -1,14 +1,13 @@
 package com.example.erfan_adine_ptest.dto.core;
 
 
-import com.example.erfan_adine_ptest.entity.core.BaseEntity;
 import com.example.erfan_adine_ptest.entity.product.message.BaseMessageStatus;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.MappedSuperclass;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -18,8 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class BaseMessageDto extends BaseEntity {
-
+public class BaseMessageDto extends BaseEntityDto {
 
 
     private BigDecimal price;

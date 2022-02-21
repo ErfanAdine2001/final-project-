@@ -4,24 +4,10 @@ import com.example.erfan_adine_ptest.dto.in.user.UserInDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartHttpServletRequest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.http.RequestEntity.post;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -77,40 +63,97 @@ class UserControllerTest extends RestControllerTest{
 
 
     @Test
-    void findAllByFNameAndLNameAndEmailAndPassword() {
+    void findAllByFNameAndLNameAndEmailAndPassword() throws Exception {
+
+        mvc.perform(MockMvcRequestBuilders
+                        .post("/users/loadAmount/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
 
     }
 
     @Test
-    void findAllByFNameAndLName() {
+    void findAllByFNameAndLName() throws Exception {
+
+
+        mvc.perform(MockMvcRequestBuilders
+                        .post("/users/loadAmount/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
     @Test
-    void showAllOrders() {
+    void showAllOrders() throws Exception {
+
+        mvc.perform(MockMvcRequestBuilders
+                        .post("/users/loadAmount/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
     @Test
-    void showAllSubServices() {
+    void showAllSubServices() throws Exception {
+
+
+        mvc.perform(MockMvcRequestBuilders
+                        .post("/users/loadAmount/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
     @Test
-    void selectSubService() {
+    void selectSubService() throws Exception {
+
+        mvc.perform(MockMvcRequestBuilders
+                        .post("/users/loadAmount/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
     @Test
-    void seeTheSuggestionsThatAreACCEPTED() {
+    void seeTheSuggestionsThatAreACCEPTED() throws Exception {
+
+        mvc.perform(MockMvcRequestBuilders
+                        .post("/users/loadAmount/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
     @Test
-    void selectWorkerWithSuggestionIdAndWaitingForWorkerSelectedU() {
+    void selectWorkerWithSuggestionIdAndWaitingForWorkerSelectedU() throws Exception {
+
+        mvc.perform(MockMvcRequestBuilders
+                        .post("/users/loadAmount/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
     @Test
-    void addComment() {
+    void addComment() throws Exception {
+
+        mvc.perform(MockMvcRequestBuilders
+                        .post("/users/loadAmount/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
     @Test
-    void findAllOrder() {
+    void findAllOrder() throws Exception {
+
+        mvc.perform(MockMvcRequestBuilders
+                        .post("/users/loadAmount/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
     }
 
     @Test

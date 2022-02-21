@@ -48,7 +48,7 @@ public class AdminController {
 
     //Search Workers
     @PostMapping("/searchWorkerListByAllAttribute")
-    public ResponseEntity<Page<WorkerOrUserSerchOutDto>> searchWorkers(@Valid @RequestBody WorkerOrUserSerchInDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
+    public ResponseEntity<Page<WorkerOrUserSerchOutDto>> searchWorkers(@Valid @RequestBody WorkerOrUserSerchInDto request)  {
 
 
         Page<WorkerOrUserSerchOutDto> allByFNameAndLNameAndEmailAndPassword = workerService.findAllByFNameAndLNameAndEmailAndPassword(request);
@@ -56,13 +56,12 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(allByFNameAndLNameAndEmailAndPassword);
 
-//        ResponseEntity<Page<WorkerOrUserSerchOutDto>> result = workderController.findAllByFNameAndLNameAndEmailAndPassword(request);
-//        return result;
+
 
     }
 
     @PostMapping("/searchAllWorkerByFNameAndLName")
-    public ResponseEntity<Page<WorkerOrUserSerchOutDto>> searchAllWorkerByFNameAndLName(@Valid @RequestBody WorkerOrUserSerchInDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
+    public ResponseEntity<Page<WorkerOrUserSerchOutDto>> searchAllWorkerByFNameAndLName(@Valid @RequestBody WorkerOrUserSerchInDto request){
 
 
         Page<WorkerOrUserSerchOutDto> findAllByFNameAndLName = workerService.findAllByFNameAndLName(request);
@@ -70,17 +69,16 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(findAllByFNameAndLName);
 
+// sletec * from User
 
 
-//        ResponseEntity<Page<WorkerOrUserSerchOutDto>> result = workderController.findAllByFNameAndLName(request);
-//        return result;
 
     }
 //*************/
 
     // search users
-    @PostMapping("/searchWorkerListByAllAttribute2")
-    public ResponseEntity<Page<WorkerOrUserSerchOutDto>> searchUsers(@Valid @RequestBody WorkerOrUserSerchInDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
+    @PostMapping("/search-worker-ListByAllAttribute2")
+    public ResponseEntity<Page<WorkerOrUserSerchOutDto>> searchUsers(@Valid @RequestBody WorkerOrUserSerchInDto request){
 
 
         Page<WorkerOrUserSerchOutDto> allByFNameAndLNameAndEmailAndPassword = userService.findAllByFNameAndLNameAndEmailAndPassword(request);
@@ -89,13 +87,12 @@ public class AdminController {
                 .body(allByFNameAndLNameAndEmailAndPassword);
 
 
-//        ResponseEntity<Page<WorkerOrUserSerchOutDto>> result = userController.findAllByFNameAndLNameAndEmailAndPassword(request);
-//        return result;
+
 
     }
 
     @PostMapping("/searchAllUserByFNameAndLName")
-    public ResponseEntity<Page<WorkerOrUserSerchOutDto>> searchAllUserByFNameAndLName(@Valid @RequestBody WorkerOrUserSerchInDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
+    public ResponseEntity<Page<WorkerOrUserSerchOutDto>> searchAllUserByFNameAndLName(@Valid @RequestBody WorkerOrUserSerchInDto request){
 
 
         Page<WorkerOrUserSerchOutDto> allByFNameAndLNameAndEmailAndPassword = userService.findAllByFNameAndLName(request);
@@ -104,8 +101,7 @@ public class AdminController {
                 .body(allByFNameAndLNameAndEmailAndPassword);
 
 
-//        ResponseEntity<Page<WorkerOrUserSerchOutDto>> result = userController.findAllByFNameAndLName(request);
-//        return result;
+
 
     }
 
@@ -131,7 +127,7 @@ public class AdminController {
         if (isExistWork(workerInDto)) {
             WorkerOutDto workerOutDto = workerService.save(workerInDto);
             Worker w = workerService.findById(workerOutDto.getId());
-
+//TOdO
             Set<Worker> workerList = new HashSet<>();
             workerList.add(w);
             addNewWorkerToMainService(workerList, mainServiceId);
@@ -144,7 +140,7 @@ public class AdminController {
 //            mainServiceInDto.setName(mainService.getName());
 //            mainServiceInDto.setUpdatedTime(new Date());
 //            mainServiceService.save(mainServiceInDto);
-            return;
+//            return;
         } else {
 
             String lastName = workerInDto.getLastName();
@@ -157,6 +153,7 @@ public class AdminController {
         }
 
     }
+
 
     public void addNewWorkerToMainService(Set<Worker> workers, Long mainServiceId) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
         MainService mainService = mainServiceService.findById(mainServiceId);
@@ -172,6 +169,7 @@ public class AdminController {
 
     public boolean isExistWork(WorkerInDto workerInDto) {
         Worker w = workerService.findById(workerInDto.getId());
+        //TODO+
         if (w.getId().equals(null))
             return true;
         return false;
@@ -182,58 +180,4 @@ public class AdminController {
 
 
 
-    //*****************************************
-
-
-//
-//    public ResponseEntity<?> changePassword(@RequestBody AdminInDto request ){
-//
-//
-//
-//
-//    }
-
-
-//
-//    @GetMapping("/{id}")
-//    public ResponseEntity<ContactDto> get(@PathVariable Integer id) {
-//        Contact contact = contactService.get(id);
-//
-//        return ResponseEntity.ok(ContactDto.builder()
-//                .id(contact.getId())
-//                .name(contact.getName())
-//                .email(contact.getEmail())
-//                .build());
-//    }
-//
-//    @PutMapping("/{id}")
-//    public ResponseEntity<CreateContactResponse> put(@PathVariable Integer id, @RequestBody ContactDto contactDto) {
-//        Contact newCon = contactService.get(id);
-//        newCon.setAddress(contactDto.getAddress());
-//        newCon.setEmail(contactDto.getEmail());
-//        newCon.setTelephone(contactDto.getTelephone());
-//        newCon.setName(contactDto.getName());
-//
-//
-//        Contact result = contactService.update(newCon);
-//
-//        CreateContactResponse response = new CreateContactResponse();
-//
-//        response.setContactId(result.getId());
-//
-//        return ResponseEntity.status(HttpStatus.CREATED)
-//                .body(response);
-//
-//        //------------
-//
-//
-//
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<String> delete(@PathVariable Integer id) {
-//        contactService.delete(id);
-//
-//        return ResponseEntity.ok(id+" deleted ");
-//    }
 }
