@@ -1,6 +1,6 @@
 package com.example.erfan_adine_ptest.security;
 
-import com.example.spring_security2.service.UserManagement;
+import com.example.erfan_adine_ptest.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserManagement userManagement;
+    private final AdminService adminService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/auth/**","/js/**","/css/**","/" ).permitAll()
+                .antMatchers("/manager/**","/js/**","/css/**","/","/permission/**","/role/**" ).permitAll()
 //                .antMatchers(HttpMethod.GET,"/student/**").hasAnyRole(ADMIN.name(),STUDENT.name())
 //                .antMatchers(HttpMethod.POST,"/student/**").hasAnyAuthority(STUDENT_WRITE.getPermissionName())
 //                .antMatchers(HttpMethod.PUT,"/student/**").hasAnyAuthority(STUDENT_WRITE.getPermissionName())
@@ -54,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder());
-        provider.setUserDetailsService(userManagement);
+        provider.setUserDetailsService(adminService);
         return provider;
     }
 

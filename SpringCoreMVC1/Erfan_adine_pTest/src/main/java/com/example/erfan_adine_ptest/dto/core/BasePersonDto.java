@@ -10,6 +10,7 @@ import javax.persistence.Lob;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -29,8 +30,7 @@ public class BasePersonDto extends BaseEntityDto {
     @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{3,}$")
     private String password;
 
-    private String role;
-
+    private Set<String> role;
 
 
 }

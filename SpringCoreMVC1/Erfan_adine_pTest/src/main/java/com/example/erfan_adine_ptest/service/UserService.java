@@ -12,11 +12,15 @@ import com.example.erfan_adine_ptest.entity.product.message.Suggestion;
 import com.example.erfan_adine_ptest.entity.user.User;
 import com.example.erfan_adine_ptest.exception.*;
 import com.example.erfan_adine_ptest.repository.UserRepository;
+import com.example.erfan_adine_ptest.security.CustomeUserDetail;
 import com.example.erfan_adine_ptest.service.util.Validation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,7 +47,7 @@ public class UserService {
 
         User user = new User();
         user.setEmail(entity.getEmail());
-        user.setImage(entity.getImage());
+//        user.setImage(entity.getImage());
         user.setFName(entity.getFirstName());
         user.setLName(entity.getLastName());
         user.setPassword(entity.getPassword());
@@ -161,6 +165,10 @@ public class UserService {
         List<MainOrder> mainOrders = userRepository.serviceHistory(id);
         return mainOrders;
     }
+
+
+
+
 }
 
 

@@ -19,6 +19,7 @@ import lombok.*;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -33,12 +34,14 @@ public class AdminController {
     private final WorkerService workerService;
     private final MainService_Service mainServiceService;
     private  final UserService userService;
-
+    private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/create")
     public ResponseEntity<AdminOutDto> create(@Valid @RequestBody AdminInDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
 
-        AdminOutDto result = adminService.saveAdmin(request);
+        String encode = passwordEncoder.encode(request.getPassword());
+
+        AdminOutDto result = adminService.saveAdmin(request ,encode);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(result);

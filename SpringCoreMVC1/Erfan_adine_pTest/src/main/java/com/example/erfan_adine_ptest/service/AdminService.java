@@ -11,6 +11,7 @@ import com.example.erfan_adine_ptest.dto.out.user.AdminOutDto;
 import com.example.erfan_adine_ptest.dto.out.user.WorkerOutDto;
 import com.example.erfan_adine_ptest.dto.out.work.MainServiceOutDto;
 import com.example.erfan_adine_ptest.entity.product.message.Request;
+import com.example.erfan_adine_ptest.entity.security.Role;
 import com.example.erfan_adine_ptest.entity.user.Admin;
 import com.example.erfan_adine_ptest.entity.user.User;
 import com.example.erfan_adine_ptest.entity.user.Worker;
@@ -20,37 +21,63 @@ import com.example.erfan_adine_ptest.exception.*;
 import com.example.erfan_adine_ptest.repository.AdminRepository;
 import com.example.erfan_adine_ptest.repository.CustomRequestRepository;
 import com.example.erfan_adine_ptest.repository.DutyRepository;
+import com.example.erfan_adine_ptest.security.CustomeUserDetail;
 import com.example.erfan_adine_ptest.service.util.Validation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import static com.example.erfan_adine_ptest.service.util.Validation.checkBaseCustomerIsValid;
-
+import static org.apache.logging.log4j.util.Base64Util.encode;
 
 @Service
 @RequiredArgsConstructor
-public class AdminService  implements CustomRequestRepository {
+public class AdminService implements CustomRequestRepository, UserDetailsService {
 
     private final AdminRepository adminRepository;
     private final WorkerService workerService;
     private final ExperteService experteService;
     private final DutyRepository dutyRepository;
+//    private PasswordEncoder passwordEncoder;
+
+//
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder(11);
+//    }
+//
+//    public String changpass(String pass){
+//        String encode = passwordEncoder().encode(pass);
+//
+//        return encode;
+//    }
+
+    public AdminOutDto saveAdmin(AdminInDto entity ,String encode) {
+//        Set<Role> roles = new HashSet<>();
+//
+//        for (String s : entity.getRole()) {
+//            Role byRoleName = roleRepository.findByRoleName(s);
+//            roles.add(byRoleName);
+//        }
 
 
-    public AdminOutDto saveAdmin(AdminInDto entity) throws NullFieldException, BadEntryException, NameNotValidException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
+        //FIXME  HOW CAN SET   -->  PASSWORDENCODER ?🤔🤔
         Admin admin = new Admin();
-        admin.setPassword(entity.getPassword());
+//        admin.setPassword(encode(entity.getPassword()));
+        admin.setPassword(encode);
         admin.setEmail(entity.getEmail());
         admin.setFName(entity.getFirstName());
         admin.setLName(entity.getLastName());
-        admin.setRole(entity.getRole());
+        admin.setUsername(entity.getUserName());
+        admin.setRoles(entity.getRole());
+        admin.setIsEnable(entity.getIsEnable());
+        admin.setCreatedTime(new Date());
+        admin.setUpdatedTime(new Date());
+
         adminRepository.save(admin);
 
         AdminOutDto response = new AdminOutDto();
@@ -58,8 +85,6 @@ public class AdminService  implements CustomRequestRepository {
 
         return response;
     }
-
-
 
 
     public Admin findById(Long id) {
@@ -76,7 +101,7 @@ public class AdminService  implements CustomRequestRepository {
     }
 
 
-    public void updateAdminPassword(Long id,String password) throws NameNotValidException, NullFieldException, BadEntryException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
+    public void updateAdminPassword(Long id, String password) {
         Admin a = findById(id);
         a.setPassword(password);
         adminRepository.save(a);
@@ -101,13 +126,7 @@ public class AdminService  implements CustomRequestRepository {
     }
 
     //-----------------------------------------------------
-    //TODO f1 -------------> 1-1    Service
-//    @Transactional
-//    public User addNewCustomer(User user) throws NullFieldException, BadEntryException, NameNotValidException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, OrderOfRequestIsNullException, BasePriceOfSubServiceIsNull, AddressOfRequestIsNull {
-//        if (checkBaseCustomerIsValid(user))
-//            return userService.save(user);
-//        return null;
-//    }
+
 
     @Transactional
     public WorkerOutDto addNewWorker(WorkerInDto workerInDto) throws NameNotValidException, EmailNotValidException, PasswordNotValidException, NullFieldException, BadEntryException {
@@ -117,15 +136,6 @@ public class AdminService  implements CustomRequestRepository {
     }
 
     //-----------------------------------------------------------add new service and SubServiceInDto
-    //TODO f1 ----------> 1-4    Service
-//    @Transactional
-//    public void addNewService(MainService mainService) throws NameNotValidException, NullFieldException, BadEntryException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
-//        if (validation.dutyIsValid(mainService)) {
-//            mainServiceService.save(mainService);
-//        }
-//
-//    }
-
 
     public SubService addNewSubService(SubService subService) throws NameNotValidException, NullFieldException, BadEntryException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NullCommentException, BasePriceOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
 
@@ -154,18 +164,18 @@ public class AdminService  implements CustomRequestRepository {
     //-------------------------------------------------------adding new  mainService and  expert
     //TODO f1 -------------------> 1-4 service True
     @Transactional
-    public MainServiceOutDto addDuty(MainServiceInDto mainServiceInDto) throws NullFieldException, BadEntryException, NameNotValidException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
+    public MainServiceOutDto addDuty(MainServiceInDto mainServiceInDto) {
         MainService mainService = new MainService();
         mainService.setName(mainServiceInDto.getName());
         mainService.setCreatedTime(new Date());
         mainService.setUpdatedTime(new Date());
         mainService.setDescription(mainServiceInDto.getDescription());
-          dutyRepository.save(mainService);
+        dutyRepository.save(mainService);
 
-        MainServiceOutDto result = new MainServiceOutDto() ;
+        MainServiceOutDto result = new MainServiceOutDto();
         result.setId(mainService.getId());
 
-          return result;
+        return result;
 
 
     }
@@ -184,4 +194,18 @@ public class AdminService  implements CustomRequestRepository {
     }
 
     //--------------------------------------------
+    //*************************
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//
+//    }
+
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Admin admin = adminRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("not found user with username:" + username));
+
+        return new CustomeUserDetail(admin);
+    }
 }

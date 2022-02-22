@@ -14,10 +14,8 @@ import javax.validation.constraints.Pattern;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-@AllArgsConstructor
-public class UserInDto extends BasePersonDto {
-
-
+//@AllArgsConstructor
+public class UserInDto {
 
 
     private String firstName;
@@ -29,18 +27,32 @@ public class UserInDto extends BasePersonDto {
 
     @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{3,}$")
     private String password;
+//
 
-    private String role;
+    @Builder.Default
+    private Boolean isEnabled = true;
+//
+//    private String firstName;
+//
+//    private String lastName;
+//
+//    @Email
+//    private String email;
+//
+//    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{3,}$")
+//    private String password;
+//
+//    private String role;
 
-    @Lob
-    private byte[] image;
+//    @Lob
+//    private byte[] image;
 
 
-    public UserInDto(String firstName, String lastName, String email,String password) {
-
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-    }
+//    public UserInDto(String firstName, String lastName, String email,String password) {
+//
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//        this.email = email;
+//        this.password = password;
+//    }
 }

@@ -15,10 +15,18 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 public interface AdminRepository extends JpaRepository<Admin, Long>, JpaSpecificationExecutor<Admin> {
 
+
+
+
+    //**************************************
+    Optional<Admin> findByUsername(String username);
+
+    //**************************************
     // -----------------------------------------
     /**
      * user and worker ->update
