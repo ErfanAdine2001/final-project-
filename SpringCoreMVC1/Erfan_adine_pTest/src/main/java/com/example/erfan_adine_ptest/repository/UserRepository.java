@@ -4,6 +4,7 @@ import com.example.erfan_adine_ptest.dto.out.user.ShowAllOrdersByUserIdOutDto;
 import com.example.erfan_adine_ptest.dto.out.user.WorkerOrUserSerchOutDto;
 import com.example.erfan_adine_ptest.entity.product.MainOrder;
 import com.example.erfan_adine_ptest.entity.product.message.Suggestion;
+import com.example.erfan_adine_ptest.entity.user.Admin;
 import com.example.erfan_adine_ptest.entity.user.User;
 import com.example.erfan_adine_ptest.entity.user.Worker;
 import org.springframework.data.domain.Page;
@@ -18,7 +19,7 @@ import java.util.Optional;
 
 
 public interface UserRepository extends PagingAndSortingRepository<User, Long> {
-
+    Optional<User> findByUsername(String username);
 
 
     @Query("select e from User e group by e.id")

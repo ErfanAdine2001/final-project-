@@ -9,9 +9,14 @@ import static com.example.erfan_adine_ptest.entity.security.Permission.*;
 
 
 public enum Role {
-    USER(Set.of()),
-    STUDENT(Set.of(STUDENT_READ)),
-    ADMIN(Set.of(STUDENT_WRITE, STUDENT_READ, ADMIN_WRITE, ADMIN_READ ));
+//    USER(Set.of()),
+//    STUDENT(Set.of(STUDENT_READ)),
+//    ADMIN(Set.of(STUDENT_WRITE, STUDENT_READ, ADMIN_WRITE, ADMIN_READ ));
+
+    USER(Set.of(SUB_SERVICE_WRITE , SUB_SERVICE_READ , USER_READ , COMMENT_READ , COMMENT_WRITE , MAIN_ORDER_READ)),
+    WORKER(Set.of(SUB_SERVICE_READ , WORKER_READ , MAIN_ORDER_READ)),
+    ADMIN(Set.of(SUB_SERVICE_WRITE , SUB_SERVICE_READ , MAIN_ORDER_WRITE , USER_WRITE , USER_READ , ADMIN_WRITE , ADMIN_READ ));
+
 
     private final Set<Permission> permissions;
 

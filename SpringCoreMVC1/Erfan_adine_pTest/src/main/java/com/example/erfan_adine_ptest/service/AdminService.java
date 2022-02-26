@@ -11,7 +11,6 @@ import com.example.erfan_adine_ptest.dto.out.user.AdminOutDto;
 import com.example.erfan_adine_ptest.dto.out.user.WorkerOutDto;
 import com.example.erfan_adine_ptest.dto.out.work.MainServiceOutDto;
 import com.example.erfan_adine_ptest.entity.product.message.Request;
-import com.example.erfan_adine_ptest.entity.security.Role;
 import com.example.erfan_adine_ptest.entity.user.Admin;
 import com.example.erfan_adine_ptest.entity.user.User;
 import com.example.erfan_adine_ptest.entity.user.Worker;
@@ -21,19 +20,19 @@ import com.example.erfan_adine_ptest.exception.*;
 import com.example.erfan_adine_ptest.repository.AdminRepository;
 import com.example.erfan_adine_ptest.repository.CustomRequestRepository;
 import com.example.erfan_adine_ptest.repository.DutyRepository;
-import com.example.erfan_adine_ptest.security.CustomeUserDetail;
+import com.example.erfan_adine_ptest.security.detail.CustomeAdminDetail;
 import com.example.erfan_adine_ptest.service.util.Validation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-
-import static org.apache.logging.log4j.util.Base64Util.encode;
 
 @Service
 @RequiredArgsConstructor
@@ -45,10 +44,10 @@ public class AdminService implements CustomRequestRepository, UserDetailsService
     private final DutyRepository dutyRepository;
 //    private PasswordEncoder passwordEncoder;
 
-//
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder(11);
-//    }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(11);
+    }
 //
 //    public String changpass(String pass){
 //        String encode = passwordEncoder().encode(pass);
@@ -56,7 +55,7 @@ public class AdminService implements CustomRequestRepository, UserDetailsService
 //        return encode;
 //    }
 
-    public AdminOutDto saveAdmin(AdminInDto entity ,String encode) {
+    public AdminOutDto saveAdmin(AdminInDto entity, String encode) {
 //        Set<Role> roles = new HashSet<>();
 //
 //        for (String s : entity.getRole()) {
@@ -206,6 +205,6 @@ public class AdminService implements CustomRequestRepository, UserDetailsService
         Admin admin = adminRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("not found user with username:" + username));
 
-        return new CustomeUserDetail(admin);
+        return new CustomeAdminDetail(admin);
     }
 }

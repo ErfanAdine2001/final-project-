@@ -10,6 +10,7 @@ import com.example.erfan_adine_ptest.service.MainOrderService;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,6 +27,7 @@ public class MainOrderController {
 
 
     @PostMapping("/create")
+    @PreAuthorize("hasAnyAuthority('MAIN_ORDER_WRITE')")
     public ResponseEntity<MainOrderOutDto> create(@Valid @RequestBody MainOrderInDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
 
         MainOrderOutDto mainOrderOutDto = mainOrderService.save(request);
@@ -37,6 +39,7 @@ public class MainOrderController {
     }
 
     @GetMapping("/findAll")
+    @PreAuthorize("hasAnyAuthority('MAIN_ORDER_READ')")
     public ResponseEntity<List<MainOrder>> findAll() {
         List<MainOrder> list = mainOrderService.findAll();
 
@@ -47,6 +50,7 @@ public class MainOrderController {
     }
 
     @GetMapping("/findById/{mainOrderId}")
+    @PreAuthorize("hasAnyAuthority('MAIN_ORDER_READ')")
     public ResponseEntity<CommentOutDto> findById(@PathVariable Long mainOrderId) {
         MainOrder mainOrder = mainOrderService.findById(mainOrderId);
 
@@ -60,6 +64,7 @@ public class MainOrderController {
     }
 
     @PutMapping("/update/{mainOrderId}")
+    @PreAuthorize("hasAnyAuthority('MAIN_ORDER_WRITE')")
     public ResponseEntity<MainOrder> update(@PathVariable Long mainOrderId, @RequestBody CommentInDto commentInDto) {
         MainOrder mainOrder = mainOrderService.findById(mainOrderId);
 
@@ -77,6 +82,7 @@ public class MainOrderController {
     }
 
     @DeleteMapping("/delete/{commentId}e")
+    @PreAuthorize("hasAnyAuthority('MAIN_ORDER_WRITE')")
     public ResponseEntity<String> delete(@PathVariable Long commentId) {
         mainOrderService.delete(commentId);
 

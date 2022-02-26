@@ -1,12 +1,13 @@
-package com.example.erfan_adine_ptest.security;
+package com.example.erfan_adine_ptest.security.detail;
 
 import com.example.erfan_adine_ptest.entity.user.Admin;
+import com.example.erfan_adine_ptest.entity.user.Worker;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-public class CustomeUserDetail implements UserDetails {
+public class CustomeWorkerDetail implements UserDetails {
 
     private final String firstName;
     private final String lastName;
@@ -15,13 +16,13 @@ public class CustomeUserDetail implements UserDetails {
     private final Boolean isEnabled;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public CustomeUserDetail(Admin admin) {
-        this.firstName = admin.getFName();
-        this.lastName = admin.getLName();
-        this.password = admin.getPassword();
-        this.isEnabled = admin.getIsEnable();
-        this.username = admin.getUsername();
-        this.authorities = admin.getAuthorities();
+    public CustomeWorkerDetail(Worker worker) {
+        this.firstName = worker.getFName();
+        this.lastName = worker.getLName();
+        this.password = worker.getPassword();
+        this.isEnabled = worker.getIsEnable();
+        this.username = worker.getUsername();
+        this.authorities = worker.getAuthorities();
     }
 
     @Override

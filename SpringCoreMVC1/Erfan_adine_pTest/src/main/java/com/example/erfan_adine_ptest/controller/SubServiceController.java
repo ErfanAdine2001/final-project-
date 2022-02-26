@@ -10,6 +10,7 @@ import com.example.erfan_adine_ptest.service.SubService_Service;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,6 +28,7 @@ public class SubServiceController{
     private final MainService_Service mainServiceService;
 
     @PostMapping("/showAllSubServices")
+    @PreAuthorize("hasAnyAuthority('SUB_SERVICE_READ')")
     public ResponseEntity<List<SubService>> showAllSubServices(){
 
         List<SubService> subServiceList = subServiceService.showSubServices();
@@ -41,6 +43,7 @@ public class SubServiceController{
 
 
     @PostMapping("/create")
+    @PreAuthorize("hasAnyAuthority('SUB_SERVICE_WRITE')")
     public ResponseEntity<SubServiceOutDto> create(@Valid @RequestBody SubServiceInDto request) {
 
         SubServiceOutDto subServiceOutDto = subServiceService.save(request);
@@ -52,6 +55,7 @@ public class SubServiceController{
     }
 
     @GetMapping("/findAll")
+    @PreAuthorize("hasAnyAuthority('SUB_SERVICE_WRITE')")
     public ResponseEntity<List<SubService>> findAll() {
         List<SubService> subServiceList = subServiceService.findAll();
 
@@ -62,6 +66,7 @@ public class SubServiceController{
     }
 
     @GetMapping("/findById/{subServiceId}")
+    @PreAuthorize("hasAnyAuthority('SUB_SERVICE_WRITE')")
     public ResponseEntity<SubServiceOutDto> findById(@PathVariable Long subServiceId) {
         SubService subService = subServiceService.findById(subServiceId);
 
@@ -75,6 +80,7 @@ public class SubServiceController{
     }
 
     @PutMapping("/update/{subServiceId}")
+    @PreAuthorize("hasAnyAuthority('SUB_SERVICE_WRITE')")
     public ResponseEntity<SubService> update(@PathVariable Long subServiceId, @RequestBody SubServiceInDto subServiceInDto) {
 
         List<MainService> mainServiceList = new ArrayList<>();
@@ -100,6 +106,7 @@ public class SubServiceController{
     }
 
     @DeleteMapping("/delete/{subServiceId}e")
+    @PreAuthorize("hasAnyAuthority('SUB_SERVICE_WRITE')")
     public ResponseEntity<String> delete(@PathVariable Long subServiceId) {
         subServiceService.delete(subServiceId);
 

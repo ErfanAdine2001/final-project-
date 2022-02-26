@@ -1,6 +1,6 @@
-package com.example.erfan_adine_ptest.security;
+package com.example.erfan_adine_ptest.security.config;
 
-import com.example.erfan_adine_ptest.service.AdminService;
+import com.example.erfan_adine_ptest.service.WorkerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,9 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class WorkerSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final AdminService adminService;
+    private final WorkerService workerService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -54,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder());
-        provider.setUserDetailsService(adminService);
+        provider.setUserDetailsService(workerService);
         return provider;
     }
 

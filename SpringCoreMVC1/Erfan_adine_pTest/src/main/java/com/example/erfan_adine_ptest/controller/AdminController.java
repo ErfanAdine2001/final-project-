@@ -19,6 +19,7 @@ import lombok.*;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +38,7 @@ public class AdminController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AdminOutDto> create(@Valid @RequestBody AdminInDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
 
         String encode = passwordEncoder.encode(request.getPassword());
@@ -51,6 +53,7 @@ public class AdminController {
 
     //Search Workers
     @PostMapping("/searchWorkerListByAllAttribute")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<WorkerOrUserSerchOutDto>> searchWorkers(@Valid @RequestBody WorkerOrUserSerchInDto request)  {
 
 
@@ -64,6 +67,7 @@ public class AdminController {
     }
 
     @PostMapping("/searchAllWorkerByFNameAndLName")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<WorkerOrUserSerchOutDto>> searchAllWorkerByFNameAndLName(@Valid @RequestBody WorkerOrUserSerchInDto request){
 
 
@@ -81,6 +85,7 @@ public class AdminController {
 
     // search users
     @PostMapping("/search-worker-ListByAllAttribute2")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<WorkerOrUserSerchOutDto>> searchUsers(@Valid @RequestBody WorkerOrUserSerchInDto request){
 
 
@@ -95,6 +100,7 @@ public class AdminController {
     }
 
     @PostMapping("/searchAllUserByFNameAndLName")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<WorkerOrUserSerchOutDto>> searchAllUserByFNameAndLName(@Valid @RequestBody WorkerOrUserSerchInDto request){
 
 
@@ -110,6 +116,7 @@ public class AdminController {
 
     // add Main Service
     @PostMapping("/addMainService")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<MainServiceOutDto> addMainService(@Valid @RequestBody MainServiceInDto mainServiceInDto) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
         MainServiceOutDto result = mainServiceService.save(mainServiceInDto);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -125,6 +132,7 @@ public class AdminController {
      * @param workerInDto
      */
     @PostMapping("/Appointment/toMainService/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void AppointmentOfASpecialistToTheService(@Valid @RequestBody WorkerInDto workerInDto, @PathVariable("id") Long mainServiceId) throws NameNotValidException, EmailNotValidException, PasswordNotValidException, NullFieldException, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, BadEntryException, RoleIsNullException, AddressOfRequestIsNull {
 //        if (workerInDto.getMainServiceList() != null && workerInDto.getFirstName() != null) {
         if (isExistWork(workerInDto)) {

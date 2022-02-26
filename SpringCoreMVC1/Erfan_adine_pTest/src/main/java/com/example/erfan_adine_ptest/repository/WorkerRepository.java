@@ -4,6 +4,7 @@ package com.example.erfan_adine_ptest.repository;
 import com.example.erfan_adine_ptest.dto.out.user.WorkerOrUserSerchOutDto;
 import com.example.erfan_adine_ptest.entity.product.MainOrder;
 import com.example.erfan_adine_ptest.entity.product.message.BaseMessageStatus;
+import com.example.erfan_adine_ptest.entity.user.Admin;
 import com.example.erfan_adine_ptest.entity.user.Worker;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +13,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface WorkerRepository extends JpaRepository<Worker, Long> {
@@ -34,4 +36,5 @@ public interface WorkerRepository extends JpaRepository<Worker, Long> {
     List<MainOrder> serviceHistory(Long id);
 
 
+    Optional<Worker> findByUsername(String username);
 }

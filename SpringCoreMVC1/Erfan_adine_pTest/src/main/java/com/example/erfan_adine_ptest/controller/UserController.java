@@ -55,7 +55,8 @@ public class UserController {
 
 
     @PostMapping("/create")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<UserOutDto> create(@Valid @RequestBody UserInDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException {
 
         UserOutDto result = userService.save(request);
@@ -67,7 +68,9 @@ public class UserController {
 
 
     @PostMapping("/findAllByFNameAndLNameAndEmailAndPassword")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+    @PreAuthorize("hasAnyRole('SUB_SERVICE_WRITE')")
+
     public ResponseEntity<Page<WorkerOrUserSerchOutDto>> findAllByFNameAndLNameAndEmailAndPassword(@Valid @RequestBody WorkerOrUserSerchInDto request){
 
         Page<WorkerOrUserSerchOutDto> allByFNameAndLNameAndEmailAndPassword = userService.findAllByFNameAndLNameAndEmailAndPassword(request);
@@ -79,7 +82,8 @@ public class UserController {
 
 
     @PostMapping("/findAllByFNameAndLName")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+    @PreAuthorize("hasAnyRole('SUB_SERVICE_WRITE')")
     public ResponseEntity<Page<WorkerOrUserSerchOutDto>> findAllByFNameAndLName(@Valid @RequestBody  WorkerOrUserSerchInDto request) {
 
         Page<WorkerOrUserSerchOutDto> allByFNameAndLNameAndEmailAndPassword = userService.findAllByFNameAndLName(request);
@@ -98,7 +102,9 @@ public class UserController {
      * @return
      */
     @PostMapping("/showAllOrders/{id}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+    @PreAuthorize("hasAnyRole('SUB_SERVICE_READ')")
+
     public ResponseEntity<Page<ShowAllOrdersByUserIdOutDto>> showAllOrders(@Valid @RequestBody ShowAllOrdersByUserIdInDto request, @PathVariable Long id) {
 
         Page<ShowAllOrdersByUserIdOutDto> showAllOrdersByUserIdOutDtos = userService.showAllOrdersByUserIdS(request, id);
@@ -114,7 +120,8 @@ public class UserController {
      * @param mainOrderInDto
      */
     @PostMapping("/selectSubServiceAndAddNewMainOrder")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+    @PreAuthorize("hasAnyRole('SUB_SERVICE_WRITE','USER_WRITE')")
     public ResponseEntity<MainOrderOutDto> selectSubService(@Valid @RequestBody MainOrderInDto mainOrderInDto) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
         MainOrderOutDto mainOrderOutDto = mainOrderService.save(mainOrderInDto);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -128,7 +135,8 @@ public class UserController {
      * @return
      */
     @PostMapping("/seeTheSuggestionsThatAreACCEPTED")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+    @PreAuthorize("hasAnyRole('SUGGESTION_READ')")
     public ResponseEntity<Page<WorkerOrUserSerchOutDto>> seeTheSuggestionsThatAreACCEPTED(@Valid @RequestBody SuggestionInDto suggestion) {
         Pageable pageable = PageRequest.of(suggestion.getPageNumber(), suggestion.getPageSize());
         Page<WorkerOrUserSerchOutDto> allByStatusOrder = suggestionService.findAllBystatusOrder(pageable, SuggestionStatus.ACCEPTED);
@@ -144,7 +152,8 @@ public class UserController {
      * @param suggestionId
      */
     @PostMapping("/selectWorkerWithSuggestionIdAndWaitingForWorkerSelected/{suggestionId}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+    @PreAuthorize("hasRole('USER') or hasRole('WORKER')")
     public ResponseEntity<String> selectWorkerWithSuggestionIdAndWaitingForWorkerSelectedU(@Valid @PathVariable Long suggestionId) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
         Suggestion s = suggestionService.findById(suggestionId);
         if (s.getSuggestionStatus().equals(SuggestionStatus.ACCEPTED)) {
@@ -168,7 +177,8 @@ public class UserController {
     // user can save his/her comment for order
     //TODO  ثبت نظرات
     @PostMapping("/addComment")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+    @PreAuthorize("hasRole('USER') or hasRole('WORKER')")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
     public ResponseEntity<CommentOutDto> addComment(@Valid @RequestBody CommentInDto commentInDto) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
 
         CommentOutDto commentOutDto = commentService.save(commentInDto);
@@ -179,7 +189,8 @@ public class UserController {
 
     //TODO  مشاهده تاریخچه سفارشات و اعتبار
     @PostMapping("/findAllOrder")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+    @PreAuthorize("hasRole('USER') or hasRole('WORKER')")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
     public ResponseEntity<List<MainOrder>> findAllOrder(@Valid @RequestBody MainOrderInDto mainOrderInDto) {
         List<MainOrder> allOrderByStatusOfStatus = mainOrderService.findAllOrderByStatusOfStatus(mainOrderInDto.getStatus());
 
@@ -190,7 +201,8 @@ public class UserController {
 
     //TODO مشاهده تاریخچه سفارشات و اعتبار
     @GetMapping("/loadAmount/{userId}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+    @PreAuthorize("hasRole('USER') or hasRole('WORKER')")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
     public ResponseEntity<List<Transaction>> loadAmount(@Valid @PathVariable Long userId) {
         List<Transaction> transactionList = transactionService.findAllByUserId(userId);
 
@@ -201,7 +213,8 @@ public class UserController {
 
     //TODO    3-2 ----- پس از اعلام پایان  customer     @@@@@@@@@@@@@@@@@@@@@@@@@@@@  how can set time for come in page    and    how can i set captcha
     @PostMapping("/creditPayMoney")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+    @PreAuthorize("hasRole('USER') or hasRole('WORKER')")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
     public ResponseEntity<String> CreditPayMoney(@Valid @RequestBody TransactionInDto transactionInDto, @RequestBody BankCardInformationInDto bankCardInformationInDto) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
 
 
@@ -292,7 +305,8 @@ public class UserController {
 
     //TODO    3-2 ----- پس از اعلام پایان  customer     @@@@@@@@@@@@@@@@@@@@@@@@@@@@-
     @PostMapping("/cashPayMoney")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+    @PreAuthorize("hasRole('USER') or hasRole('WORKER')")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
     public ResponseEntity<String> cashPayMoney(@RequestBody TransactionInDto transactionInDto) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
 
         if (mainOrderService.findById(transactionInDto.getOrderId()).getStatus() == OrderStatus.DONE) {
@@ -317,7 +331,8 @@ public class UserController {
 
 
     @GetMapping("/ServiceHistory/{userId}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+    @PreAuthorize("hasRole('USER') or hasRole('WORKER')")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
     public ResponseEntity<List<MainOrder>> serviceHistory(@PathVariable Long userId) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(userService.ServiceHistory(userId));

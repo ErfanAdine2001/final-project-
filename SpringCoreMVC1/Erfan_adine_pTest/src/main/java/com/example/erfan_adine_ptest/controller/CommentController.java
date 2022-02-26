@@ -26,8 +26,10 @@ public class CommentController {
 
 
     @PostMapping("/create")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public ResponseEntity<CommentOutDto> create(@Valid @RequestBody CommentInDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
+
 
         CommentOutDto commentOutDto = commentService.save(request);
 
@@ -38,7 +40,8 @@ public class CommentController {
     }
 
     @GetMapping("/findAll")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
     public ResponseEntity<List<Comment>> findAll() {
         List<Comment> list = commentService.findAll();
 
@@ -49,7 +52,8 @@ public class CommentController {
     }
 
     @GetMapping("/findById/{commentId}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public ResponseEntity<CommentOutDto> findById(@PathVariable Long commentId) {
         Comment comment = commentService.findById(commentId);
 
@@ -63,7 +67,8 @@ public class CommentController {
     }
 
     @PutMapping("/update/{commentId}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public ResponseEntity<Comment> update(@PathVariable Long commentId, @RequestBody CommentInDto commentInDto) {
         Comment comment = commentService.findById(commentId);
 
@@ -81,7 +86,8 @@ public class CommentController {
     }
 
     @DeleteMapping("/delete/{commentId}e")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public ResponseEntity<String> delete(@PathVariable Long commentId) {
         commentService.delete(commentId);
 
