@@ -29,8 +29,8 @@ public class UserInDto {
     private String password;
 //
 
-    @Builder.Default
-    private Boolean isEnabled = true;
+//    @Builder.Default
+//    private Boolean isEnabled = true;
 //
 //    private String firstName;
 //

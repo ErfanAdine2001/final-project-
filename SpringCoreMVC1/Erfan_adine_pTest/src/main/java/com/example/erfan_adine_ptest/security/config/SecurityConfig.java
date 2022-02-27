@@ -1,6 +1,6 @@
 package com.example.erfan_adine_ptest.security.config;
 
-import com.example.erfan_adine_ptest.service.WorkerService;
+import com.example.erfan_adine_ptest.service.BasePersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,14 +17,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
-public class WorkerSecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final WorkerService workerService;
+    private final BasePersonService basePersonService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(11);
     }
+// fixme     ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
 
 
     @Override
@@ -32,7 +33,7 @@ public class WorkerSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/manager/**","/js/**","/css/**","/","/permission/**","/role/**" ).permitAll()
+                .antMatchers("/js/**","/css/**" ).permitAll()
 //                .antMatchers(HttpMethod.GET,"/student/**").hasAnyRole(ADMIN.name(),STUDENT.name())
 //                .antMatchers(HttpMethod.POST,"/student/**").hasAnyAuthority(STUDENT_WRITE.getPermissionName())
 //                .antMatchers(HttpMethod.PUT,"/student/**").hasAnyAuthority(STUDENT_WRITE.getPermissionName())
@@ -46,7 +47,7 @@ public class WorkerSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(daoAuthenticationProvider());
     }
 
@@ -54,32 +55,7 @@ public class WorkerSecurityConfig extends WebSecurityConfigurerAdapter {
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder());
-        provider.setUserDetailsService(workerService);
+        provider.setUserDetailsService(basePersonService);
         return provider;
     }
-
-
-//
-//    @Override
-//    @Bean
-//    protected UserDetailsService userDetailsService() {
-//        UserDetails erfan = User.builder()
-//                .username("erfan")
-//                .password(passwordEncoder().encode("123"))
-////                .roles("STUDENT")
-//                .authorities(STUDENT.getAuthority())
-//                .build();
-//
-//        UserDetails admin = User.builder()
-//                .username("admin")
-//                .password(passwordEncoder().encode("123"))
-////                .roles("Admin")
-//                .authorities(ADMIN.getAuthority())
-//                .build();
-//
-//        return new InMemoryUserDetailsManager(erfan,admin);
-//
-//
-//
-//    }
 }

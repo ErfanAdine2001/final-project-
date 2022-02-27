@@ -16,8 +16,7 @@ import com.example.erfan_adine_ptest.entity.work.MainService;
 import com.example.erfan_adine_ptest.exception.*;
 import com.example.erfan_adine_ptest.repository.DutyRepository;
 import com.example.erfan_adine_ptest.repository.WorkerRepository;
-import com.example.erfan_adine_ptest.security.detail.CustomeUserDetail;
-import com.example.erfan_adine_ptest.security.detail.CustomeWorkerDetail;
+
 import com.example.erfan_adine_ptest.service.util.Validation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -34,7 +33,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class WorkerService implements UserDetailsService {
+public class WorkerService  {
     private final WorkerRepository workerRepository;
     private final DutyRepository dutyRepository;
     private final MainOrderService mainOrderService;
@@ -196,13 +195,13 @@ public class WorkerService implements UserDetailsService {
         List<MainOrder> mainOrders = workerRepository.serviceHistory(id);
         return mainOrders;
     }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Worker worker = workerRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("not found worker with username:" + username));
-
-        return new CustomeWorkerDetail(worker);
-    }
+//
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        Worker worker = workerRepository.findByUsername(username)
+//                .orElseThrow(() -> new RuntimeException("not found worker with username:" + username));
+//
+//        return new CustomeWorkerDetail(worker);
+//    }
 }
 

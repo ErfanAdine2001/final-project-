@@ -20,7 +20,7 @@ import com.example.erfan_adine_ptest.exception.*;
 import com.example.erfan_adine_ptest.repository.AdminRepository;
 import com.example.erfan_adine_ptest.repository.CustomRequestRepository;
 import com.example.erfan_adine_ptest.repository.DutyRepository;
-import com.example.erfan_adine_ptest.security.detail.CustomeAdminDetail;
+//import com.example.erfan_adine_ptest.security.detail.CustomeAdminDetail;
 import com.example.erfan_adine_ptest.service.util.Validation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -36,7 +36,7 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class AdminService implements CustomRequestRepository, UserDetailsService {
+public class AdminService implements CustomRequestRepository {
 
     private final AdminRepository adminRepository;
     private final WorkerService workerService;
@@ -44,11 +44,11 @@ public class AdminService implements CustomRequestRepository, UserDetailsService
     private final DutyRepository dutyRepository;
 //    private PasswordEncoder passwordEncoder;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(11);
-    }
-//
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder(11);
+//    }
+////
 //    public String changpass(String pass){
 //        String encode = passwordEncoder().encode(pass);
 //
@@ -199,12 +199,12 @@ public class AdminService implements CustomRequestRepository, UserDetailsService
 //
 //    }
 
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Admin admin = adminRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("not found user with username:" + username));
-
-        return new CustomeAdminDetail(admin);
-    }
+//
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        Admin admin = adminRepository.findByUsername(username)
+//                .orElseThrow(() -> new RuntimeException("not found user with username:" + username));
+//
+//        return new CustomeAdminDetail(admin);
+//    }
 }

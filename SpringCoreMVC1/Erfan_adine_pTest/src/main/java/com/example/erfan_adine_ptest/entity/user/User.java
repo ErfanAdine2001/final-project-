@@ -36,20 +36,4 @@ public class User extends BasePerson {
     private BigDecimal UserAccountBalance;
 
 
-//    private Boolean isEnabled ;
-
-
-    @ElementCollection(targetClass = Role.class , fetch = FetchType.EAGER )
-    @Builder.Default
-    private Set<Role> roles = new HashSet<>();
-
-
-    private String username;
-
-    private Boolean isEnable;
-
-    public Set<SimpleGrantedAuthority> getAuthorities() {
-        return roles.stream().flatMap(r -> r.getAuthority().stream())
-                .collect(Collectors.toSet());
-    }
 }

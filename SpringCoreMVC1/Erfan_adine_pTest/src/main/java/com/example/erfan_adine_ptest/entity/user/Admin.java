@@ -19,19 +19,6 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class Admin extends BasePerson {
 
-    private String username;
 
-    private Boolean isEnable;
-
-
-    @ElementCollection(targetClass = Role.class , fetch = FetchType.EAGER )
-    @Builder.Default
-    private Set<Role> roles = new HashSet<>();
-
-
-    public Set<SimpleGrantedAuthority> getAuthorities() {
-        return roles.stream().flatMap(r -> r.getAuthority().stream())
-                .collect(Collectors.toSet());
-    }
     //TODO search for syntax : Auto query generate jpa repository
 }

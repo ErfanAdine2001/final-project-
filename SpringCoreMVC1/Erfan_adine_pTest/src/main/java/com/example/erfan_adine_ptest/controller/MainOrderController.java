@@ -81,15 +81,13 @@ public class MainOrderController {
 
     }
 
-    @DeleteMapping("/delete/{commentId}e")
+    @DeleteMapping("/delete/{commentId}")
     @PreAuthorize("hasAnyAuthority('MAIN_ORDER_WRITE')")
     public ResponseEntity<String> delete(@PathVariable Long commentId) {
         mainOrderService.delete(commentId);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("Deleted");
-
-
     }
 
 

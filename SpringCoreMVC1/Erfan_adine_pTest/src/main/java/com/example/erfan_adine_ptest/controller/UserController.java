@@ -55,8 +55,6 @@ public class UserController {
 
 
     @PostMapping("/create")
-//    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<UserOutDto> create(@Valid @RequestBody UserInDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException {
 
         UserOutDto result = userService.save(request);
@@ -71,7 +69,7 @@ public class UserController {
 //    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
     @PreAuthorize("hasAnyRole('SUB_SERVICE_WRITE')")
 
-    public ResponseEntity<Page<WorkerOrUserSerchOutDto>> findAllByFNameAndLNameAndEmailAndPassword(@Valid @RequestBody WorkerOrUserSerchInDto request){
+    public ResponseEntity<Page<WorkerOrUserSerchOutDto>> findAllByFNameAndLNameAndEmailAndPassword(@Valid @RequestBody WorkerOrUserSerchInDto request) {
 
         Page<WorkerOrUserSerchOutDto> allByFNameAndLNameAndEmailAndPassword = userService.findAllByFNameAndLNameAndEmailAndPassword(request);
 
@@ -84,7 +82,7 @@ public class UserController {
     @PostMapping("/findAllByFNameAndLName")
 //    @PreAuthorize("hasRole('ADMIN') or hasRole('admin') or hasRole('user') or hasRole('USER')")
     @PreAuthorize("hasAnyRole('SUB_SERVICE_WRITE')")
-    public ResponseEntity<Page<WorkerOrUserSerchOutDto>> findAllByFNameAndLName(@Valid @RequestBody  WorkerOrUserSerchInDto request) {
+    public ResponseEntity<Page<WorkerOrUserSerchOutDto>> findAllByFNameAndLName(@Valid @RequestBody WorkerOrUserSerchInDto request) {
 
         Page<WorkerOrUserSerchOutDto> allByFNameAndLNameAndEmailAndPassword = userService.findAllByFNameAndLName(request);
 
@@ -111,7 +109,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(showAllOrdersByUserIdOutDtos);
     }
-
 
 
     /**
@@ -339,6 +336,9 @@ public class UserController {
 
     }
 
-
+    @GetMapping("/login")
+    public String login() {
+        return "";
+    }
 
 }
