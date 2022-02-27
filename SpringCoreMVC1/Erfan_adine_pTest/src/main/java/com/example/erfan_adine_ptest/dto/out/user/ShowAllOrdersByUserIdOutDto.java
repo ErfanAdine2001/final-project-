@@ -4,13 +4,12 @@ import com.example.erfan_adine_ptest.entity.product.OrderStatus;
 import com.example.erfan_adine_ptest.entity.product.message.Suggestion;
 import com.example.erfan_adine_ptest.entity.user.Admin;
 import com.example.erfan_adine_ptest.entity.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ShowAllOrdersByUserIdOutDto {
