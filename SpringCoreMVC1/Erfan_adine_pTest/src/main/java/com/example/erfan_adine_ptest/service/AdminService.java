@@ -4,13 +4,16 @@ package com.example.erfan_adine_ptest.service;
 //fixme this import is very important because i can do some my works that ??????????????????????????????????
 
 
+import com.example.erfan_adine_ptest.dto.core.BasePersonDto;
 import com.example.erfan_adine_ptest.dto.in.user.AdminInDto;
 import com.example.erfan_adine_ptest.dto.in.user.WorkerInDto;
 import com.example.erfan_adine_ptest.dto.in.work.MainServiceInDto;
+import com.example.erfan_adine_ptest.dto.out.BasPersonOutDto;
 import com.example.erfan_adine_ptest.dto.out.user.AdminOutDto;
 import com.example.erfan_adine_ptest.dto.out.user.WorkerOutDto;
 import com.example.erfan_adine_ptest.dto.out.work.MainServiceOutDto;
 import com.example.erfan_adine_ptest.entity.product.message.Request;
+import com.example.erfan_adine_ptest.entity.security.Role;
 import com.example.erfan_adine_ptest.entity.user.Admin;
 import com.example.erfan_adine_ptest.entity.user.User;
 import com.example.erfan_adine_ptest.entity.user.Worker;
@@ -42,7 +45,7 @@ public class AdminService implements CustomRequestRepository {
     private final WorkerService workerService;
     private final ExperteService experteService;
     private final DutyRepository dutyRepository;
-//    private PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
 //    @Bean
 //    public PasswordEncoder passwordEncoder() {
@@ -85,6 +88,21 @@ public class AdminService implements CustomRequestRepository {
         return response;
     }
 
+
+
+    @Transactional
+    public BasPersonOutDto save(BasePersonDto request) {
+        Admin admin =Admin.builder()
+                .fName(request.getFirstName())
+                .lName(request.getLastName())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .username(request.getUsername())
+                .email(request.getEmail())
+                .roles(new HashSet<>(List.of(Role.ADMIN)))
+                .build();
+        Admin save = adminRepository.save(admin);
+        return new BasPersonOutDto(save.getId());
+    }
 
     public Admin findById(Long id) {
         return adminRepository.findById(id).get();

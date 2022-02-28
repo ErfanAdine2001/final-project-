@@ -1,16 +1,20 @@
 package com.example.erfan_adine_ptest.service;
 
+import com.example.erfan_adine_ptest.dto.core.BasePersonDto;
 import com.example.erfan_adine_ptest.dto.in.user.ShowAllOrdersByUserIdInDto;
 import com.example.erfan_adine_ptest.dto.in.user.UserInDto;
 import com.example.erfan_adine_ptest.dto.in.user.WorkerOrUserSerchInDto;
+import com.example.erfan_adine_ptest.dto.out.BasPersonOutDto;
 import com.example.erfan_adine_ptest.dto.out.user.ShowAllOrdersByUserIdOutDto;
 import com.example.erfan_adine_ptest.dto.out.user.UserOutDto;
 import com.example.erfan_adine_ptest.dto.out.user.WorkerOrUserSerchOutDto;
 import com.example.erfan_adine_ptest.entity.product.MainOrder;
 import com.example.erfan_adine_ptest.entity.product.OrderStatus;
 import com.example.erfan_adine_ptest.entity.product.message.Suggestion;
+import com.example.erfan_adine_ptest.entity.security.Role;
 import com.example.erfan_adine_ptest.entity.user.Admin;
 import com.example.erfan_adine_ptest.entity.user.User;
+import com.example.erfan_adine_ptest.entity.user.Worker;
 import com.example.erfan_adine_ptest.exception.*;
 import com.example.erfan_adine_ptest.repository.UserRepository;
 import com.example.erfan_adine_ptest.service.util.Validation;
@@ -21,10 +25,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -32,7 +38,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-
+    private final PasswordEncoder passwordEncoder;
     private final SuggestionService suggestionService;
 
 
@@ -71,6 +77,22 @@ public class UserService {
         return user;
 
     }
+
+
+    @Transactional
+    public BasPersonOutDto save(BasePersonDto request) {
+        User user =User.builder()
+                .fName(request.getFirstName())
+                .lName(request.getLastName())
+                .username(request.getUsername())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .email(request.getEmail())
+                .roles(new HashSet<>(List.of(Role.USER)))
+                .build();
+        User save = userRepository.save(user);
+        return new BasPersonOutDto(save.getId());
+    }
+
 
 
     public Page<WorkerOrUserSerchOutDto> findAllByFNameAndLName(WorkerOrUserSerchInDto workerOrUserSerchInDto) {

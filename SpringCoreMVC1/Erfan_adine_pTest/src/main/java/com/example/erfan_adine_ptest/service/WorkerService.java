@@ -1,8 +1,10 @@
 package com.example.erfan_adine_ptest.service;
 
 
+import com.example.erfan_adine_ptest.dto.core.BasePersonDto;
 import com.example.erfan_adine_ptest.dto.in.user.WorkerInDto;
 import com.example.erfan_adine_ptest.dto.in.user.WorkerOrUserSerchInDto;
+import com.example.erfan_adine_ptest.dto.out.BasPersonOutDto;
 import com.example.erfan_adine_ptest.dto.out.ServiceHistoryOutDto;
 import com.example.erfan_adine_ptest.dto.out.product.MainOrderOutDto;
 import com.example.erfan_adine_ptest.dto.out.user.WorkerOrUserSerchOutDto;
@@ -10,6 +12,7 @@ import com.example.erfan_adine_ptest.dto.out.user.WorkerOutDto;
 import com.example.erfan_adine_ptest.entity.product.MainOrder;
 import com.example.erfan_adine_ptest.entity.product.OrderStatus;
 import com.example.erfan_adine_ptest.entity.product.message.Suggestion;
+import com.example.erfan_adine_ptest.entity.security.Role;
 import com.example.erfan_adine_ptest.entity.user.User;
 import com.example.erfan_adine_ptest.entity.user.Worker;
 import com.example.erfan_adine_ptest.entity.work.MainService;
@@ -25,21 +28,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class WorkerService  {
+public class WorkerService {
     private final WorkerRepository workerRepository;
     private final DutyRepository dutyRepository;
-    private final MainOrderService mainOrderService;
-    private final SuggestionService suggestionService;
+    private final PasswordEncoder passwordEncoder;
 
-    private Validation validation;
 
     //todo f1 ----------------------> 1-5 service
     @Transactional
@@ -86,7 +89,7 @@ public class WorkerService  {
         worker.setUpdatedTime(new Date());
         worker.setEmail(request.getEmail());
         worker.setMainService(request.getMainServiceList());
-         workerRepository.save(worker);
+        workerRepository.save(worker);
 
         WorkerOutDto workerOutDto = new WorkerOutDto();
         workerOutDto.setId(worker.getId());
@@ -110,7 +113,19 @@ public class WorkerService  {
     }
 
 
-
+    @Transactional
+    public BasPersonOutDto save(BasePersonDto request) {
+        Worker worker =Worker.builder()
+                .fName(request.getFirstName())
+                .lName(request.getLastName())
+                .username(request.getUsername())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .email(request.getEmail())
+                .roles(new HashSet<>(List.of(Role.WORKER)))
+                .build();
+        Worker save = workerRepository.save(worker);
+        return new BasPersonOutDto(save.getId());
+    }
 
 
     //****************************************
@@ -121,30 +136,8 @@ public class WorkerService  {
     }
 
 
-    //TODO fS 2-1  ----------> Service
-    @Transactional
-    public void ConfirmationOfOrder(Long idOfMainOrder) throws NameNotValidException, NullFieldException, BadEntryException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
-        MainOrder mainOrder = mainOrderService.findById(idOfMainOrder);
-        if ((mainOrder.getStatus().equals(OrderStatus.WAITING_FOR_EXPERT))) {
-            mainOrder.setStatus(OrderStatus.WAITING_FOR_SUGGESTION);
-            mainOrderService.save(mainOrder);
-        }
 
 
-    }
-
-    //TODO fS 2-2   ----------> Service
-    @Transactional
-    public void sendNewSuggestion(Suggestion suggestion, Long idOfMainOrder) throws NameNotValidException, NullFieldException, BadEntryException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
-        Suggestion s = suggestionService.save(suggestion);
-
-        MainOrder mainOrder = mainOrderService.findById(idOfMainOrder);
-        if ((mainOrder.getStatus().equals(OrderStatus.WAITING_FOR_SUGGESTION))) {
-            mainOrder.setStatus(OrderStatus.ACCEPTED);
-            mainOrderService.save(mainOrder);
-        }
-        s.setOrder(mainOrder);
-    }
 
 
     // TODO validation email don f--------->1-2  service of worker
@@ -184,14 +177,8 @@ public class WorkerService  {
 
     //**************************************
 
-    public List<MainOrder> findAllOrderByStatusWateFOrSuggestions(OrderStatus status) {
-        List<MainOrder> allOrderByStatusWateForSuggestion = mainOrderService.findAllOrderByStatusWateForSuggestion(status);
-        return allOrderByStatusWateForSuggestion;
-    }
 
-
-
-    public List<MainOrder> serviceHistory(Long id){
+    public List<MainOrder> serviceHistory(Long id) {
         List<MainOrder> mainOrders = workerRepository.serviceHistory(id);
         return mainOrders;
     }

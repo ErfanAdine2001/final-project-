@@ -10,6 +10,7 @@ import javax.persistence.Lob;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
+import java.util.Date;
 import java.util.Set;
 
 @Setter
@@ -17,7 +18,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class BasePersonDto extends BaseEntityDto {
+public class BasePersonDto{
 
 
     private String firstName;
@@ -30,7 +31,8 @@ public class BasePersonDto extends BaseEntityDto {
     @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{3,}$")
     private String password;
 
-    private Set<String> role;
+    private String username;
 
+    private String type;
 
 }

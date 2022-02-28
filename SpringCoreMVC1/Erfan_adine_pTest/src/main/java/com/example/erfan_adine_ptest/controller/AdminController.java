@@ -1,9 +1,11 @@
 package com.example.erfan_adine_ptest.controller;
 
+import com.example.erfan_adine_ptest.dto.core.BasePersonDto;
 import com.example.erfan_adine_ptest.dto.in.user.AdminInDto;
 import com.example.erfan_adine_ptest.dto.in.user.WorkerInDto;
 import com.example.erfan_adine_ptest.dto.in.user.WorkerOrUserSerchInDto;
 import com.example.erfan_adine_ptest.dto.in.work.MainServiceInDto;
+import com.example.erfan_adine_ptest.dto.out.BasPersonOutDto;
 import com.example.erfan_adine_ptest.dto.out.user.AdminOutDto;
 import com.example.erfan_adine_ptest.dto.out.user.WorkerOrUserSerchOutDto;
 import com.example.erfan_adine_ptest.dto.out.user.WorkerOutDto;
@@ -35,20 +37,20 @@ public class AdminController {
     private final WorkerService workerService;
     private final MainService_Service mainServiceService;
     private  final UserService userService;
-    private final PasswordEncoder passwordEncoder;
+
 
     @PostMapping("/create")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<AdminOutDto> create(@Valid @RequestBody AdminInDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
+    public ResponseEntity<BasPersonOutDto> create(@Valid @RequestBody BasePersonDto request) throws NameOfSubServiceIsNull, NameOfMainServiceIsNull, SuggestionOfPriceIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, NullFieldException, BadEntryException, AddressOfRequestIsNull, NullAddresOfMainOrderException, OrderOfTransactionIsNullExeption, OrderOfRequestIsNullException, NameNotValidException, EmailNotValidException, PasswordNotValidException, RoleIsNullException {
 
-        String encode = passwordEncoder.encode(request.getPassword());
 
-        AdminOutDto result = adminService.saveAdmin(request ,encode);
+        BasPersonOutDto result = adminService.save(request);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(result);
 
     }
+
 
 
     //Search Workers

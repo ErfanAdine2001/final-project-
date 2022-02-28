@@ -20,6 +20,8 @@ import java.util.Set;
 @AllArgsConstructor
 public class WorkerInDto extends BasePersonDto {
 
+    private Long id;
+
     private MainOrder order;
 
     @Lob

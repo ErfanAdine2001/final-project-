@@ -81,7 +81,7 @@ public class WorkerController {
      */
     @PostMapping("/findSuggestionForMainOrder")
     public ResponseEntity<List<MainOrder>> findSuggestionForMainOrder(@RequestBody MainOrderInDto mainOrderInDto) {
-        List<MainOrder> allOrderByStatusWateFOrSuggestions = workerService.findAllOrderByStatusWateFOrSuggestions(mainOrderInDto.getStatus());
+        List<MainOrder> allOrderByStatusWateFOrSuggestions = mainOrderService.findAllOrderByStatusWateFOrSuggestions(mainOrderInDto.getStatus());
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(allOrderByStatusWateFOrSuggestions);

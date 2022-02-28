@@ -4,6 +4,7 @@ import com.example.erfan_adine_ptest.dto.in.product.MainOrderInDto;
 import com.example.erfan_adine_ptest.dto.out.product.MainOrderOutDto;
 import com.example.erfan_adine_ptest.entity.product.MainOrder;
 import com.example.erfan_adine_ptest.entity.product.OrderStatus;
+import com.example.erfan_adine_ptest.entity.product.message.Suggestion;
 import com.example.erfan_adine_ptest.exception.*;
 import com.example.erfan_adine_ptest.repository.OrderRepository;
 import com.example.erfan_adine_ptest.service.util.Validation;
@@ -22,9 +23,8 @@ import java.util.List;
 public class MainOrderService {
     private final OrderRepository orderRepository;
     private final SubService_Service subServiceService;
-    private final  SuggestionService suggestionService;
+    private final SuggestionService suggestionService;
     private final UserService userService;
-
 
 
     @Transactional
@@ -48,9 +48,6 @@ public class MainOrderService {
         return mainOrderOutDto;
 
     }
-
-
-
 
 
     @Transactional
@@ -99,19 +96,51 @@ public class MainOrderService {
         orderRepository.save(a);
     }
 
+    //TODO fS 2-1  ----------> Service
+    @Transactional
+    public void ConfirmationOfOrder(Long idOfMainOrder) throws NameNotValidException, NullFieldException, BadEntryException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
+        MainOrder mainOrder = findById(idOfMainOrder);
+        if ((mainOrder.getStatus().equals(OrderStatus.WAITING_FOR_EXPERT))) {
+            mainOrder.setStatus(OrderStatus.WAITING_FOR_SUGGESTION);
+            save(mainOrder);
+        }
+
+
+    }
+
     @Transactional
     public List<MainOrder> findAllOrderByStatusWateForSuggestion(OrderStatus status) {
         List<MainOrder> allByStatus = orderRepository.findAllByStatus(status);
         List<MainOrder> finalOrder = new ArrayList<>();
         for (MainOrder order : allByStatus) {
 
-            if (order.getStatus().equals(OrderStatus.WAITING_FOR_SUGGESTION)){
+            if (order.getStatus().equals(OrderStatus.WAITING_FOR_SUGGESTION)) {
 
                 finalOrder.add(order);
 
             }
         }
         return finalOrder;
+    }
+
+
+    //TODO fS 2-2   ----------> Service
+    @Transactional
+    public void sendNewSuggestion(Suggestion suggestion, Long idOfMainOrder) throws NameNotValidException, NullFieldException, BadEntryException, EmailNotValidException, PasswordNotValidException, NullAddresOfMainOrderException, NameOfSubServiceIsNull, NameOfMainServiceIsNull, OrderOfRequestIsNullException, NullCommentException, BasePriceOfSubServiceIsNull, RoleIsNullException, AddressOfRequestIsNull, OrderOfTransactionIsNullExeption, SuggestionOfPriceIsNullException {
+        Suggestion s = suggestionService.save(suggestion);
+
+        MainOrder mainOrder = findById(idOfMainOrder);
+        if ((mainOrder.getStatus().equals(OrderStatus.WAITING_FOR_SUGGESTION))) {
+            mainOrder.setStatus(OrderStatus.ACCEPTED);
+            save(mainOrder);
+        }
+        s.setOrder(mainOrder);
+    }
+
+
+    public List<MainOrder> findAllOrderByStatusWateFOrSuggestions(OrderStatus status) {
+        List<MainOrder> allOrderByStatusWateForSuggestion = findAllOrderByStatusWateForSuggestion(status);
+        return allOrderByStatusWateForSuggestion;
     }
 
 
@@ -123,7 +152,7 @@ public class MainOrderService {
         List<MainOrder> finalOrder = new ArrayList<>();
         for (MainOrder order : allByStatus) {
 
-            if (order.getStatus().equals(status)){
+            if (order.getStatus().equals(status)) {
 
                 finalOrder.add(order);
 
@@ -131,7 +160,6 @@ public class MainOrderService {
         }
         return finalOrder;
     }
-
 
 
 }

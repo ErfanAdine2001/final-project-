@@ -19,14 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private  final PasswordEncoder passwordEncoder;
     private final BasePersonService basePersonService;
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(11);
-    }
-// fixme     ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -47,7 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .csrf().disable()
-                .authorizeRequests().antMatchers("/", "api/**").permitAll()
+//                .addFilter()
+                .authorizeRequests().antMatchers("/", "api/**","/api/BasePerson/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -65,7 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(passwordEncoder());
+        provider.setPasswordEncoder(passwordEncoder);
         provider.setUserDetailsService(basePersonService);
         return provider;
     }
