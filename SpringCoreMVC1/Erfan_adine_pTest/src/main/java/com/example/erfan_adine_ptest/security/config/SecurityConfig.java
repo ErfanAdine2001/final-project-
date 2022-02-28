@@ -30,19 +30,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+//        http
+//                .csrf().disable()
+//                .authorizeRequests()
+//                .antMatchers("/js/**","/css/**" ).permitAll()
+////                .antMatchers(HttpMethod.GET,"/student/**").hasAnyRole(ADMIN.name(),STUDENT.name())
+////                .antMatchers(HttpMethod.POST,"/student/**").hasAnyAuthority(STUDENT_WRITE.getPermissionName())
+////                .antMatchers(HttpMethod.PUT,"/student/**").hasAnyAuthority(STUDENT_WRITE.getPermissionName())
+////                .antMatchers(HttpMethod.DELETE,"/student/**").hasAnyAuthority(STUDENT_WRITE.getPermissionName())
+////               .antMatchers("/student/1").permitAll()
+//                .anyRequest()
+//                .authenticated()
+//                .and()
+//                .httpBasic();
+
+
         http
                 .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/js/**","/css/**" ).permitAll()
-//                .antMatchers(HttpMethod.GET,"/student/**").hasAnyRole(ADMIN.name(),STUDENT.name())
-//                .antMatchers(HttpMethod.POST,"/student/**").hasAnyAuthority(STUDENT_WRITE.getPermissionName())
-//                .antMatchers(HttpMethod.PUT,"/student/**").hasAnyAuthority(STUDENT_WRITE.getPermissionName())
-//                .antMatchers(HttpMethod.DELETE,"/student/**").hasAnyAuthority(STUDENT_WRITE.getPermissionName())
-//               .antMatchers("/student/1").permitAll()
-                .anyRequest()
-                .authenticated()
+                .authorizeRequests().antMatchers("/", "api/**").permitAll()
+                .anyRequest().authenticated()
                 .and()
-                .httpBasic();
+                .formLogin()
+                .loginPage("/login").permitAll()
+                .and()
+                .logout().permitAll();
     }
 
 

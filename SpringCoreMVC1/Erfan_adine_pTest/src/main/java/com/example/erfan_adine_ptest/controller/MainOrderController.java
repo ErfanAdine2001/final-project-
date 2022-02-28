@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/mainOrders")
+@RequestMapping("/api/mainOrders")
 public class MainOrderController {
 
     private final MainOrderService mainOrderService;

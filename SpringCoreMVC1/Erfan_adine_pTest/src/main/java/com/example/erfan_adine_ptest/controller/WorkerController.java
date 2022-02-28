@@ -34,7 +34,7 @@ import java.util.Objects;
 
 
 @RestController
-@RequestMapping("/workers")
+@RequestMapping("/api/workers")
 @RequiredArgsConstructor
 public class WorkerController {
 

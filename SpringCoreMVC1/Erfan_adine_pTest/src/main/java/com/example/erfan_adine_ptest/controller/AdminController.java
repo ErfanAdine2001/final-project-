@@ -29,7 +29,7 @@ import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/manager")
+@RequestMapping("/api/manager")
 public class AdminController {
     private final AdminService adminService;
     private final WorkerService workerService;
