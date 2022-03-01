@@ -16,7 +16,7 @@ import java.util.List;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
+//@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
 public class SubService extends BaseEntity {
 
     @Column

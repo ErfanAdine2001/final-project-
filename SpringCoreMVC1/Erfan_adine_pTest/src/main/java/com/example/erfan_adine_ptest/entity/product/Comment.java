@@ -17,6 +17,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
+@Table(name="myComment")
 public class Comment extends BaseEntity {
 //    @Column(nullable = false)
     private Integer points;

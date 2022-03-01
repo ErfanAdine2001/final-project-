@@ -9,21 +9,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.HashSet;
-import java.util.Set;
+import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
+@Component
 public class BootStrap implements CommandLineRunner {
-    private  final BasePersonService basePersonService;
+
     private  final AdminService adminService;
 
     @Override
     public void run(String... args) throws Exception {
 
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-        adminService.save(new BasePersonDto("erfan", "adine", "erfan@gmail.com", passwordEncoder.encode("pass"), "danial" ,""));
+
+        adminService.save(new BasePersonDto("erfan", "adine", "erfan@gmail.com", "123", "danial" ,""));
 
     }
 }

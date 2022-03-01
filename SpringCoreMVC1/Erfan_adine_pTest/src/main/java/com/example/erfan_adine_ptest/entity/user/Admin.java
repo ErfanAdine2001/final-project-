@@ -10,6 +10,7 @@ import javax.persistence.*;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
+@Table(name = "Myadmin")
 public class Admin extends BasePerson {
 
 

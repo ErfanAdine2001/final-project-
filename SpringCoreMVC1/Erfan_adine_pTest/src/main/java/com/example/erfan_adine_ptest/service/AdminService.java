@@ -45,7 +45,7 @@ public class AdminService implements CustomRequestRepository {
     private final WorkerService workerService;
     private final ExperteService experteService;
     private final DutyRepository dutyRepository;
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
 //    @Bean
 //    public PasswordEncoder passwordEncoder() {
@@ -98,6 +98,7 @@ public class AdminService implements CustomRequestRepository {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .username(request.getUsername())
                 .email(request.getEmail())
+                .isEnable(true)
                 .roles(new HashSet<>(List.of(Role.ADMIN)))
                 .build();
         Admin save = adminRepository.save(admin);

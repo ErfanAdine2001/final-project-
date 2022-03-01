@@ -24,6 +24,7 @@ import java.math.BigDecimal;
 //@Table(
 //        uniqueConstraints = {@UniqueConstraint(columnNames = {"order_id"})}
 //)
+@Table(name="myTransaction")
 public class Transaction extends BaseEntity {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_ID_oo")

@@ -1,5 +1,7 @@
 package com.example.erfan_adine_ptest.security.config;
 
+import com.example.erfan_adine_ptest.security.filter.CustomAuthenticationFilter;
+import com.example.erfan_adine_ptest.security.filter.CustomAuthorizationFilter;
 import com.example.erfan_adine_ptest.service.BasePersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -10,8 +12,12 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.crypto.SecretKey;
+
 
 @Configuration
 @EnableWebSecurity
@@ -21,6 +27,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private  final PasswordEncoder passwordEncoder;
     private final BasePersonService basePersonService;
+    private final SecretKey secretKey;
+    private final JwtConfig config;
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -42,13 +51,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
 //                .addFilter()
-                .authorizeRequests().antMatchers("/", "api/**","/api/BasePerson/**").permitAll()
-                .anyRequest().authenticated()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .formLogin()
-                .loginPage("/login").permitAll()
-                .and()
-                .logout().permitAll();
+                .addFilter(new CustomAuthenticationFilter(secretKey,authenticationManager(),config))
+                .addFilterAfter(new CustomAuthorizationFilter(secretKey,config) ,CustomAuthenticationFilter.class )
+                .authorizeRequests().antMatchers( "/api/BasePerson/login","/api/BasePerson/create" ,"/api/BasePerson/test").permitAll()
+                .anyRequest().authenticated();
     }
 
 

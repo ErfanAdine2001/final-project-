@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "MyUser")
 public class User extends BasePerson {
 
 

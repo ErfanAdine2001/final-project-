@@ -22,6 +22,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
+@Table(name="mySuggestion")
 public class Suggestion extends BaseMessage {
 
 
